@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-Hant-HK">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>中三數學學習站</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="assets/data.js"></script>
+  <script src="assets/common.js"></script>
+</head>
+<body>
+  <header id="topbar"></header>
+
+  <main class="wrap">
+    <section class="hero">
+      <h1>中三數學學習站</h1>
+      <p>選擇一個課題開始學習，或輸入關鍵字搜尋（例如「斜率」、「cone」）。</p>
+
+      <div class="search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="搜尋課題、概念或英文名稱…" autocomplete="off" aria-label="搜尋課題">
+      </div>
+
+      <div class="chips" id="chips" role="group" aria-label="按範疇篩選"></div>
+      <div class="recent" id="recent"></div>
+    </section>
+
+    <div id="topics"></div>
+    <p class="empty" id="empty">找不到相關課題，試試其他關鍵字？</p>
+  </main>
+
+  <footer><div class="wrap">中三數學學習站 · 內容持續更新中</div></footer>
+
+  <script src="assets/home.js"></script>
+</body>
+</html>
