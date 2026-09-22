@@ -12,6 +12,7 @@
   <style>
     .formula { font-size: 20px; font-weight: 700; text-align: center; margin: 8px 0 12px; }
     .formula sup { font-size: .6em; }
+    .refs li { font-size: 14px; color: var(--muted); }
   </style>
 </head>
 <body data-topic="percentages" data-notes>
@@ -79,16 +80,39 @@
           <h2>教學建議</h2>
           <h3>課堂頁面各工具的用法</h3>
           <ul>
-            <li><strong>① 連續百分變化</strong>：先按「+20% → −20%」，請學生預測結果，再揭曉 96。然後按「交換次序」，讓學生發現次序不影響結果（1.2 × 0.8 = 0.8 × 1.2）。「+10% → +10%」可帶出整體是 +21% 而不是 +20%。</li>
-            <li><strong>② 單利息 vs 複利息</strong>：用 ◀ ▶ 逐年比較，重點看「複利息的利息 = 上一年本利和 × r%」。把年期拉到 20 年，可看到兩者差距越來越大。展開數據表可讓學生核對計算。</li>
+            <li><strong>① 連續百分變化</strong>：勾選「先預測，後揭曉」，按「+20% → −20%」，讓學生寫下估計再揭曉 96，製造認知衝突。百分比條把每一步的「100%」都畫出來，學生可直接看到第二次的 20%（24）比第一次的 20%（20）長。然後按「交換次序」，發現次序不影響結果（1.2 × 0.8 = 0.8 × 1.2）。「+10% → +10%」可帶出整體是 +21% 而不是 +20%。</li>
+            <li><strong>② 單利息 vs 複利息</strong>：先勾選「先預測，後揭曉」，讓學生估計 20 年後複利息的本利和，大多數學生會低估。揭曉後用 ◀ ▶ 逐年比較，並展開數據表，對比「比上一年多」（單利息不變、複利息遞增）及「是上一年的」（複利息每年都 × 1.08）兩欄。</li>
             <li><strong>③ 分期複利</strong>：依次按「每年、每半年、每季、每月」，觀察時間線上的計息次數及本利和的變化。下方列出頭幾期的計算，讓學生明白公式中的 r% ÷ k 和 nk 從何而來。</li>
-            <li><strong>④ 增長與折舊</strong>：先用「汽車折舊」，問學生「價值何時跌到一半？」再看提示。然後切換「城市人口增長」，比較增長與折舊的圖形。</li>
+            <li><strong>④ 增長與折舊</strong>：先用「汽車折舊」，問學生「價值何時跌到一半？」。然後勾選「比較錯誤做法」，對比「每年都減去原值的 15%」：錯誤做法在第 7 年已跌至 0，讓學生明白為何要按上一期計算。</li>
+          </ul>
+
+          <h3>研究的啟示</h3>
+          <ul>
+            <li><strong>百分率的語言有誤導性</strong>（Parker &amp; Leinhardt, 1995）：「增加 20%」用加法的字眼表達乘法的意思，而且「……的 20%」中的「的」指向哪個基數，學生常常弄錯。教學時宜同時寫出兩種說法：「增加 20%」即「× 1.2」。</li>
+            <li><strong>連續百分變化的核心是基數改變</strong>（Jacobs Danan &amp; Gelman, 2018）：不少大學生仍會把兩次百分變化直接相加。研究建議先確保學生掌握一步的百分變化，再處理兩步的問題。</li>
+            <li><strong>百分比條／雙數線</strong>（Van den Heuvel-Panhuizen, 2003；Küchemann, Hodgen &amp; Brown）：把數量與 0%–100% 並排畫在同一條上，可延伸至超過 100%，並支援把百分率當作「乘數」使用。① 的百分比條即採用此模型。</li>
+            <li><strong>指數增長偏誤</strong>（Stango &amp; Zinman, 2009）：一般人會把複利增長「直線化」，因而低估未來值。先估計、後揭曉，可讓學生親身經歷這種偏誤。</li>
+            <li><strong>「加」與「乘」的規律</strong>（Confrey &amp; Smith, 1995；Ellis 等）：理解指數增長的關鍵，是察覺時間每加 1，數值就乘以同一個數。② 的數據表及 ④ 的「每一年都 × 0.85」正是突出這一點。</li>
+            <li><strong>直線化錯覺</strong>（De Bock, Van Dooren &amp; Verschaffel）：學生傾向在不適用的情況下使用直線模型。④ 的「比較錯誤做法」直接對比兩種模型。</li>
           </ul>
           <h3>留意</h3>
           <ul>
             <li>所有金額均準確至 $0.01；人口及細菌數目取最接近的整數。</li>
             <li>④ 的情境數據為方便計算而設的虛構數字。</li>
           </ul>
+        </section>
+
+        <section class="section" id="references">
+          <h2>參考資料</h2>
+          <ul class="refs">
+            <li>Parker, M., &amp; Leinhardt, G. (1995). Percent: A privileged proportion. <em>Review of Educational Research, 65</em>(4), 421–481.</li>
+            <li>Jacobs Danan, J. A., &amp; Gelman, R. (2018). The problem with percentages. <em>Philosophical Transactions of the Royal Society B, 373</em>(1740), 20160519.</li>
+            <li>Van den Heuvel-Panhuizen, M. (2003). The didactical use of models in realistic mathematics education: An example from a longitudinal trajectory on percentage. <em>Educational Studies in Mathematics, 54</em>(1), 9–35.</li>
+            <li>Küchemann, D., Hodgen, J., &amp; Brown, M. The use of alternative double number lines as models of ratio tasks and as models for ratio relations and scaling. <em>Proceedings of BCME 8.</em></li>
+            <li>Stango, V., &amp; Zinman, J. (2009). Exponential growth bias and household finance. <em>The Journal of Finance, 64</em>(6), 2807–2849.</li>
+            <li>Confrey, J., &amp; Smith, E. (1995). Splitting, covariation, and their role in the development of exponential functions. <em>Journal for Research in Mathematics Education, 26</em>(1), 66–86.</li>
+            <li>Ellis, A. B., Ozgur, Z., Kulow, T., Williams, C. C., &amp; Amidon, J. (2016). An exponential growth learning trajectory. <em>Mathematical Thinking and Learning, 18</em>(3).</li>
+            <li>De Bock, D., Van Dooren, W., Janssens, D., &amp; Verschaffel, L. (2007). <em>The illusion of linearity: From analysis to improvement.</em> Springer.</li>          </ul>
         </section>
       </div>
     </div>

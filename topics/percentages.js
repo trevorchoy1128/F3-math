@@ -38,6 +38,34 @@
     $(id).querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", x.getAttribute(attr) === String(value)); });
   }
 
+  // 先預測，後揭曉：勾選後隱藏結果，學生輸入估計再揭曉（製造認知衝突）
+  function setupPredict(o) {
+    var revealed = false, toggle = $(o.toggle), box = $(o.box), out = $(o.out), input = $(o.input);
+    var note = document.createElement("p");
+    note.className = "guess-note";
+    out.insertBefore(note, out.firstChild);
+    function apply() {
+      var on = toggle.checked;
+      box.hidden = !on || revealed;
+      out.hidden = on && !revealed;
+    }
+    function reset() { revealed = false; input.value = ""; note.innerHTML = ""; apply(); }
+    toggle.addEventListener("change", reset);
+    function reveal() {
+      revealed = true;
+      var g = Number(input.value), a = o.actual();
+      note.innerHTML = input.value.trim() === "" || !isFinite(g) ? "" :
+        "你的估計：" + o.fmt(g) + "；實際：<strong>" + o.fmt(a) + "</strong>。" +
+        (Math.abs(g - a) / a < 0.01 ? "非常接近！" :
+          (g < a ? "低估了 " : "高估了 ") + num(Math.abs(g - a) / a * 100, 1) + "%。" + (g < a && o.lowNote ? o.lowNote : ""));
+      apply();
+      o.onReveal();
+    }
+    $(o.button).addEventListener("click", reveal);
+    input.addEventListener("keydown", function (e) { if (e.key === "Enter") reveal(); });
+    return { reset: reset };
+  }
+
   /* ---------- ① 連續百分變化 ---------- */
   var SUCC_PRESETS = [
     { label: "+20% → −20%", steps: [[1, 20], [-1, 20]] },
@@ -46,6 +74,7 @@
     { label: "+50% → −50%", steps: [[1, 50], [-1, 50]] },
   ];
   var succ = SUCC_PRESETS[0].steps.map(function (s) { return { s: s[0], r: s[1] }; });
+  var succEnd = 0;
 
   $("succ-presets").innerHTML = SUCC_PRESETS.map(function (p, i) {
     return '<button type="button" class="chip" data-i="' + i + '">' + p.label + "</button>";
@@ -68,10 +97,13 @@
     var vals = [start], lines = [], m = 1;
     succ.forEach(function (st, i) {
       var f = 1 + st.s * st.r / 100, next = vals[i] * f;
-      lines.push("第 " + (i + 1) + " 次：" + num(vals[i], 4) + " × (1 " + (st.s > 0 ? "+" : "−") + " " + st.r + "%) = " + num(next, 4));
+      lines.push("第 " + (i + 1) + " 次：" + (st.s > 0 ? "增加 " : "減少 ") + st.r + "%，即 × " + num(f, 4) + "：" +
+        num(vals[i], 4) + " × " + num(f, 4) + " = " + num(next, 4));
       vals.push(next); m *= f;
     });
+    renderPercentBars(vals);
     var end = vals[vals.length - 1], change = (m - 1) * 100;
+    succEnd = end;
     lines.push("整體：" + num(start, 4) + " × " + succ.map(function (st) { return num(1 + st.s * st.r / 100, 4); }).join(" × ") +
       " = " + num(start, 4) + " × " + num(m, 6) + " = <strong>" + num(end, 4) + "</strong>");
     $("succ-calc").innerHTML = lines.join("<br>");
@@ -86,20 +118,48 @@
     }
     $("succ-result").innerHTML = msg;
     $("succ-result").className = "result" + (same ? "" : " bad");
+  }
 
-    barChart($("succ-chart"), {
-      labels: vals.map(function (v, i) { return i ? "第 " + i + " 次後" : "原值"; }),
-      series: [{ name: "數值", color: "var(--s1)", values: vals }],
-      fmt: function (v) { return num(v, 4); },
-      refs: [{ value: start, label: "原值 " + num(start, 4) }],
-      height: 220, padL: 44, ariaLabel: "每次變化後的數值",
+  // 百分比條（參考 Van den Heuvel-Panhuizen 的 bar model）：每一步都以上一次的數值作 100%，
+  // 所有條用同一比例尺，學生可看到第二次的 20% 比第一次的 20% 長
+  function renderPercentBars(vals) {
+    var max = Math.max.apply(null, vals);
+    function w(v) { return (v / max * 100) + "%"; }
+    $("succ-bars").innerHTML = succ.map(function (st, i) {
+      var prev = vals[i], next = vals[i + 1], delta = Math.abs(next - prev);
+      var bar = st.s > 0
+        ? '<span class="base" style="width:' + w(prev) + '"></span><span class="add" style="width:' + w(delta) + '"></span>'
+        : '<span class="base" style="width:' + w(next) + '"></span><span class="removed" style="width:' + w(delta) + '"></span>';
+      var endPct = 100 + st.s * st.r;
+      function tick(v, text) { // 貼近右邊的刻度改為靠右對齊，避免超出範圍
+        return '<span style="left:' + w(v) + (v / max > 0.85 ? ";transform:translateX(-100%)" : "") + '">' + text + "</span>";
+      }
+      var scale = '<span style="left:0">0</span>' + tick(prev, "100%（" + num(prev, 4) + "）") +
+        tick(next, endPct + "%（" + num(next, 4) + "）");
+      return '<div><div class="pbar-label"><strong>第 ' + (i + 1) + " 次</strong>：以 " + num(prev, 4) + " 作 100%，" +
+        (st.s > 0 ? "增加" : "減少") + " " + st.r + "% = " + num(prev, 4) + " × " + st.r + "% = <strong>" + num(delta, 4) + "</strong></div>" +
+        '<div class="pbar">' + bar + '<span class="mark" style="left:' + w(prev) + '"></span></div>' +
+        '<div class="pbar-scale">' + scale + "</div></div>";
+    }).join("");
+
+    // 刻度文字重疊時，隱藏結果刻度（保留 0 及 100%）
+    $("succ-bars").querySelectorAll(".pbar-scale").forEach(function (sc) {
+      var s = sc.querySelectorAll("span"), a = s[1].getBoundingClientRect(), b = s[2].getBoundingClientRect();
+      if (a.width && b.left < a.right + 2 && b.right > a.left - 2) s[2].hidden = true;
     });
   }
+
+  var succPredict = setupPredict({
+    toggle: "succ-predict", box: "succ-guess", out: "succ-out", input: "succ-guess-in", button: "succ-reveal",
+    actual: function () { return succEnd; },
+    fmt: function (v) { return num(v, 4); }, onReveal: function () {},
+  });
 
   $("succ-presets").addEventListener("click", function (e) {
     var b = e.target.closest(".chip");
     if (!b) return;
     succ = SUCC_PRESETS[Number(b.getAttribute("data-i"))].steps.map(function (s) { return { s: s[0], r: s[1] }; });
+    succPredict.reset();
     renderSuccRows();
   });
   $("succ-steps").addEventListener("click", function (e) {
@@ -119,6 +179,8 @@
   $("succ-start").addEventListener("input", renderSucc);
   $("succ-add").addEventListener("click", function () { succ.push({ s: 1, r: 10 }); renderSuccRows(); });
   $("succ-swap").addEventListener("click", function () { succ.reverse(); renderSuccRows(); });
+  // 百分比條的刻度要按實際寬度決定，分頁切換到此時重畫
+  document.addEventListener("sectionchange", function (e) { if (e.detail === "successive") renderSucc(); });
   renderSuccRows();
 
   /* ---------- ② 單利息 vs 複利息 ---------- */
@@ -161,17 +223,31 @@
         "（每年都一樣）→ 本利和 " + money(d.simple[t]) + "<br>" +
         "<strong>複利息：</strong>利息 = 上一年本利和 " + money(d.comp[t - 1]) + " × " + rs + " = " + money(d.comp[t - 1] * d.r / 100) +
         "（每年都增加）→ 本利和 " + money(d.comp[t]) + "<br>" +
+        // 共變：時間每加 1 年，單利息「加」同一個數，複利息「乘」同一個數（Confrey & Smith；Ellis 等）
+        "<strong>規律：</strong>每過一年，單利息的本利和都 <strong>+ " + money(d.P * d.r / 100) + "</strong>；" +
+        "複利息的本利和都 <strong>× " + num(1 + d.r / 100, 4) + "</strong>。<br>" +
         '<span class="hint">單利息：I = P × r% × n　｜　複利息：A = P(1 + r%)' + sup("n") + "</span>";
 
-    $("int-table").innerHTML = "<tr><th>年</th><th class=\"num\">單利息本利和</th><th class=\"num\">複利息本利和</th><th class=\"num\">相差</th></tr>" +
+    $("int-table").innerHTML = "<tr><th rowspan=\"2\">年</th><th colspan=\"2\">單利息</th><th colspan=\"3\">複利息</th></tr>" +
+      "<tr><th class=\"num\">本利和</th><th class=\"num\">比上一年多</th><th class=\"num\">本利和</th><th class=\"num\">比上一年多</th><th class=\"num\">是上一年的</th></tr>" +
       d.simple.map(function (v, t) {
-        return "<tr><td>" + t + "</td><td class=\"num\">" + money(v) + "</td><td class=\"num\">" + money(d.comp[t]) +
-          "</td><td class=\"num\">" + money(d.comp[t] - v) + "</td></tr>";
+        return "<tr><td>" + t + "</td><td class=\"num\">" + money(v) + "</td><td class=\"num\">" + (t ? "+ " + money(v - d.simple[t - 1]) : "—") +
+          "</td><td class=\"num\">" + money(d.comp[t]) + "</td><td class=\"num\">" + (t ? "+ " + money(d.comp[t] - d.comp[t - 1]) : "—") +
+          "</td><td class=\"num\">" + (t ? "× " + num(d.comp[t] / d.comp[t - 1], 4) : "—") + "</td></tr>";
       }).join("");
+    $("int-guess-n").textContent = d.n;
   }
-  bindRange("int-r", renderInterest);
-  bindRange("int-n", renderInterest);
-  $("int-p").addEventListener("input", renderInterest);
+  // 研究發現一般人會把複利「直線化」而低估增長（Stango & Zinman, 2009）
+  var intPredict = setupPredict({
+    toggle: "int-predict", box: "int-guess", out: "int-out", input: "int-guess-in", button: "int-reveal",
+    actual: function () { var d = intData(); return d.comp[d.n]; },
+    fmt: money, onReveal: renderInterest,
+    lowNote: "研究發現，大部分人都會低估複利息的增長。",
+  });
+  function onIntSettings() { intPredict.reset(); renderInterest(); }
+  bindRange("int-r", onIntSettings);
+  bindRange("int-n", onIntSettings);
+  $("int-p").addEventListener("input", onIntSettings);
   $("int-prev").addEventListener("click", function () { intYear--; renderInterest(); });
   $("int-next").addEventListener("click", function () { intYear++; renderInterest(); });
   renderInterest();
@@ -253,20 +329,40 @@
     var refs = [{ value: start, label: "原值" }];
     if (hit != null && hit <= n) refs.push({ value: target, label: gr.t < 0 ? "原值的一半" : "原值的兩倍" });
 
+    // 比較錯誤做法：每期都按原值加減（直線），針對「直線化錯覺」（De Bock, Van Dooren & Verschaffel）
+    var compare = $("gr-compare").checked, linear = [];
+    for (t = 0; t <= n; t++) linear.push(Math.max(0, start * (1 + gr.t * r * t / 100)));
+    var series = [{ name: "實際（按上一期計算）", color: "var(--s1)", values: vals }];
+    if (compare) series.push({ name: "錯誤做法（每期按原值計算）", color: "var(--s2)", values: linear });
+    $("gr-legend").hidden = !compare;
+    $("gr-legend").innerHTML = series.map(function (s) { return '<span><i style="background:' + s.color + '"></i>' + s.name + "</span>"; }).join("");
+
     barChart($("gr-chart"), {
       labels: vals.map(function (v, t) { return String(t); }),
-      series: [{ name: p.what, color: gr.t < 0 ? "var(--s2)" : "var(--s1)", values: vals }],
+      series: series,
       fmt: grFmt, tickFmt: function (v) { return (p.money ? "$" : "") + group(String(Math.round(v))); },
       tipTitle: function (t) { return t ? "第 " + t + " " + p.unit + "後" : "開始時"; },
       refs: refs, padL: 72, ariaLabel: p.what + "的變化",
     });
 
+    // 每一期都乘以同一個數
+    var chain = vals.slice(0, Math.min(4, n + 1)).map(grFmt).join(" → ") + (n > 3 ? " → …" : "");
+    $("gr-chain").innerHTML = "每一" + p.unit + "都 <strong>× " + num(f, 4) + "</strong>：" + chain;
+
     var sign = gr.t < 0 ? "−" : "+";
     $("gr-calc").innerHTML = "第 " + n + " " + p.unit + "後的" + p.what + " = " + grFmt(start) + " × (1 " + sign + " " + r + "%)" + sup(n) +
       " = " + grFmt(start) + " × " + num(f, 4) + sup(n) + " = <strong>" + grFmt(vals[n]) + "</strong>";
+
+    var extra = "";
+    if (compare) {
+      extra = "<br>錯誤做法每" + p.unit + "都" + (gr.t < 0 ? "減去" : "加上") + "原值的 " + r + "%（" + grFmt(start * r / 100) + "），" +
+        "第 " + n + " " + p.unit + "後得 " + grFmt(linear[n]) + "，與實際相差 " + grFmt(Math.abs(linear[n] - vals[n])) + "。";
+      var zero = Math.ceil(100 / r);
+      if (gr.t < 0 && zero <= n) extra += "按錯誤做法，第 " + zero + " " + p.unit + "後價值已跌至 0 或以下，這並不合理。";
+    }
     $("gr-milestone").innerHTML = (hit == null ? "" :
       "第 " + hit + " " + p.unit + "後，" + p.what + "首次" + (gr.t < 0 ? "少於原值的一半" : "多於原值的兩倍") + "。") +
-      (gr.t < 0 ? "<br>無論折舊多少" + p.unit + "，數值都只會越來越少，但不會變成 0。" : "");
+      (gr.t < 0 ? "<br>無論折舊多少" + p.unit + "，數值都只會越來越少，但不會變成 0。" : "") + extra;
   }
 
   function loadPreset(p) {
@@ -284,5 +380,6 @@
   bindRange("gr-r", renderGrowth);
   $("gr-n").addEventListener("input", renderGrowth);
   $("gr-start").addEventListener("input", renderGrowth);
+  $("gr-compare").addEventListener("change", renderGrowth);
   loadPreset(GR_PRESETS[0]);
 })();

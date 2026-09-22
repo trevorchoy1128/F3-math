@@ -28,6 +28,29 @@
     .step-row .lbl { width: 64px; font-size: 14px; color: var(--muted); }
     .step-row .x { border: 0; background: none; color: var(--muted); font-size: 18px; cursor: pointer; padding: 4px 8px; }
 
+    /* 先預測，後揭曉 */
+    .predict-toggle { font-size: 14px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; cursor: pointer; margin-left: 4px; }
+    .predict-toggle input { accent-color: var(--c); width: 16px; height: 16px; }
+    .predict-box { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 12px 0; padding: 12px 14px; border-radius: 10px; background: var(--c-soft); }
+    .guess-note { margin: 8px 0; font-size: 15px; }
+
+    /* ① 百分比條：每一步以上一次的數值作 100% */
+    .pbars { display: flex; flex-direction: column; gap: 14px; margin: 12px 0; }
+    .pbar-label { font-size: 14px; margin-bottom: 4px; }
+    .pbar { position: relative; height: 26px; display: flex; }
+    .pbar span { height: 100%; }
+    .pbar .base { background: var(--s1); border-radius: 4px 0 0 4px; }
+    .pbar .add { background: var(--s2); border-radius: 0 4px 4px 0; margin-left: 2px; }
+    .pbar .removed, .removed-key {
+      background: repeating-linear-gradient(45deg, var(--s1) 0 2px, transparent 2px 7px);
+      opacity: .6; border: 1px dashed var(--s1); border-radius: 0 4px 4px 0; margin-left: 2px;
+    }
+    .removed-key { display: inline-block; width: 10px; height: 10px; margin-right: 6px; border-radius: 3px; }
+    .pbar .mark { position: absolute; top: -4px; bottom: -4px; width: 0; border-left: 2px solid var(--text); }
+    .pbar-scale { position: relative; height: 18px; font-size: 12px; color: var(--muted); }
+    .pbar-scale span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+    .pbar-scale span:first-child { transform: none; }
+
     /* ② 單利息 vs 複利息 */
     .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
     .tile { background: var(--surface-2); border-radius: 10px; padding: 10px 12px; }
@@ -75,10 +98,23 @@
           <div class="row">
             <button type="button" class="btn" id="succ-add">＋ 加一次變化</button>
             <button type="button" class="btn" id="succ-swap">交換次序</button>
+            <label class="predict-toggle"><input type="checkbox" id="succ-predict"> 先預測，後揭曉</label>
           </div>
-          <div class="chart" id="succ-chart"></div>
-          <div class="calc" id="succ-calc"></div>
-          <div class="result" id="succ-result" aria-live="polite"></div>
+          <div class="predict-box" id="succ-guess" hidden>
+            <label for="succ-guess-in">估計最後的數值：</label>
+            <input id="succ-guess-in" class="field sm" type="number" inputmode="decimal">
+            <button type="button" class="btn primary" id="succ-reveal">揭曉</button>
+          </div>
+          <div id="succ-out">
+            <div class="legend">
+              <span><i style="background:var(--s1)"></i>上一次的數值（當作 100%）</span>
+              <span><i style="background:var(--s2)"></i>增加的部分</span>
+              <span><i class="removed-key"></i>減少的部分</span>
+            </div>
+            <div class="pbars" id="succ-bars"></div>
+            <div class="calc" id="succ-calc"></div>
+            <div class="result" id="succ-result" aria-live="polite"></div>
+          </div>
         </section>
 
         <section class="section" id="interest">
@@ -89,6 +125,15 @@
             <div><label for="int-r">年利率 r = <output id="int-r-out"></output>%</label><input id="int-r" type="range" min="1" max="20" value="8"></div>
             <div><label for="int-n">年期 n = <output id="int-n-out"></output> 年</label><input id="int-n" type="range" min="1" max="20" value="10"></div>
           </div>
+          <div class="row">
+            <label class="predict-toggle"><input type="checkbox" id="int-predict"> 先預測，後揭曉</label>
+          </div>
+          <div class="predict-box" id="int-guess" hidden>
+            <label for="int-guess-in">估計 <span id="int-guess-n"></span> 年後複利息的本利和（$）：</label>
+            <input id="int-guess-in" class="field sm" type="number" inputmode="decimal">
+            <button type="button" class="btn primary" id="int-reveal">揭曉</button>
+          </div>
+          <div id="int-out">
           <div class="legend"><span><i style="background:var(--s1)"></i>單利息本利和</span><span><i style="background:var(--s2)"></i>複利息本利和</span></div>
           <div class="chart" id="int-chart"></div>
           <div class="tiles" id="int-tiles"></div>
@@ -103,6 +148,7 @@
             <summary>顯示每年數據表</summary>
             <div class="table-wrap"><table class="t" id="int-table"></table></div>
           </details>
+          </div>
         </section>
 
         <section class="section" id="periods">
@@ -140,7 +186,12 @@
             <div><label for="gr-r">每期百分率 = <output id="gr-r-out"></output>%</label><input id="gr-r" type="range" min="1" max="50" value="15"></div>
             <div><label for="gr-n">期數 = <output id="gr-n-out"></output></label><input id="gr-n" type="range" min="1" max="20" value="10"></div>
           </div>
+          <div class="row">
+            <label class="predict-toggle"><input type="checkbox" id="gr-compare"> 比較錯誤做法：每期都按「原值」計算</label>
+          </div>
+          <div class="legend" id="gr-legend" hidden></div>
           <div class="chart" id="gr-chart"></div>
+          <div class="calc" id="gr-chain"></div>
           <div class="calc" id="gr-calc"></div>
           <div class="result" id="gr-milestone"></div>
         </section>
