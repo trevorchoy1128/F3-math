@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-Hant-HK">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>科學記數法（教師筆記）｜中三數學學習站</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script src="../assets/data.js"></script>
+  <script src="../assets/common.js"></script>
+  <style>
+    .formula { font-size: 22px; font-weight: 700; text-align: center; margin: 8px 0 12px; }
+    .formula sup { font-size: .6em; }
+  </style>
+</head>
+<body data-topic="scientific-notation" data-notes>
+  <header id="topbar"></header>
+
+  <main class="wrap">
+    <div id="topic-head"></div>
+
+    <div class="topic-layout">
+      <nav class="toc" id="toc" aria-label="本頁目錄"></nav>
+
+      <div>
+        <section class="section" id="goals">
+          <h2>學習目標</h2>
+          <ul>
+            <li>理解 10 的正整數及負整數次方的意義。</li>
+            <li>認識科學記數法 a × 10<sup>n</sup> 的條件：1 ≤ a &lt; 10，n 是整數。</li>
+            <li>把很大的數寫成科學記數法（n 為正整數）。</li>
+            <li>把很小的數寫成科學記數法（n 為負整數）。</li>
+          </ul>
+        </section>
+
+        <section class="section" id="concept">
+          <h2>概念講解</h2>
+
+          <h3>1. 為甚麼需要科學記數法？</h3>
+          <p>很大或很小的數有很多個 0，例如地球與太陽的距離約 150 000 000 km，病毒的直徑約 0.000 000 1 m。這些數難以閱讀，容易數錯 0 的數目，也難以比較大小。科學記數法可以把它們寫得簡潔。</p>
+
+          <h3>2. 定義</h3>
+          <div class="formula">a × 10<sup>n</sup>，其中 1 ≤ a &lt; 10，n 是整數</div>
+          <ul>
+            <li><strong>a</strong>：只有一個非零數字在小數點前。</li>
+            <li><strong>n</strong>：很大的數，n 是正整數；很小的數（小於 1），n 是負整數。</li>
+          </ul>
+
+          <h3>3. 步驟</h3>
+          <ol>
+            <li>把小數點移到第一個非零數字的後面，得出 a。</li>
+            <li>數一數小數點移了多少位。</li>
+            <li>小數點<strong>向左</strong>移 k 位，n = k；小數點<strong>向右</strong>移 k 位，n = −k。</li>
+          </ol>
+          <p>例如：45 000 000 = 4.5 × 10<sup>7</sup>（小數點向左移 7 位）；0.000 32 = 3.2 × 10<sup>−4</sup>（小數點向右移 4 位）。</p>
+
+          <div class="callout">
+            <strong>記憶方法</strong>
+            數值不變：a 變小了多少倍，10<sup>n</sup> 就要變大多少倍，反之亦然。小數點向左移（a 變小）→ n 增加；向右移（a 變大）→ n 減少。
+          </div>
+          <div class="callout warn">
+            <strong>常見錯誤</strong>
+            <ul>
+              <li>a 不在 1 與 10 之間，例如寫成 45 × 10<sup>6</sup> 或 0.45 × 10<sup>8</sup>。</li>
+              <li>把 a 寫成 10，例如 10 × 10<sup>4</sup>（應為 1 × 10<sup>5</sup>）。</li>
+              <li>很小的數忘記負號，例如 0.000 32 寫成 3.2 × 10<sup>4</sup>。</li>
+              <li>以為 10<sup>−4</sup> 是負數。其實 10<sup>−4</sup> = 0.000 1，是一個很小的正數。</li>
+              <li>數位數時數錯，特別是把小數點前的 0 也數進去。</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="section" id="teaching">
+          <h2>教學建議</h2>
+          <h3>課堂頁面各工具的用法</h3>
+          <ul>
+            <li><strong>① 10 的乘冪</strong>：由 10<sup>3</sup> 開始，逐步減到 10<sup>0</sup>、10<sup>−1</sup>、10<sup>−2</sup>，請學生預測下一個結果。每減 1，數值就除以 10，讓學生自然接受負指數代表很小的數。</li>
+            <li><strong>② 移動小數點</strong>：本課核心。先請學生預測要向哪邊移、移幾多位，再按鍵驗證。提示會說明 a 太大或太小；移動時留意 a 與 10<sup>n</sup> 一起變化，但等式左右兩邊始終相等。可用預設的數，或輸入學生提出的數。</li>
+            <li><strong>③ 是不是科學記數法？</strong>：適合全班討論。先讓學生舉手投票，再按鍵揭曉理由。重點是 1 ≤ a &lt; 10 及底數必須是 10。</li>
+            <li><strong>④ 大與小的世界</strong>：先顯示一般寫法，問學生「哪個較大？相差多少倍？」，再轉為科學記數法，讓學生感受只看指數就能比較大小。</li>
+          </ul>
+          <h3>留意</h3>
+          <ul>
+            <li>如學生未學負整數指數，可先在 ① 由 10<sup>3</sup> 逐步向下拉，建立「每減 1 就除以 10」的規律。</li>
+            <li>④ 的數據都是近似值，方便學生計算。</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer><div class="wrap">中三數學學習站 · 教師筆記</div></footer>
+
+  <script src="../assets/topic.js"></script>
+</body>
+</html>

@@ -21,8 +21,14 @@ window.TOPICS = [
   {
     id: "indices", strand: "na", status: "planned",
     zh: "指數定律", en: "Laws of Integral Indices",
-    desc: "零指數、負整數指數、科學記數法",
-    keywords: ["指數", "冪", "科學記數法", "index", "power", "scientific notation"],
+    desc: "零指數、負整數指數、指數定律",
+    keywords: ["指數", "冪", "index", "power"],
+  },
+  {
+    id: "scientific-notation", strand: "na", status: "draft",
+    zh: "科學記數法", en: "Scientific Notation",
+    desc: "以 a × 10ⁿ 表示很大或很小的數",
+    keywords: ["科學記數法", "標準式", "10 的乘冪", "小數點", "scientific notation", "standard form", "power of 10"],
   },
   {
     id: "factorization", strand: "na", status: "planned",

@@ -160,6 +160,7 @@ footer { color: var(--muted); font-size: 13px; padding: 32px 0 40px; border-top:
 .topic-hero .en { color: var(--muted); margin: 2px 0 0; }
 
 .topic-layout { display: grid; grid-template-columns: 200px 1fr; gap: 28px; align-items: start; }
+.topic-layout > div { min-width: 0; }
 .toc { position: sticky; top: 76px; display: flex; flex-direction: column; gap: 2px; }
 .toc a {
   text-decoration: none; color: var(--muted); font-size: 14px;
@@ -220,6 +221,8 @@ table.t th { background: var(--surface-2); font-weight: 600; white-space: nowrap
 .widget { border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin: 12px 0 20px; background: var(--bg); }
 .widget-title { font-weight: 700; font-size: 17px; margin: 0 0 2px !important; }
 .widget-hint { color: var(--muted); font-size: 14px; margin: 0 0 12px !important; }
+
+.error { color: var(--dh); font-size: 14px; margin-top: 8px; }
 
 .feedback { margin-top: 12px; padding: 12px 14px; border-radius: 10px; font-size: 15px; border-left: 4px solid; }
 .feedback.ok { background: var(--mss-soft); border-color: var(--mss); }

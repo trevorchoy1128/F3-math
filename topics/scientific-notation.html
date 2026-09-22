@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-Hant-HK">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>科學記數法｜中三數學學習站</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script src="../assets/data.js"></script>
+  <script src="../assets/common.js"></script>
+  <style>
+    .hint { color: var(--muted); font-size: 15px; }
+    .big { font-size: clamp(22px, 5vw, 32px); font-weight: 700; line-height: 1.4; word-break: break-all; }
+    .big sup { font-size: .6em; }
+
+    /* ① 10 的乘冪 */
+    .power-row { display: flex; align-items: center; gap: 14px; margin: 8px 0 4px; flex-wrap: wrap; }
+    .power-row input[type="range"] { flex: 1; min-width: 200px; accent-color: var(--c); }
+    .power-card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-top: 12px; }
+    .power-card .name { color: var(--muted); font-size: 15px; }
+    .power-card .one { color: var(--c); }
+    .power-rule { margin-top: 8px; font-size: 16px; }
+
+    /* ② 移動小數點 */
+    .presets { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+    .digits { display: flex; align-items: flex-end; margin: 18px 0 6px; flex-wrap: nowrap; overflow-x: auto; padding: 4px 0 8px; }
+    /* 置中，但數字太長時仍可由最左邊開始捲動 */
+    .digits > :first-child { margin-left: auto; }
+    .digits > :last-child { margin-right: auto; }
+    .dg { font-size: clamp(22px, 4.6vw, 36px); font-weight: 700; width: 1.05em; text-align: center; font-variant-numeric: tabular-nums; }
+    .dg.dim { color: var(--muted); opacity: .35; }
+    .pt { width: 0; position: relative; }
+    .pt::after {
+      content: ""; position: absolute; left: -5px; bottom: 6px; width: 10px; height: 10px; border-radius: 50%;
+      background: var(--dh); transition: .2s;
+    }
+    .times { font-size: clamp(20px, 4vw, 30px); font-weight: 700; margin-left: 12px; white-space: nowrap; }
+    .times sup { font-size: .6em; color: var(--c); }
+    .status { text-align: center; margin: 4px 0 14px; font-size: 16px; min-height: 28px; }
+    .status .ok { color: var(--mss); font-weight: 700; }
+    .status .no { color: var(--dh); font-weight: 600; }
+    .moves { text-align: center; color: var(--muted); font-size: 15px; min-height: 24px; }
+    .equation { text-align: center; font-size: clamp(18px, 3.6vw, 24px); margin: 10px 0 14px; }
+    .equation sup { font-size: .6em; }
+    .move-btns { justify-content: center; }
+
+    /* ③ 是不是科學記數法 */
+    .judge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 10px; }
+    .jcard { border: 2px solid var(--border); border-radius: 12px; padding: 12px; background: var(--surface); display: flex; flex-direction: column; gap: 8px; }
+    .jcard .expr { font-size: 24px; font-weight: 700; text-align: center; }
+    .jcard .expr sup { font-size: .6em; }
+    .jcard .row { justify-content: center; }
+    .jcard .why { font-size: 14px; display: none; }
+    .jcard.done .why { display: block; }
+    .jcard.right { border-color: var(--mss); background: var(--mss-soft); }
+    .jcard.wrong { border-color: var(--dh); background: var(--dh-soft); }
+    .jcard.done .btn { display: none; }
+    .judge-score { color: var(--muted); font-size: 15px; }
+
+    /* ④ 大與小的世界 */
+    .world h3 { margin: 18px 0 8px; }
+    .facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
+    .fact {
+      font: inherit; color: var(--text); text-align: left; cursor: pointer;
+      border: 1px solid var(--border); border-radius: 12px; background: var(--surface); padding: 12px 14px;
+    }
+    .fact:hover { border-color: var(--c); }
+    .fact .what { font-size: 14px; color: var(--muted); }
+    .fact .num { font-size: 20px; font-weight: 700; margin-top: 4px; word-break: break-all; }
+    .fact .num sup { font-size: .6em; }
+    .fact .tag2 { font-size: 12px; color: var(--c); margin-top: 4px; }
+    .fact[aria-pressed="true"] { background: var(--c-soft); border-color: var(--c); }
+
+    @media (max-width: 480px) {
+      .times { margin-left: 6px; }
+    }
+  </style>
+</head>
+<body data-topic="scientific-notation" data-tabs>
+  <header id="topbar"></header>
+
+  <main class="wrap">
+    <div id="topic-head"></div>
+
+    <div class="topic-layout">
+      <nav class="toc" id="toc" aria-label="本課目錄"></nav>
+
+      <div>
+        <section class="section" id="powers">
+          <h2>① 10 的乘冪</h2>
+          <p class="hint">拉動滑桿改變指數 n，看看 10<sup>n</sup> 寫成一般的數是怎樣的。</p>
+          <div class="power-row">
+            <button type="button" class="btn" id="pw-minus" aria-label="指數減 1">−</button>
+            <input type="range" id="pw-range" min="-8" max="10" value="3" aria-label="指數 n">
+            <button type="button" class="btn" id="pw-plus" aria-label="指數加 1">+</button>
+          </div>
+          <div class="power-card">
+            <div class="big" id="pw-eq"></div>
+            <div class="name" id="pw-name"></div>
+            <div class="power-rule" id="pw-rule"></div>
+          </div>
+        </section>
+
+        <section class="section" id="mover">
+          <h2>② 移動小數點</h2>
+          <p class="hint">移動小數點（紅點），直到前面的數 a 在 1 與 10 之間。小數點每移一位，後面的指數就會改變 1，使數值保持不變。</p>
+          <div class="presets" id="presets"></div>
+          <div class="row">
+            <input id="mv-input" class="field" inputmode="decimal" autocomplete="off" placeholder="自己輸入一個數" aria-label="自己輸入一個數">
+            <button type="button" class="btn" id="mv-use">使用</button>
+            <button type="button" class="btn" id="mv-random">隨機</button>
+          </div>
+          <div id="mv-error" class="error" hidden></div>
+
+          <div class="digits" id="mv-digits"></div>
+          <div class="moves" id="mv-moves"></div>
+          <div class="status" id="mv-status" aria-live="polite"></div>
+          <div class="row move-btns">
+            <button type="button" class="btn primary" id="mv-left">← 小數點向左移</button>
+            <button type="button" class="btn primary" id="mv-right">小數點向右移 →</button>
+            <button type="button" class="btn" id="mv-reset">重設</button>
+          </div>
+          <div class="equation" id="mv-eq"></div>
+        </section>
+
+        <section class="section" id="judge">
+          <h2>③ 是不是科學記數法？</h2>
+          <p class="hint">科學記數法寫成 a × 10<sup>n</sup>，其中 1 ≤ a &lt; 10，n 是整數。逐張判斷，看看你的理由是否正確。</p>
+          <div class="row">
+            <span class="judge-score" id="judge-score"></span>
+            <button type="button" class="btn" id="judge-reset">重新開始</button>
+          </div>
+          <div class="judge-grid" id="judge-grid"></div>
+        </section>
+
+        <section class="section world" id="world">
+          <h2>④ 大與小的世界</h2>
+          <p class="hint">按每張咭，在一般寫法與科學記數法之間切換。哪一種寫法比較容易讀？比較容易比較大小？</p>
+          <div class="row">
+            <button type="button" class="btn" id="world-all">全部轉為科學記數法</button>
+          </div>
+          <h3>很大的數</h3>
+          <div class="facts" id="facts-big"></div>
+          <h3>很小的數</h3>
+          <div class="facts" id="facts-small"></div>
+        </section>
+
+        <nav class="pager" id="pager"></nav>
+      </div>
+    </div>
+  </main>
+
+  <footer><div class="wrap">中三數學學習站 · <a href="../notes/scientific-notation.html">教師筆記</a></div></footer>
+
+  <script src="../assets/topic.js"></script>
+  <script src="scientific-notation.js"></script>
+</body>
+</html>
