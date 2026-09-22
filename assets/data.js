@@ -13,6 +13,12 @@ window.STRANDS = [
 
 window.TOPICS = [
   {
+    id: "number-systems", strand: "na", status: "draft",
+    zh: "數字系統", en: "Number Systems",
+    desc: "位值、十進制與二進制、把二進制數轉換為十進制數",
+    keywords: ["二進制", "十進制", "位值", "進位", "展開式", "binary", "decimal", "place value", "base"],
+  },
+  {
     id: "indices", strand: "na", status: "planned",
     zh: "指數定律", en: "Laws of Integral Indices",
     desc: "零指數、負整數指數、科學記數法",

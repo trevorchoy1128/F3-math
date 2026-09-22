@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="zh-Hant-HK">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>數字系統｜中三數學學習站</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script src="../assets/data.js"></script>
+  <script src="../assets/common.js"></script>
+  <style>
+    /* 555 位值示範 */
+    .digits-demo { display: flex; gap: 10px; margin: 6px 0 14px; flex-wrap: wrap; }
+    .dd { text-align: center; background: var(--surface-2); border-radius: 10px; padding: 8px 16px; }
+    .dd b { display: block; font-size: 32px; line-height: 1.2; }
+    .dd small { color: var(--muted); font-size: 13px; }
+    .dd:nth-child(1) b { color: var(--na); }
+    .dd:nth-child(2) b { color: var(--mss); }
+    .dd:nth-child(3) b { color: var(--dh); }
+
+    /* 位值表 */
+    .pv td { min-width: 54px; }
+    .pv .pv-name { font-size: 13px; color: var(--muted); }
+    .pv .pv-v { color: var(--muted); font-size: 13px; white-space: nowrap; }
+    .pv .pv-d { font-size: 22px; font-weight: 700; color: var(--c); }
+    .pv .zero { color: var(--muted); opacity: .55; }
+    .expand { margin-top: 4px; font-size: 17px; line-height: 1.9; }
+    .expand > div:not(:first-child) { padding-left: 1em; }
+    .error { color: var(--dh); font-size: 14px; margin-top: 8px; }
+
+    /* 進位計數器 */
+    .odo-row { margin: 12px 0; }
+    .odo-label { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+    .odo { display: flex; gap: 4px; }
+    .cell { width: 36px; text-align: center; }
+    .cell b {
+      display: block; height: 44px; line-height: 42px; font-size: 24px; border-radius: 8px;
+      background: var(--surface); border: 1px solid var(--border);
+    }
+    .cell small { display: block; font-size: 11px; color: var(--muted); margin-top: 3px; }
+    .cell.lead b { color: var(--muted); opacity: .4; }
+    .cell.changed b { animation: pop .45s ease; border-color: var(--c); background: var(--c-soft); }
+    @keyframes pop { from { transform: translateY(-8px); opacity: .2; } to { transform: none; opacity: 1; } }
+    .counter-msg { min-height: 50px; font-size: 15px; margin: 4px 0 12px; }
+
+    /* 二進制開關 */
+    .switches { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; max-width: 520px; }
+    .sw {
+      font: inherit; border: 1px solid var(--border); background: var(--surface); color: var(--text);
+      border-radius: 10px; padding: 8px 0 6px; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+    }
+    .sw .bulb { width: 22px; height: 22px; border-radius: 50%; background: var(--surface-2); border: 2px solid var(--border); transition: .15s; }
+    .sw[aria-pressed="true"] { border-color: var(--c); background: var(--c-soft); }
+    .sw[aria-pressed="true"] .bulb { background: #f5b82e; border-color: #d99a0b; box-shadow: 0 0 10px #f5b82e99; }
+    .sw .sw-bit { font-size: 20px; font-weight: 700; }
+    .sw .sw-val { font-size: 12px; color: var(--muted); }
+    .sw-out { margin: 12px 0; font-size: 17px; line-height: 1.8; }
+
+    /* 例題 */
+    .example { border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; background: var(--bg); }
+    .ex-q { font-weight: 600; margin-bottom: 10px; }
+    .ex-tag { display: inline-block; background: var(--c); color: var(--surface); border-radius: 6px; font-size: 13px; padding: 1px 8px; margin-right: 6px; }
+    .ex-steps li { margin-bottom: 10px; }
+    .ex-ans { font-weight: 700; color: var(--c); margin: 0 0 12px; }
+
+    /* 練習 */
+    .quiz-q { font-size: 20px; margin: 10px 0 12px; }
+    .score { color: var(--muted); font-size: 14px; margin-left: auto; }
+
+    @media (max-width: 420px) {
+      .cell { width: 30px; }
+      .cell b { font-size: 20px; }
+      .pv td { min-width: 40px; padding: 6px; }
+      .sw .sw-bit { font-size: 17px; }
+      .sw .sw-val { font-size: 11px; }
+    }
+  </style>
+</head>
+<body data-topic="number-systems">
+  <header id="topbar"></header>
+
+  <main class="wrap">
+    <div id="topic-head"></div>
+
+    <div class="topic-layout">
+      <nav class="toc" id="toc" aria-label="本課目錄"></nav>
+
+      <div>
+        <section class="section" id="goals">
+          <h2>學習目標</h2>
+          <ul>
+            <li>理解<strong>位值</strong>的意義：同一個數字放在不同位置，代表不同的值。</li>
+            <li>認識十進制（逢十進一）及二進制（逢二進一）的位值。</li>
+            <li>把十進制數及二進制數寫成<strong>展開式</strong>。</li>
+            <li>把二進制數轉換為十進制數。</li>
+          </ul>
+        </section>
+
+        <section class="section" id="concept">
+          <h2>概念講解</h2>
+
+          <h3>1. 甚麼是位值？</h3>
+          <p>請看 <strong>555</strong> 這個數。三個數字都是 5，但它們代表的值並不相同：</p>
+          <div class="digits-demo">
+            <div class="dd"><b>5</b><small>百位 → 500</small></div>
+            <div class="dd"><b>5</b><small>十位 → 50</small></div>
+            <div class="dd"><b>5</b><small>個位 → 5</small></div>
+          </div>
+          <p>一個數字代表的值，取決於它所在的<strong>位置</strong>。每個位置的「份量」，稱為<strong>位值</strong>（place value）。</p>
+
+          <h3>2. 位值有甚麼作用？</h3>
+          <ul>
+            <li><strong>用少量數字寫出任何數</strong>：十進制只有 0 至 9 十個數字，但靠位值，就能寫出無論多大的數。</li>
+            <li><strong>「0」可以佔位</strong>：35 和 305 的分別，在於中間的 0 把 3 推到了百位。</li>
+            <li><strong>計算的基礎</strong>：直式加減中的「進位」和「借位」，都是建基於位值。</li>
+          </ul>
+
+          <h3>3. 十進制：逢十進一</h3>
+          <p>日常使用的是<strong>十進制</strong>（decimal）。它用 0 至 9 共十個數字；某個位數滿 10，便向左進一位。因此，<strong>每向左移一位，位值便乘以 10</strong>。</p>
+          <div class="table-wrap">
+            <table class="t">
+              <tr><th>位</th><td>萬位</td><td>千位</td><td>百位</td><td>十位</td><td>個位</td></tr>
+              <tr><th>位值</th><td>10<sup>4</sup> = 10000</td><td>10<sup>3</sup> = 1000</td><td>10<sup>2</sup> = 100</td><td>10<sup>1</sup> = 10</td><td>10<sup>0</sup> = 1</td></tr>
+            </table>
+          </div>
+          <p>例如：3025 = 3 × 1000 + 0 × 100 + 2 × 10 + 5 × 1。這種寫法稱為<strong>展開式</strong>。</p>
+
+          <h3>4. 二進制：逢二進一</h3>
+          <p><strong>二進制</strong>（binary）只用 0 和 1 兩個數字；某個位數滿 2，便向左進一位。因此，<strong>每向左移一位，位值便乘以 2</strong>。</p>
+          <div class="table-wrap">
+            <table class="t">
+              <tr><th>位值</th><td>2<sup>7</sup></td><td>2<sup>6</sup></td><td>2<sup>5</sup></td><td>2<sup>4</sup></td><td>2<sup>3</sup></td><td>2<sup>2</sup></td><td>2<sup>1</sup></td><td>2<sup>0</sup></td></tr>
+              <tr><th>即</th><td>128</td><td>64</td><td>32</td><td>16</td><td>8</td><td>4</td><td>2</td><td>1</td></tr>
+            </table>
+          </div>
+          <p>電腦內部使用二進制，因為電路只有「通電」（1）和「斷電」（0）兩種狀態。</p>
+
+          <h3>5. 十進制與二進制的比較</h3>
+          <div class="table-wrap">
+            <table class="t">
+              <tr><th></th><th>十進制</th><th>二進制</th></tr>
+              <tr><th>使用的數字</th><td>0, 1, 2, …, 9</td><td>0, 1</td></tr>
+              <tr><th>進位規則</th><td>逢十進一</td><td>逢二進一</td></tr>
+              <tr><th>位值（由右至左）</th><td>1, 10, 100, 1000, …</td><td>1, 2, 4, 8, 16, …</td></tr>
+              <tr><th>每向左移一位</th><td>位值 × 10</td><td>位值 × 2</td></tr>
+            </table>
+          </div>
+
+          <h3>6. 記法</h3>
+          <div class="callout">
+            <strong>怎樣分辨是哪一種進制？</strong>
+            二進制數會在右下方寫上細小的 2，例如 1011<sub>2</sub>，讀作「二進制數一零一一」。
+            沒有標示的數（例如 1011）一般當作十進制數，即「一千零一十一」。
+          </div>
+
+          <h3>7. 把二進制數轉換為十進制數</h3>
+          <ol>
+            <li>由<strong>右至左</strong>寫出每個數字的位值：1、2、4、8、16……</li>
+            <li>把每個數字乘以它的位值（即寫成展開式）。</li>
+            <li>把所有結果相加。</li>
+          </ol>
+          <p>例如：1011<sub>2</sub> = 1 × 8 + 0 × 4 + 1 × 2 + 1 × 1 = 8 + 0 + 2 + 1 = <strong>11</strong></p>
+          <div class="callout">
+            <strong>小技巧</strong>
+            0 乘以任何位值都是 0，所以只需把「1」所在位置的位值加起來：1011<sub>2</sub> → 8 + 2 + 1 = 11。
+          </div>
+          <div class="callout warn">
+            <strong>常見錯誤</strong>
+            <ul>
+              <li>把 1011<sub>2</sub> 讀成「一千零一十一」。</li>
+              <li>由左邊開始數位值。位值應由<strong>最右邊</strong>的 1 開始。</li>
+              <li>以為最右邊的位值是 2。其實最右邊的位值是 1。</li>
+              <li>在二進制數中寫出 2 或以上的數字。二進制只有 0 和 1。</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="section" id="explore">
+          <h2>互動探索</h2>
+
+          <div class="widget">
+            <p class="widget-title">① 位值表</p>
+            <p class="widget-hint">輸入一個數，看看每個數字代表多少。切換進制時，會換成同一個數的另一種寫法。</p>
+            <div class="row">
+              <div class="seg" id="pv-base" role="group" aria-label="選擇進制">
+                <button type="button" data-base="2" aria-pressed="true">二進制</button>
+                <button type="button" data-base="10" aria-pressed="false">十進制</button>
+              </div>
+              <input id="pv-input" class="field" value="1011" inputmode="numeric" autocomplete="off" maxlength="10" aria-label="輸入數字">
+              <button type="button" class="btn" id="pv-random">隨機</button>
+            </div>
+            <div id="pv-error" class="error" hidden></div>
+            <div id="pv-out"></div>
+          </div>
+
+          <div class="widget">
+            <p class="widget-title">② 逢十進一 vs 逢二進一</p>
+            <p class="widget-hint">按「+1」逐一數數，比較兩種進制何時進位。有變化的格會亮起。</p>
+            <div class="odo-row">
+              <div class="odo-label">十進制</div>
+              <div class="odo" id="odo-dec"></div>
+            </div>
+            <div class="odo-row">
+              <div class="odo-label">二進制</div>
+              <div class="odo" id="odo-bin"></div>
+            </div>
+            <div class="counter-msg" id="counter-msg" aria-live="polite"></div>
+            <div class="row">
+              <button type="button" class="btn" id="cnt-minus">−1</button>
+              <button type="button" class="btn primary" id="cnt-plus">+1</button>
+              <button type="button" class="btn" id="cnt-play">▶ 自動</button>
+              <button type="button" class="btn" id="cnt-reset">重設</button>
+            </div>
+          </div>
+
+          <div class="widget">
+            <p class="widget-title">③ 二進制開關</p>
+            <p class="widget-hint">每個燈泡代表一個位。按下開關（1 = 開，0 = 關），看看十進制數值如何變化。</p>
+            <div class="switches" id="switches"></div>
+            <div class="sw-out" id="sw-out" aria-live="polite"></div>
+            <div class="row">
+              <button type="button" class="btn primary" id="sw-challenge">挑戰：隨機目標數</button>
+              <button type="button" class="btn" id="sw-clear">全部關掉</button>
+            </div>
+            <div id="sw-feedback"></div>
+          </div>
+        </section>
+
+        <section class="section" id="examples">
+          <h2>例題</h2>
+          <div id="examples-body"></div>
+        </section>
+
+        <section class="section" id="practice">
+          <h2>練習</h2>
+          <p>把二進制數轉換為十進制數。答錯一次會有提示，答錯兩次會顯示答案。</p>
+          <div class="row">
+            <div class="seg" id="quiz-level" role="group" aria-label="選擇難度">
+              <button type="button" data-bits="4" aria-pressed="true">初級（4 位）</button>
+              <button type="button" data-bits="6" aria-pressed="false">中級（6 位）</button>
+              <button type="button" data-bits="8" aria-pressed="false">高級（8 位）</button>
+            </div>
+            <span class="score" id="quiz-score"></span>
+          </div>
+          <div class="quiz-q" id="quiz-q"></div>
+          <div class="row">
+            <input id="quiz-input" class="field" inputmode="numeric" autocomplete="off" placeholder="十進制答案" aria-label="十進制答案">
+            <button type="button" class="btn primary" id="quiz-check">檢查</button>
+            <button type="button" class="btn" id="quiz-show">顯示答案</button>
+            <button type="button" class="btn" id="quiz-next">下一題</button>
+          </div>
+          <div id="quiz-feedback" aria-live="polite"></div>
+        </section>
+
+        <nav class="pager" id="pager"></nav>
+      </div>
+    </div>
+  </main>
+
+  <footer><div class="wrap">中三數學學習站 · 內容持續更新中</div></footer>
+
+  <script src="../assets/topic.js"></script>
+  <script src="number-systems.js"></script>
+</body>
+</html>
