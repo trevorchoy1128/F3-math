@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-Hant-HK">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>百分法的進一步應用（教師筆記）｜中三數學學習站</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script src="../assets/data.js"></script>
+  <script src="../assets/common.js"></script>
+  <style>
+    .formula { font-size: 20px; font-weight: 700; text-align: center; margin: 8px 0 12px; }
+    .formula sup { font-size: .6em; }
+  </style>
+</head>
+<body data-topic="percentages" data-notes>
+  <header id="topbar"></header>
+
+  <main class="wrap">
+    <div id="topic-head"></div>
+
+    <div class="topic-layout">
+      <nav class="toc" id="toc" aria-label="本頁目錄"></nav>
+
+      <div>
+        <section class="section" id="goals">
+          <h2>學習目標</h2>
+          <ul>
+            <li>計算連續百分變化，並理解兩次相同百分率的增減不會互相抵消。</li>
+            <li>分辨單利息與複利息，並計算本利和及利息。</li>
+            <li>計算按每半年、每季或每月計算的複利息。</li>
+            <li>應用百分法解決增長及折舊的問題。</li>
+          </ul>
+        </section>
+
+        <section class="section" id="concept">
+          <h2>概念講解</h2>
+
+          <h3>1. 連續百分變化</h3>
+          <p>每一次的百分變化，都是按<strong>上一次變化後的數值</strong>計算。</p>
+          <div class="formula">新值 = 原值 × (1 ± r₁%) × (1 ± r₂%) × …</div>
+          <p>例如：100 先增加 20%，再減少 20%：100 × 1.2 × 0.8 = 96，整體減少 4%，並非回到 100。</p>
+
+          <h3>2. 單利息與複利息</h3>
+          <div class="table-wrap">
+            <table class="t">
+              <tr><th></th><th>單利息</th><th>複利息</th></tr>
+              <tr><th>計算利息的基礎</th><td>每年都按本金</td><td>按上一年的本利和</td></tr>
+              <tr><th>每年利息</th><td>不變</td><td>逐年增加</td></tr>
+              <tr><th>公式</th><td>I = P × r% × n<br>A = P + I</td><td>A = P(1 + r%)<sup>n</sup><br>I = A − P</td></tr>
+            </table>
+          </div>
+          <p>P：本金　r%：年利率　n：年數　I：利息　A：本利和</p>
+
+          <h3>3. 分期複利</h3>
+          <p>若每年計息 k 次（每半年 k = 2，每季 k = 4，每月 k = 12），則每期利率為 r% ÷ k，n 年共有 nk 期：</p>
+          <div class="formula">A = P(1 + r% ÷ k)<sup>nk</sup></div>
+          <p>年利率相同時，計息次數越多，本利和越大，但增幅會越來越小。</p>
+
+          <h3>4. 增長與折舊</h3>
+          <div class="formula">增長：新值 = 原值 × (1 + r%)<sup>n</sup>　　折舊：新值 = 原值 × (1 − r%)<sup>n</sup></div>
+          <p>增長與複利息的計算方法相同；折舊則每期都按上一期的價值減少 r%，所以價值不會跌至 0。</p>
+
+          <div class="callout warn">
+            <strong>常見錯誤</strong>
+            <ul>
+              <li>以為「先加 20% 再減 20%」會回到原值。</li>
+              <li>把兩次百分變化直接相加，例如以為加 10% 再加 10% 等於加 20%（其實是加 21%）。</li>
+              <li>計算複利息時，每年都用本金計利息（即誤用單利息）。</li>
+              <li>分期複利時，忘記把年利率除以 k，或忘記把年數乘以 k。</li>
+              <li>混淆本利和 A 與利息 I：題目問利息時，要減去本金。</li>
+              <li>折舊時寫成 (1 + r%)<sup>n</sup>，或以為 n 年後價值減少了 n × r%。</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="section" id="teaching">
+          <h2>教學建議</h2>
+          <h3>課堂頁面各工具的用法</h3>
+          <ul>
+            <li><strong>① 連續百分變化</strong>：先按「+20% → −20%」，請學生預測結果，再揭曉 96。然後按「交換次序」，讓學生發現次序不影響結果（1.2 × 0.8 = 0.8 × 1.2）。「+10% → +10%」可帶出整體是 +21% 而不是 +20%。</li>
+            <li><strong>② 單利息 vs 複利息</strong>：用 ◀ ▶ 逐年比較，重點看「複利息的利息 = 上一年本利和 × r%」。把年期拉到 20 年，可看到兩者差距越來越大。展開數據表可讓學生核對計算。</li>
+            <li><strong>③ 分期複利</strong>：依次按「每年、每半年、每季、每月」，觀察時間線上的計息次數及本利和的變化。下方列出頭幾期的計算，讓學生明白公式中的 r% ÷ k 和 nk 從何而來。</li>
+            <li><strong>④ 增長與折舊</strong>：先用「汽車折舊」，問學生「價值何時跌到一半？」再看提示。然後切換「城市人口增長」，比較增長與折舊的圖形。</li>
+          </ul>
+          <h3>留意</h3>
+          <ul>
+            <li>所有金額均準確至 $0.01；人口及細菌數目取最接近的整數。</li>
+            <li>④ 的情境數據為方便計算而設的虛構數字。</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer><div class="wrap">中三數學學習站 · 教師筆記</div></footer>
+
+  <script src="../assets/topic.js"></script>
+</body>
+</html>

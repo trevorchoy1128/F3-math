@@ -9,8 +9,51 @@
   <link rel="stylesheet" href="../assets/style.css">
   <script src="../assets/data.js"></script>
   <script src="../assets/common.js"></script>
+  <style>
+    .hint { color: var(--muted); font-size: 15px; }
+    .presets { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .field.sm { width: 110px; font-size: 16px; height: 38px; }
+    .form { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px 16px; margin: 6px 0 10px; }
+    .form label { display: block; font-size: 14px; color: var(--muted); margin-bottom: 4px; }
+    .form input[type="range"] { width: 100%; accent-color: var(--c); }
+    .form output { font-weight: 700; color: var(--text); }
+    .calc { font-size: 17px; line-height: 1.9; margin: 8px 0; }
+    .calc sup { font-size: .65em; }
+    .result { font-size: 18px; margin: 8px 0; }
+    .result.bad { color: var(--dh); }
+
+    /* ① 連續百分變化 */
+    .steps { display: flex; flex-direction: column; gap: 8px; margin: 10px 0; }
+    .step-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .step-row .lbl { width: 64px; font-size: 14px; color: var(--muted); }
+    .step-row .x { border: 0; background: none; color: var(--muted); font-size: 18px; cursor: pointer; padding: 4px 8px; }
+
+    /* ② 單利息 vs 複利息 */
+    .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
+    .tile { background: var(--surface-2); border-radius: 10px; padding: 10px 12px; }
+    .tile small { display: block; color: var(--muted); font-size: 13px; }
+    .tile b { display: block; font-size: 20px; }
+    .tile span { font-size: 13px; color: var(--muted); }
+    .year-nav { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+    .explain { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-top: 8px; font-size: 15px; line-height: 1.8; }
+    details { margin-top: 12px; }
+    summary { cursor: pointer; color: var(--c); font-size: 15px; }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+    /* ③ 分期複利 */
+    .timeline { position: relative; height: 54px; margin: 14px 8px 4px; }
+    .timeline .line { position: absolute; left: 0; right: 0; top: 18px; height: 2px; background: var(--border); }
+    .timeline .tick { position: absolute; top: 12px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: var(--c); border: 2px solid var(--surface); }
+    .timeline .end { position: absolute; top: 32px; font-size: 12px; color: var(--muted); transform: translateX(-50%); white-space: nowrap; }
+    .compare tr.on td { background: var(--c-soft); font-weight: 700; }
+
+    @media (max-width: 480px) {
+      .tiles { grid-template-columns: 1fr; }
+      .step-row .lbl { width: 100%; }
+    }
+  </style>
 </head>
-<body data-topic="percentages">
+<body data-topic="percentages" data-tabs>
   <header id="topbar"></header>
 
   <main class="wrap">
@@ -20,29 +63,86 @@
       <nav class="toc" id="toc" aria-label="本課目錄"></nav>
 
       <div>
-        <section class="section" id="goals">
-          <h2>學習目標</h2>
-          <div class="placeholder">內容待定</div>
+        <section class="section" id="successive">
+          <h2>① 連續百分變化</h2>
+          <p class="hint">先增加 20%，再減少 20%，會回到原來的數值嗎？設定每一次變化，看看結果。</p>
+          <div class="presets" id="succ-presets"></div>
+          <div class="row">
+            <label for="succ-start">原值</label>
+            <input id="succ-start" class="field sm" type="number" min="1" value="100">
+          </div>
+          <div class="steps" id="succ-steps"></div>
+          <div class="row">
+            <button type="button" class="btn" id="succ-add">＋ 加一次變化</button>
+            <button type="button" class="btn" id="succ-swap">交換次序</button>
+          </div>
+          <div class="chart" id="succ-chart"></div>
+          <div class="calc" id="succ-calc"></div>
+          <div class="result" id="succ-result" aria-live="polite"></div>
         </section>
 
-        <section class="section" id="concept">
-          <h2>概念講解</h2>
-          <div class="placeholder">內容待定</div>
+        <section class="section" id="interest">
+          <h2>② 單利息 vs 複利息</h2>
+          <p class="hint">同樣的本金和利率，單利息每年只按本金計利息；複利息則按上一年的本利和計利息。</p>
+          <div class="form">
+            <div><label for="int-p">本金 P（$）</label><input id="int-p" class="field sm" type="number" min="100" step="100" value="10000"></div>
+            <div><label for="int-r">年利率 r = <output id="int-r-out"></output>%</label><input id="int-r" type="range" min="1" max="20" value="8"></div>
+            <div><label for="int-n">年期 n = <output id="int-n-out"></output> 年</label><input id="int-n" type="range" min="1" max="20" value="10"></div>
+          </div>
+          <div class="legend"><span><i style="background:var(--s1)"></i>單利息本利和</span><span><i style="background:var(--s2)"></i>複利息本利和</span></div>
+          <div class="chart" id="int-chart"></div>
+          <div class="tiles" id="int-tiles"></div>
+          <div class="year-nav">
+            <button type="button" class="btn" id="int-prev" aria-label="上一年">◀</button>
+            <strong id="int-year"></strong>
+            <button type="button" class="btn" id="int-next" aria-label="下一年">▶</button>
+            <span class="hint">（也可以按圖中的柱）</span>
+          </div>
+          <div class="explain" id="int-explain"></div>
+          <details>
+            <summary>顯示每年數據表</summary>
+            <div class="table-wrap"><table class="t" id="int-table"></table></div>
+          </details>
         </section>
 
-        <section class="section" id="explore">
-          <h2>互動探索</h2>
-          <div class="placeholder">內容待定</div>
+        <section class="section" id="periods">
+          <h2>③ 分期複利</h2>
+          <p class="hint">年利率相同，但每年計息的次數不同：每年、每半年、每季或每月。計息次數越多，本利和會怎樣？</p>
+          <div class="form">
+            <div><label for="per-p">本金 P（$）</label><input id="per-p" class="field sm" type="number" min="100" step="100" value="10000"></div>
+            <div><label for="per-r">年利率 r = <output id="per-r-out"></output>%</label><input id="per-r" type="range" min="1" max="20" value="8"></div>
+            <div><label for="per-n">年期 n = <output id="per-n-out"></output> 年</label><input id="per-n" type="range" min="1" max="10" value="3"></div>
+          </div>
+          <div class="seg" id="per-freq" role="group" aria-label="計息方式">
+            <button type="button" data-k="1" aria-pressed="true">每年</button>
+            <button type="button" data-k="2" aria-pressed="false">每半年</button>
+            <button type="button" data-k="4" aria-pressed="false">每季</button>
+            <button type="button" data-k="12" aria-pressed="false">每月</button>
+          </div>
+          <div class="timeline" id="per-timeline" aria-hidden="true"></div>
+          <div class="calc" id="per-calc"></div>
+          <div class="table-wrap"><table class="t compare" id="per-table"></table></div>
         </section>
 
-        <section class="section" id="examples">
-          <h2>例題</h2>
-          <div class="placeholder">內容待定</div>
-        </section>
-
-        <section class="section" id="practice">
-          <h2>練習</h2>
-          <div class="placeholder">內容待定</div>
+        <section class="section" id="growth">
+          <h2>④ 增長與折舊</h2>
+          <p class="hint">每期都按上一期的數值增加（增長）或減少（折舊）相同的百分率。選一個情境，或自行設定。</p>
+          <div class="presets" id="gr-presets"></div>
+          <div class="form">
+            <div><label for="gr-start">初始值</label><input id="gr-start" class="field sm" type="number" min="1" value="300000"></div>
+            <div>
+              <label>類型</label>
+              <div class="seg" id="gr-type" role="group" aria-label="增長或折舊">
+                <button type="button" data-t="1" aria-pressed="false">增長</button>
+                <button type="button" data-t="-1" aria-pressed="true">折舊</button>
+              </div>
+            </div>
+            <div><label for="gr-r">每期百分率 = <output id="gr-r-out"></output>%</label><input id="gr-r" type="range" min="1" max="50" value="15"></div>
+            <div><label for="gr-n">期數 = <output id="gr-n-out"></output></label><input id="gr-n" type="range" min="1" max="20" value="10"></div>
+          </div>
+          <div class="chart" id="gr-chart"></div>
+          <div class="calc" id="gr-calc"></div>
+          <div class="result" id="gr-milestone"></div>
         </section>
 
         <nav class="pager" id="pager"></nav>
@@ -50,8 +150,10 @@
     </div>
   </main>
 
-  <footer><div class="wrap">中三數學學習站 · 內容持續更新中</div></footer>
+  <footer><div class="wrap">中三數學學習站 · <a href="../notes/percentages.html">教師筆記</a></div></footer>
 
   <script src="../assets/topic.js"></script>
+  <script src="../assets/chart.js"></script>
+  <script src="percentages.js"></script>
 </body>
 </html>

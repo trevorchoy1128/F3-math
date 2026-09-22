@@ -37,13 +37,7 @@ window.TOPICS = [
     keywords: ["因式分解", "多項式", "恆等式", "十字相乘", "factorize", "polynomial", "identity"],
   },
   {
-    id: "inequalities", strand: "na", status: "planned",
-    zh: "一元一次不等式", en: "Linear Inequalities in One Unknown",
-    desc: "不等式的性質、解不等式、在數線上表示解",
-    keywords: ["不等式", "數線", "inequality", "number line"],
-  },
-  {
-    id: "percentages", strand: "na", status: "planned",
+    id: "percentages", strand: "na", status: "draft",
     zh: "百分法的進一步應用", en: "More about Percentages",
     desc: "複利息、增長與折舊、連續百分變化",
     keywords: ["百分", "複利息", "增長", "折舊", "percentage", "compound interest", "growth", "depreciation"],
