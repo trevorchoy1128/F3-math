@@ -228,6 +228,11 @@ table.t th { background: var(--surface-2); font-weight: 600; white-space: nowrap
 .feedback.ok strong:first-child { color: var(--mss); }
 .feedback.bad strong:first-child { color: var(--dh); }
 
+/* 分頁模式的上一部分／下一部分 */
+.stepnav { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin: 4px 0 16px; }
+.stepnav .btn { text-decoration: none; }
+.step-count { color: var(--muted); font-size: 14px; }
+
 .pager { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 24px 0 8px; }
 .pager a {
   display: block; text-decoration: none; color: var(--text);

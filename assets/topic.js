@@ -33,17 +33,69 @@
   }).join("");
   var links = Array.prototype.slice.call(toc.querySelectorAll("a"));
 
-  function setActive() {
-    var current = sections[0];
-    sections.forEach(function (s) { if (s.getBoundingClientRect().top < 140) current = s; });
+  function highlight(current) {
     links.forEach(function (a) {
       var on = a.getAttribute("href") === "#" + current.id;
       a.classList.toggle("active", on);
+      if (on) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current");
       if (on && toc.scrollWidth > toc.clientWidth) a.scrollIntoView({ block: "nearest", inline: "nearest" });
     });
   }
-  window.addEventListener("scroll", setActive, { passive: true });
-  setActive();
+
+  if (document.body.hasAttribute("data-tabs")) {
+    // 分頁模式：每次只顯示一個部分，方便上堂逐個講解
+    var stepNav = document.createElement("div");
+    stepNav.className = "stepnav";
+    sections[sections.length - 1].after(stepNav);
+
+    var showSection = function (id, fromUser) {
+      var i = Math.max(0, sections.findIndex(function (s) { return s.id === id; }));
+      var cur = sections[i];
+      sections.forEach(function (s) { s.hidden = s !== cur; });
+      highlight(cur);
+      var p = sections[i - 1], n = sections[i + 1];
+      stepNav.innerHTML =
+        (p ? '<a class="btn" href="#' + p.id + '">← 上一部分</a>' : "<span></span>") +
+        '<span class="step-count">' + (i + 1) + " / " + sections.length + "</span>" +
+        (n ? '<a class="btn primary" href="#' + n.id + '">下一部分 →</a>' : "<span></span>");
+      if (fromUser) {
+        history.replaceState(null, "", "#" + cur.id);
+        document.getElementById("topic-head").scrollIntoView({ block: "start" });
+      }
+      document.dispatchEvent(new CustomEvent("sectionchange", { detail: cur.id }));
+    };
+
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest('#toc a, .stepnav a');
+      if (!a) return;
+      e.preventDefault();
+      showSection(a.getAttribute("href").slice(1), true);
+    });
+    // 鍵盤左右鍵或簡報遙控器轉頁（輸入框內除外）
+    document.addEventListener("keydown", function (e) {
+      if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+      var dir = { ArrowRight: 1, PageDown: 1, ArrowLeft: -1, PageUp: -1 }[e.key];
+      if (!dir) return;
+      var i = sections.findIndex(function (s) { return !s.hidden; }) + dir;
+      if (i < 0 || i >= sections.length) return;
+      e.preventDefault();
+      showSection(sections[i].id, true);
+    });
+    window.addEventListener("hashchange", function () { showSection(location.hash.slice(1)); });
+    showSection(location.hash.slice(1));
+    // 瀏覽器會自動捲到 #部分，分頁模式下改為停在頁頂，保留標題
+    if (location.hash) {
+      window.addEventListener("load", function () { setTimeout(function () { window.scrollTo(0, 0); }, 0); });
+    }
+  } else {
+    var setActive = function () {
+      var current = sections[0];
+      sections.forEach(function (s) { if (s.getBoundingClientRect().top < 140) current = s; });
+      highlight(current);
+    };
+    window.addEventListener("scroll", setActive, { passive: true });
+    setActive();
+  }
 
   // 上一課／下一課
   var prev = TOPICS[idx - 1], next = TOPICS[idx + 1];

@@ -138,6 +138,7 @@
     this.textContent = "⏸ 暫停";
     timer = setInterval(function () { step(1); }, 800);
   });
+  document.addEventListener("sectionchange", function (e) { if (e.detail !== "counter") stopPlay(); });
   renderCounter(null);
 
   /* ---------- ① 點數咭 ---------- */
