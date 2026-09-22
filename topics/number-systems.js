@@ -1,4 +1,4 @@
-// 數字系統：位值表、進位計數器、二進制開關、例題、練習
+// 數字系統：點數咭、位值表、進位計數器、糖果包裝工廠
 (function () {
   var DEC_NAMES = ["個位", "十位", "百位", "千位", "萬位", "十萬位", "百萬位"];
 
@@ -41,7 +41,7 @@
       "<div>= <strong>" + parseInt(str, base) + "</strong></div></div>";
   }
 
-  /* ---------- ① 位值表 ---------- */
+  /* ---------- ② 位值表 ---------- */
   var pvBase = 2;
   var pvInput = $("pv-input"), pvOut = $("pv-out"), pvErr = $("pv-error");
   var PV_RULE = {
@@ -81,7 +81,7 @@
   });
   renderPV();
 
-  /* ---------- ② 進位計數器 ---------- */
+  /* ---------- ③ 進位計數器 ---------- */
   var cnt = 0, MAX = 255, timer = null;
   var DEC_LABELS = ["百", "十", "個"], BIN_LABELS = ["128", "64", "32", "16", "8", "4", "2", "1"];
 
@@ -140,153 +140,121 @@
   });
   renderCounter(null);
 
-  /* ---------- ③ 二進制開關 ---------- */
-  var bits = [0, 0, 0, 0, 1, 0, 1, 1], target = null;
-  var swEl = $("switches");
-  swEl.innerHTML = BIN_LABELS.map(function (v, i) {
-    return '<button type="button" class="sw" data-i="' + i + '" aria-label="位值 ' + v + '">' +
-      '<span class="bulb"></span><span class="sw-bit"></span><span class="sw-val">' + v + "</span></button>";
+  /* ---------- ① 點數咭 ---------- */
+  var CARD_VALUES = [16, 8, 4, 2, 1];
+  var DOT_COLS = { 16: 4, 8: 4, 4: 2, 2: 2, 1: 1 };
+  var READ = { "0": "零", "1": "一" };
+  var cardBits = [1, 0, 1, 0, 1], dotsTarget = null;
+  var cardsEl = $("cards");
+
+  cardsEl.innerHTML = CARD_VALUES.map(function (v, i) {
+    var dots = new Array(v + 1).join("<i></i>");
+    return '<button type="button" class="dcard" data-i="' + i + '" aria-label="' + v + ' 點咭">' +
+      '<span class="face"><span class="dots" style="grid-template-columns:repeat(' + DOT_COLS[v] + ',auto)">' + dots + "</span></span>" +
+      '<span class="bit"></span><span class="val">' + v + " 點</span></button>";
   }).join("");
 
-  function renderSwitches() {
-    swEl.querySelectorAll(".sw").forEach(function (b, i) {
-      b.setAttribute("aria-pressed", bits[i] === 1);
-      b.querySelector(".sw-bit").textContent = bits[i];
+  function renderCards() {
+    cardsEl.querySelectorAll(".dcard").forEach(function (b, i) {
+      b.setAttribute("aria-pressed", cardBits[i] === 1);
+      b.querySelector(".bit").textContent = cardBits[i];
     });
     var on = [], total = 0;
-    bits.forEach(function (x, i) { if (x) { on.push(BIN_LABELS[i]); total += Number(BIN_LABELS[i]); } });
-    var binStr = bits.join("").replace(/^0+(?=\d)/, "");
-    $("sw-out").innerHTML =
-      "二進制：<strong>" + sub(binStr, 2) + "</strong><br>" +
-      "十進制：" + (on.length > 1 ? on.join(" + ") + " = " : "") + "<strong>" + total + "</strong>";
+    cardBits.forEach(function (x, i) { if (x) { on.push(CARD_VALUES[i]); total += CARD_VALUES[i]; } });
+    var binStr = cardBits.join("").replace(/^0+(?=\d)/, "");
+    var reading = "二進制數" + binStr.split("").map(function (d) { return READ[d]; }).join("");
 
-    var fb = $("sw-feedback");
-    if (target == null) { fb.innerHTML = ""; return; }
-    if (total === target) {
-      fb.innerHTML = '<div class="feedback ok"><strong>做到了！</strong>' + target + " = " + sub(binStr, 2) + "</div>";
+    // 數量、寫法、讀法三者並列
+    $("triad").innerHTML =
+      "<div><small>數量</small><b>" + total + " 粒點</b><span>" + (on.length ? on.join(" + ") : "沒有點") + "</span></div>" +
+      "<div><small>寫法</small><b>" + sub(binStr, 2) + "</b></div>" +
+      "<div><small>讀法</small><b>" + reading + "</b></div>";
+
+    var fb = $("dots-feedback");
+    if (dotsTarget == null) { fb.innerHTML = ""; return; }
+    if (total === dotsTarget) {
+      fb.innerHTML = '<div class="feedback ok"><strong>做到了！</strong>' + dotsTarget + " 粒點 = " + sub(binStr, 2) + "</div>";
     } else {
-      fb.innerHTML = '<div class="feedback bad"><strong>目標：' + target + "</strong>現在是 " + total +
-        (total < target ? "，還差 " + (target - total) + "。" : "，多了 " + (total - target) + "。") +
-        "提示：先開最大而又不超過目標的燈。</div>";
+      fb.innerHTML = '<div class="feedback bad"><strong>目標：' + dotsTarget + " 粒點</strong>現在是 " + total +
+        (total < dotsTarget ? " 粒，還差 " + (dotsTarget - total) + " 粒。" : " 粒，多了 " + (total - dotsTarget) + " 粒。") +
+        "提示：先翻開最大而又不超過目標的咭。</div>";
     }
   }
 
-  swEl.addEventListener("click", function (e) {
-    var b = e.target.closest(".sw");
+  cardsEl.addEventListener("click", function (e) {
+    var b = e.target.closest(".dcard");
     if (!b) return;
-    var i = Number(b.getAttribute("data-i"));
-    bits[i] = 1 - bits[i];
-    renderSwitches();
+    var i = Number(b.getAttribute("data-i")), v = CARD_VALUES[i];
+    cardBits[i] = 1 - cardBits[i];
+    $("last-flip").innerHTML = cardBits[i]
+      ? "翻開 " + v + " 點咭：這個位的 <strong>1</strong> 代表 <strong>" + v + " 粒點</strong>。"
+      : "蓋上 " + v + " 點咭：這個位變成 <strong>0</strong>，少了 " + v + " 粒點。";
+    renderCards();
   });
-  $("sw-clear").addEventListener("click", function () { bits = [0, 0, 0, 0, 0, 0, 0, 0]; renderSwitches(); });
-  $("sw-challenge").addEventListener("click", function () {
-    target = randInt(5, 255);
-    bits = [0, 0, 0, 0, 0, 0, 0, 0];
-    renderSwitches();
+  $("dots-clear").addEventListener("click", function () {
+    cardBits = [0, 0, 0, 0, 0]; $("last-flip").innerHTML = ""; renderCards();
   });
-  renderSwitches();
-
-  /* ---------- 例題（逐步顯示） ---------- */
-  var EXAMPLES = ["1101", "101010", "1100100"];
-
-  function exampleHTML(str, n) {
-    var cols = columns(str, 2);
-    var ones = cols.filter(function (c) { return c.d === "1"; }).map(function (c) { return c.v; });
-    var total = parseInt(str, 2);
-    var steps = [
-      "由右至左，寫出每個數字的位值：" + pvTable(str, 2),
-      "寫成展開式：<br>" + sub(str, 2) + " = " +
-        cols.map(function (c) { return c.d + " × " + pow(2, c.k); }).join(" + "),
-      "計算並相加：<br>= " + cols.map(function (c) { return c.prod; }).join(" + ") + " = <strong>" + total + "</strong>" +
-        '<div class="callout"><strong>小技巧</strong>只把「1」所在位置的位值相加：' + ones.join(" + ") + " = " + total + "</div>",
-    ];
-    return '<div class="example" data-step="0">' +
-      '<div class="ex-q"><span class="ex-tag">例 ' + n + "</span>把 " + sub(str, 2) + " 轉換為十進制數。</div>" +
-      '<ol class="ex-steps">' + steps.map(function (s) { return "<li hidden>" + s + "</li>"; }).join("") + "</ol>" +
-      '<p class="ex-ans" hidden>答：' + sub(str, 2) + " = " + total + "</p>" +
-      '<div class="row"><button type="button" class="btn primary ex-next">顯示第一步</button>' +
-      '<button type="button" class="btn ex-all">顯示全部</button>' +
-      '<button type="button" class="btn ex-reset" hidden>重新開始</button></div></div>';
-  }
-
-  var exBody = $("examples-body");
-  exBody.innerHTML = EXAMPLES.map(function (s, i) { return exampleHTML(s, i + 1); }).join("");
-
-  function showSteps(ex, k) {
-    var items = ex.querySelectorAll(".ex-steps li");
-    items.forEach(function (li, i) { li.hidden = i >= k; });
-    var done = k >= items.length;
-    ex.setAttribute("data-step", k);
-    ex.querySelector(".ex-ans").hidden = !done;
-    ex.querySelector(".ex-next").hidden = done;
-    ex.querySelector(".ex-all").hidden = done;
-    ex.querySelector(".ex-reset").hidden = k === 0;
-    ex.querySelector(".ex-next").textContent = k === 0 ? "顯示第一步" : "下一步";
-  }
-  exBody.addEventListener("click", function (e) {
-    var ex = e.target.closest(".example");
-    if (!ex) return;
-    var k = Number(ex.getAttribute("data-step"));
-    if (e.target.closest(".ex-next")) showSteps(ex, k + 1);
-    else if (e.target.closest(".ex-all")) showSteps(ex, 99);
-    else if (e.target.closest(".ex-reset")) showSteps(ex, 0);
+  $("dots-challenge").addEventListener("click", function () {
+    dotsTarget = randInt(3, 31);
+    cardBits = [0, 0, 0, 0, 0]; $("last-flip").innerHTML = "";
+    renderCards();
   });
+  renderCards();
 
-  /* ---------- 練習 ---------- */
-  var qBits = 4, qNum = null, tries = 0, answered = false, right = 0, done = 0;
-  var qInput = $("quiz-input"), qFb = $("quiz-feedback");
+  /* ---------- ④ 糖果包裝工廠 ---------- */
+  var LEVELS = [
+    { name: "粒", v: 1, unit: "粒" }, { name: "袋", v: 2, unit: "袋" }, { name: "盒", v: 4, unit: "盒" },
+    { name: "箱", v: 8, unit: "箱" }, { name: "大箱", v: 16, unit: "大箱" },
+  ];
+  var packCounts, packStage, packN;
+  var packInput = $("pack-n");
 
-  function feedback(ok, title, body) {
-    qFb.innerHTML = '<div class="feedback ' + (ok ? "ok" : "bad") + '"><strong>' + title + "</strong>" + (body || "") + "</div>";
-  }
-  function updateScore() { $("quiz-score").textContent = done ? "答對 " + right + " / " + done + " 題" : ""; }
-
-  function newQuestion() {
-    var lo = Math.pow(2, qBits - 1), hi = Math.pow(2, qBits) - 1, n;
-    do { n = randInt(lo, hi); } while (n === qNum);
-    qNum = n; tries = 0; answered = false;
-    $("quiz-q").innerHTML = "把 <strong>" + sub(n.toString(2), 2) + "</strong> 轉換為十進制數。";
-    qInput.value = ""; qFb.innerHTML = "";
-    $("quiz-check").disabled = false; $("quiz-show").disabled = false;
-  }
-
-  function finish(correct) {
-    answered = true; done++;
-    if (correct) right++;
-    $("quiz-check").disabled = true; $("quiz-show").disabled = true;
-    updateScore();
-  }
-
-  function check() {
-    if (answered) { newQuestion(); qInput.focus(); return; }
-    var v = qInput.value.trim();
-    if (!/^\d+$/.test(v)) { feedback(false, "請輸入一個整數。"); return; }
-    tries++;
-    var sol = expanded(qNum.toString(2), 2);
-    if (Number(v) === qNum) {
-      feedback(true, tries === 1 ? "正確！" : "正確！第二次就做到了。", sol);
-      finish(true);
-    } else if (tries === 1) {
-      feedback(false, "未正確，再試一次。", "提示：由右至左寫出位值 1、2、4、8……，再把「1」所在位置的位值相加。");
-    } else {
-      feedback(false, "答案是 " + qNum + "。", sol);
-      finish(false);
+  function renderFactory(active) {
+    // 由左至右：大箱 → 粒，與位值表的次序一致
+    var html = "";
+    for (var k = LEVELS.length - 1; k >= 0; k--) {
+      var L = LEVELS[k], toks = "";
+      for (var j = 0; j < packCounts[k]; j++) toks += '<span class="tok t' + k + '">' + (k ? L.v : "") + "</span>";
+      html += '<div class="bin' + (active && active.indexOf(k) !== -1 ? " active" : "") + '">' +
+        '<div class="bin-head">' + L.name + "<small>每個 " + L.v + " 粒</small></div>" +
+        '<div class="bin-body">' + toks + "</div>" +
+        '<div class="bin-foot">' + packCounts[k] + "</div></div>";
     }
+    $("factory-bins").innerHTML = html;
   }
 
-  $("quiz-check").addEventListener("click", check);
-  qInput.addEventListener("keydown", function (e) { if (e.key === "Enter") check(); });
-  $("quiz-show").addEventListener("click", function () {
-    feedback(false, "答案是 " + qNum + "。", expanded(qNum.toString(2), 2));
-    finish(false);
+  function resetFactory() {
+    packN = Math.max(1, Math.min(31, Math.round(Number(packInput.value)) || 1));
+    packInput.value = packN;
+    packCounts = [packN, 0, 0, 0, 0];
+    packStage = 0;
+    $("pack-step").disabled = false;
+    $("pack-msg").innerHTML = "現在有 " + packN + " 粒散裝糖果。按「包裝下一步」開始。";
+    renderFactory();
+  }
+
+  $("pack-step").addEventListener("click", function () {
+    var k = packStage, from = LEVELS[k], to = LEVELS[k + 1];
+    var had = packCounts[k], made = Math.floor(had / 2);
+    packCounts[k + 1] += made;
+    packCounts[k] = had % 2;
+    packStage++;
+    var msg = "每 2 " + from.unit + "包成 1 " + to.unit + "：" + had + " " + from.unit + " → " + made + " " + to.unit +
+      "，剩下 " + packCounts[k] + " " + from.unit + "。";
+    if (made === 0) msg = "只有 " + had + " " + from.unit + "，不足 2 " + from.unit + "，不用包裝。";
+
+    if (packStage === LEVELS.length - 1) {
+      var digits = packCounts.slice().reverse().join("").replace(/^0+(?=\d)/, "");
+      var parts = [];
+      for (var i = LEVELS.length - 1; i >= 0; i--) if (packCounts[i]) parts.push(LEVELS[i].v);
+      msg += "<br><strong>包裝完成！</strong>每種包裝最多只有 1 個。由左至右寫下數量，就是 <strong>" + sub(digits, 2) +
+        "</strong>。驗算：" + parts.join(" + ") + " = " + packN + " 粒。";
+      $("pack-step").disabled = true;
+    }
+    $("pack-msg").innerHTML = msg;
+    renderFactory([k, k + 1]);
   });
-  $("quiz-next").addEventListener("click", newQuestion);
-  $("quiz-level").addEventListener("click", function (e) {
-    var b = e.target.closest("button");
-    if (!b) return;
-    qBits = Number(b.getAttribute("data-bits"));
-    this.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
-    newQuestion();
-  });
-  newQuestion();
+  $("pack-reset").addEventListener("click", resetFactory);
+  packInput.addEventListener("change", resetFactory);
+  resetFactory();
 })();

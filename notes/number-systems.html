@@ -121,30 +121,15 @@
           </div>
         </section>
 
-        <section class="section" id="misconceptions">
-          <h2>常見誤解</h2>
-          <p>Herman、Zilles 及 Loui（2011）訪問及測試修讀電腦課程的大學生，發現他們大多能按步驟轉換進制，卻未必明白每個位的份量。常見誤解包括：</p>
-          <div class="table-wrap">
-            <table class="t">
-              <tr><th>誤解</th><th>例子</th><th>可在課堂上問</th></tr>
-              <tr><td>換了進制，位值不變</td><td>把 10<sub>2</sub> 的「1」當作 10</td><td>10 和 10<sub>2</sub> 哪個較大？相差多少？</td></tr>
-              <tr><td>底數較大的數必定較大</td><td>認為任何十進制數都大於二進制數</td><td>1000<sub>2</sub> 和 7 哪個較大？</td></tr>
-              <tr><td>最右邊的位值不是 1</td><td>把最右邊的位值當作 2</td><td>1<sub>2</sub> 是多少？10<sub>2</sub> 呢？</td></tr>
-              <tr><td>只記步驟，不理解意義</td><td>轉換正確，但不能比較兩個二進制數的大小</td><td>不計算，判斷 1000<sub>2</sub> 和 111<sub>2</sub> 哪個較大，並解釋。</td></tr>
-            </table>
-          </div>
-        </section>
-
         <section class="section" id="teaching">
           <h2>教學建議</h2>
 
           <h3>課堂頁面各工具的用法</h3>
           <ul>
-            <li><strong>① 位值表</strong>：先用十進制（例如 3025）重溫展開式，再切換到二進制，讓學生看到同一個數的兩種寫法。可故意輸入「1021」，讓學生解釋為何二進制不能有 2。</li>
-            <li><strong>② 逢十進一 vs 逢二進一</strong>：在按「+1」之前，先請學生預測哪一步會進位、進位幾次（例如 7 → 8、15 → 16），再按鍵驗證。</li>
-            <li><strong>③ 二進制開關</strong>：適合全班遊戲。用「挑戰」出目標數，請學生說出要開哪幾盞燈及原因。</li>
-            <li><strong>例題</strong>：用「下一步」逐步顯示，每步之前先問學生下一步做甚麼。</li>
-            <li><strong>練習</strong>：由初級開始。學生答錯兩次時，系統會顯示完整展開式，可以此跟進。</li>
+            <li><strong>① 點數咭</strong>：先讓學生數每張咭的點數，發現「每張是右邊一張的 2 倍」。翻開一張咭時，強調「這個 1 代表 8 粒點」，而不只是「1 在第四位」。下方同時顯示數量、寫法、讀法，可請學生把三者對應起來。「挑戰」適合全班遊戲。</li>
+            <li><strong>② 位值表</strong>：輸入二進制數，顯示每個數字乘以位值，再寫成展開式。可故意輸入「1021」，讓學生解釋為何二進制不能有 2。</li>
+            <li><strong>③ 逢十進一 vs 逢二進一</strong>：在按「+1」之前，先請學生預測哪一步會進位、進位幾次（例如 7 → 8、15 → 16），再按鍵驗證。</li>
+            <li><strong>④ 糖果包裝工廠</strong>（延伸）：用「每 2 個包成 1 個大包裝」說明逢二進一。包裝完成後，每種包裝最多只有 1 個，由左至右寫下就是二進制數。</li>
           </ul>
 
           <h3>研究的啟示</h3>
@@ -152,23 +137,20 @@
             <li><strong>位值的四個性質</strong>（Ross, 1989）：位置性、底數性、乘法性（數字 × 位值）、加法性（各部分相加）。展開式正好同時體現乘法性及加法性。</li>
             <li><strong>重視「數量值」</strong>（Thompson, 2003）：學生能說出「1 在 8 的位」，不代表明白它代表 8 件東西。可配合實物或點數卡（CS Unplugged 二進制卡）。</li>
             <li><strong>變易理論</strong>（Marton；盧敏玲）：固定一樣、改變另一樣，學生才會注意到關鍵特徵。例如數字不變（101），只改變進制；或數值不變，只改變寫法。</li>
-            <li><strong>比較不同數字系統</strong>（Thanheiser &amp; Melhuish）：透過比較，學生較易看清「分組、位值、底數」這些在十進制中被視為理所當然的特徵。</li>
-            <li><strong>逐步撤除例題</strong>（Atkinson, Renkl &amp; Merrill）：先完整示範，之後逐步留空讓學生完成，並加入「為甚麼？」的提問，效果比「例題後即做練習」好。</li>
+            <li><strong>數量、寫法、讀法互相連繫</strong>（Fuson 等, 1997）：學生要把實際數量、書寫的數字及讀法三者連起來，理解才會穩固。</li>
+            <li><strong>包裝情境</strong>（McClain, 2003）：以包裝糖果的情境（粒 → 袋 → 盒）解釋分組及進位，令「逢二進一」有具體意思。</li>
           </ul>
         </section>
 
         <section class="section" id="references">
           <h2>參考資料</h2>
           <ul class="refs">
-            <li>Herman, G. L., Zilles, C., &amp; Loui, M. C. (2011). How do students misunderstand number representations? <em>Computer Science Education, 21</em>(3), 289–312.</li>
             <li>Ross, S. H. (1989). Parts, wholes, and place value: A developmental view. <em>Arithmetic Teacher, 36</em>(6).</li>
             <li>Thompson, I. (2003). Putting place value in its place. <em>Mathematics Teaching</em>.</li>
             <li>Fuson, K. C., et al. (1997). Children's conceptual structures for multidigit numbers and methods of multidigit addition and subtraction. <em>JRME, 28</em>(2), 130–162.</li>
             <li>Bell, T., Witten, I. H., &amp; Fellows, M. CS Unplugged: Binary Numbers. <a href="https://www.csunplugged.org/en/resources/binary-cards/">csunplugged.org</a></li>
             <li>Lo, M. L. (2012). <em>Variation theory and the improvement of teaching and learning.</em> Göteborg: Acta Universitatis Gothoburgensis.</li>
-            <li>Thanheiser, E., &amp; Melhuish, K. Leveraging variation of historical number systems to build understanding of the base-ten place-value system. <em>ZDM – Mathematics Education.</em></li>
             <li>McClain, K. (2003). Supporting preservice teachers' understanding of place value and multidigit arithmetic. <em>Mathematical Thinking and Learning, 5</em>(4), 281–306.</li>
-            <li>Atkinson, R. K., Renkl, A., &amp; Merrill, M. M. (2003). Transitioning from studying examples to solving problems. <em>Journal of Educational Psychology, 95</em>(4), 774–783.</li>
           </ul>
         </section>
       </div>

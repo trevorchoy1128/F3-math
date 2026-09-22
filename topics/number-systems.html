@@ -10,6 +10,37 @@
   <script src="../assets/data.js"></script>
   <script src="../assets/common.js"></script>
   <style>
+    .hint { color: var(--muted); font-size: 15px; }
+
+    /* 點數咭 */
+    .cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; max-width: 560px; }
+    .dcard {
+      font: inherit; color: var(--text); cursor: pointer;
+      border: 2px solid var(--border); border-radius: 12px; background: var(--surface);
+      padding: 10px 4px 8px; display: flex; flex-direction: column; align-items: center; gap: 6px;
+      transition: border-color .15s, background .15s;
+    }
+    .dcard .face { height: 76px; display: grid; place-items: center; }
+    .dots { display: grid; gap: 4px; }
+    .dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--border); transition: background .15s; }
+    .dcard .bit { font-size: 26px; font-weight: 700; line-height: 1; color: var(--muted); }
+    .dcard .val { font-size: 13px; color: var(--muted); }
+    .dcard[aria-pressed="true"] { border-color: var(--c); background: var(--c-soft); }
+    .dcard[aria-pressed="true"] .dots i { background: var(--c); }
+    .dcard[aria-pressed="true"] .bit { color: var(--c); }
+    .dcard[aria-pressed="false"] .face {
+      background: repeating-linear-gradient(45deg, var(--surface-2) 0 6px, transparent 6px 12px);
+      border-radius: 8px; width: 100%;
+    }
+
+    .triad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 16px 0 10px; max-width: 560px; }
+    .triad > div { background: var(--surface-2); border-radius: 10px; padding: 10px 12px; }
+    .triad small { display: block; color: var(--muted); font-size: 13px; }
+    .triad b { display: block; font-size: 20px; }
+    .triad > div:last-child b { font-size: 17px; }
+    .triad span { font-size: 14px; color: var(--muted); }
+    .last-flip { min-height: 26px; font-size: 15px; }
+
     /* 位值表 */
     .pv td { min-width: 54px; }
     .pv .pv-name { font-size: 13px; color: var(--muted); }
@@ -35,37 +66,34 @@
     @keyframes pop { from { transform: translateY(-8px); opacity: .2; } to { transform: none; opacity: 1; } }
     .counter-msg { min-height: 50px; font-size: 15px; margin: 4px 0 12px; }
 
-    /* 二進制開關 */
-    .switches { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; max-width: 520px; }
-    .sw {
-      font: inherit; border: 1px solid var(--border); background: var(--surface); color: var(--text);
-      border-radius: 10px; padding: 8px 0 6px; cursor: pointer;
-      display: flex; flex-direction: column; align-items: center; gap: 3px;
-    }
-    .sw .bulb { width: 22px; height: 22px; border-radius: 50%; background: var(--surface-2); border: 2px solid var(--border); transition: .15s; }
-    .sw[aria-pressed="true"] { border-color: var(--c); background: var(--c-soft); }
-    .sw[aria-pressed="true"] .bulb { background: #f5b82e; border-color: #d99a0b; box-shadow: 0 0 10px #f5b82e99; }
-    .sw .sw-bit { font-size: 20px; font-weight: 700; }
-    .sw .sw-val { font-size: 12px; color: var(--muted); }
-    .sw-out { margin: 12px 0; font-size: 17px; line-height: 1.8; }
+    /* 包裝工廠 */
+    .factory { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 14px 0; }
+    .bin { border: 1px solid var(--border); border-radius: 10px; background: var(--bg); display: flex; flex-direction: column; min-height: 170px; }
+    .bin-head { text-align: center; padding: 6px 2px; border-bottom: 1px solid var(--border); font-size: 14px; font-weight: 600; }
+    .bin-head small { display: block; font-weight: 400; color: var(--muted); font-size: 12px; }
+    .bin-body { flex: 1; display: flex; flex-wrap: wrap; align-content: flex-end; justify-content: center; gap: 3px; padding: 6px; }
+    .bin-foot { text-align: center; font-size: 22px; font-weight: 700; border-top: 1px solid var(--border); padding: 4px; }
+    .bin.active { border-color: var(--c); }
+    .tok { display: grid; place-items: center; color: var(--surface); font-weight: 700; background: var(--c); animation: pop .35s ease; }
+    .tok.t0 { width: 10px; height: 10px; border-radius: 50%; background: var(--dh); }
+    .tok.t1 { width: 22px; height: 16px; border-radius: 6px; font-size: 10px; }
+    .tok.t2 { width: 28px; height: 22px; border-radius: 4px; font-size: 11px; }
+    .tok.t3 { width: 36px; height: 28px; border-radius: 4px; font-size: 12px; }
+    .tok.t4 { width: 44px; height: 34px; border-radius: 4px; font-size: 13px; }
+    .pack-msg { min-height: 50px; font-size: 15px; margin-bottom: 12px; }
 
-    /* 例題 */
-    .example { border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; background: var(--bg); }
-    .ex-q { font-weight: 600; margin-bottom: 10px; }
-    .ex-tag { display: inline-block; background: var(--c); color: var(--surface); border-radius: 6px; font-size: 13px; padding: 1px 8px; margin-right: 6px; }
-    .ex-steps li { margin-bottom: 10px; }
-    .ex-ans { font-weight: 700; color: var(--c); margin: 0 0 12px; }
-
-    /* 練習 */
-    .quiz-q { font-size: 20px; margin: 10px 0 12px; }
-    .score { color: var(--muted); font-size: 14px; margin-left: auto; }
-
-    @media (max-width: 420px) {
+    @media (max-width: 480px) {
+      .cards { gap: 5px; }
+      .dots { gap: 3px; }
+      .dots i { width: 7px; height: 7px; }
+      .dcard .face { height: 58px; }
+      .triad { grid-template-columns: 1fr; }
       .cell { width: 30px; }
       .cell b { font-size: 20px; }
       .pv td { min-width: 40px; padding: 6px; }
-      .sw .sw-bit { font-size: 17px; }
-      .sw .sw-val { font-size: 11px; }
+      .factory { gap: 4px; }
+      .bin-head { font-size: 12px; }
+      .tok.t3 { width: 30px; } .tok.t4 { width: 34px; }
     }
   </style>
 </head>
@@ -79,81 +107,65 @@
       <nav class="toc" id="toc" aria-label="本課目錄"></nav>
 
       <div>
-        <section class="section" id="explore">
-          <h2>互動探索</h2>
-
-          <div class="widget">
-            <p class="widget-title">① 位值表</p>
-            <p class="widget-hint">輸入一個數，看看每個數字代表多少。切換進制時，會換成同一個數的另一種寫法。</p>
-            <div class="row">
-              <div class="seg" id="pv-base" role="group" aria-label="選擇進制">
-                <button type="button" data-base="2" aria-pressed="true">二進制</button>
-                <button type="button" data-base="10" aria-pressed="false">十進制</button>
-              </div>
-              <input id="pv-input" class="field" value="1011" inputmode="numeric" autocomplete="off" maxlength="10" aria-label="輸入數字">
-              <button type="button" class="btn" id="pv-random">隨機</button>
-            </div>
-            <div id="pv-error" class="error" hidden></div>
-            <div id="pv-out"></div>
+        <section class="section" id="dots">
+          <h2>① 點數咭</h2>
+          <p class="hint">每張咭上的點數，就是那個位的位值。按咭翻開（1）或蓋上（0），數數看得見多少粒點。</p>
+          <div class="cards" id="cards"></div>
+          <div class="last-flip" id="last-flip" aria-live="polite"></div>
+          <div class="triad" id="triad"></div>
+          <div class="row">
+            <button type="button" class="btn primary" id="dots-challenge">挑戰：隨機目標數</button>
+            <button type="button" class="btn" id="dots-clear">全部蓋上</button>
           </div>
+          <div id="dots-feedback"></div>
+        </section>
 
-          <div class="widget">
-            <p class="widget-title">② 逢十進一 vs 逢二進一</p>
-            <p class="widget-hint">按「+1」逐一數數，比較兩種進制何時進位。有變化的格會亮起。</p>
-            <div class="odo-row">
-              <div class="odo-label">十進制</div>
-              <div class="odo" id="odo-dec"></div>
+        <section class="section" id="pv">
+          <h2>② 位值表</h2>
+          <p class="hint">輸入一個數，看看每個數字代表多少。切換進制時，會換成同一個數的另一種寫法。</p>
+          <div class="row">
+            <div class="seg" id="pv-base" role="group" aria-label="選擇進制">
+              <button type="button" data-base="2" aria-pressed="true">二進制</button>
+              <button type="button" data-base="10" aria-pressed="false">十進制</button>
             </div>
-            <div class="odo-row">
-              <div class="odo-label">二進制</div>
-              <div class="odo" id="odo-bin"></div>
-            </div>
-            <div class="counter-msg" id="counter-msg" aria-live="polite"></div>
-            <div class="row">
-              <button type="button" class="btn" id="cnt-minus">−1</button>
-              <button type="button" class="btn primary" id="cnt-plus">+1</button>
-              <button type="button" class="btn" id="cnt-play">▶ 自動</button>
-              <button type="button" class="btn" id="cnt-reset">重設</button>
-            </div>
+            <input id="pv-input" class="field" value="1011" inputmode="numeric" autocomplete="off" maxlength="10" aria-label="輸入數字">
+            <button type="button" class="btn" id="pv-random">隨機</button>
           </div>
+          <div id="pv-error" class="error" hidden></div>
+          <div id="pv-out"></div>
+        </section>
 
-          <div class="widget">
-            <p class="widget-title">③ 二進制開關</p>
-            <p class="widget-hint">每個燈泡代表一個位。按下開關（1 = 開，0 = 關），看看十進制數值如何變化。</p>
-            <div class="switches" id="switches"></div>
-            <div class="sw-out" id="sw-out" aria-live="polite"></div>
-            <div class="row">
-              <button type="button" class="btn primary" id="sw-challenge">挑戰：隨機目標數</button>
-              <button type="button" class="btn" id="sw-clear">全部關掉</button>
-            </div>
-            <div id="sw-feedback"></div>
+        <section class="section" id="counter">
+          <h2>③ 逢十進一 vs 逢二進一</h2>
+          <p class="hint">按「+1」逐一數數，比較兩種進制何時進位。有變化的格會亮起。</p>
+          <div class="odo-row">
+            <div class="odo-label">十進制</div>
+            <div class="odo" id="odo-dec"></div>
+          </div>
+          <div class="odo-row">
+            <div class="odo-label">二進制</div>
+            <div class="odo" id="odo-bin"></div>
+          </div>
+          <div class="counter-msg" id="counter-msg" aria-live="polite"></div>
+          <div class="row">
+            <button type="button" class="btn" id="cnt-minus">−1</button>
+            <button type="button" class="btn primary" id="cnt-plus">+1</button>
+            <button type="button" class="btn" id="cnt-play">▶ 自動</button>
+            <button type="button" class="btn" id="cnt-reset">重設</button>
           </div>
         </section>
 
-        <section class="section" id="examples">
-          <h2>例題</h2>
-          <div id="examples-body"></div>
-        </section>
-
-        <section class="section" id="practice">
-          <h2>練習</h2>
-          <p>把二進制數轉換為十進制數。答錯一次會有提示，答錯兩次會顯示答案。</p>
+        <section class="section" id="factory">
+          <h2>④ 糖果包裝工廠</h2>
+          <p class="hint">工廠規定：每 2 粒糖包成 1 袋，每 2 袋裝成 1 盒，每 2 盒裝成 1 箱，每 2 箱裝成 1 大箱。包裝完後，每種包裝各有多少個？</p>
           <div class="row">
-            <div class="seg" id="quiz-level" role="group" aria-label="選擇難度">
-              <button type="button" data-bits="4" aria-pressed="true">初級（4 位）</button>
-              <button type="button" data-bits="6" aria-pressed="false">中級（6 位）</button>
-              <button type="button" data-bits="8" aria-pressed="false">高級（8 位）</button>
-            </div>
-            <span class="score" id="quiz-score"></span>
+            <label for="pack-n">糖果數量</label>
+            <input id="pack-n" class="field" type="number" min="1" max="31" value="21" style="width:100px">
+            <button type="button" class="btn primary" id="pack-step">包裝下一步</button>
+            <button type="button" class="btn" id="pack-reset">重新開始</button>
           </div>
-          <div class="quiz-q" id="quiz-q"></div>
-          <div class="row">
-            <input id="quiz-input" class="field" inputmode="numeric" autocomplete="off" placeholder="十進制答案" aria-label="十進制答案">
-            <button type="button" class="btn primary" id="quiz-check">檢查</button>
-            <button type="button" class="btn" id="quiz-show">顯示答案</button>
-            <button type="button" class="btn" id="quiz-next">下一題</button>
-          </div>
-          <div id="quiz-feedback" aria-live="polite"></div>
+          <div class="factory" id="factory-bins"></div>
+          <div class="pack-msg" id="pack-msg" aria-live="polite"></div>
         </section>
 
         <nav class="pager" id="pager"></nav>
