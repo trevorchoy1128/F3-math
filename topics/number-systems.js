@@ -1,6 +1,7 @@
 // 數字系統：點數咭、位值表、進位計數器、糖果包裝工廠
 (function () {
-  var DEC_NAMES = ["個位", "十位", "百位", "千位", "萬位", "十萬位", "百萬位"];
+  var DEC_NAMES = L(["個位", "十位", "百位", "千位", "萬位", "十萬位", "百萬位"],
+    ["ones", "tens", "hundreds", "thousands", "ten thousands", "hundred thousands", "millions"]);
 
   function $(id) { return document.getElementById(id); }
   function pow(base, k) { return base + "<sup>" + k + "</sup>"; }
@@ -24,10 +25,10 @@
       return "<tr><th>" + label + "</th>" + cols.map(fn).join("") + "</tr>";
     }
     var html = '<div class="table-wrap"><table class="t pv">';
-    if (base === 10) html += row("位", function (c) { return '<td class="pv-name">' + (DEC_NAMES[c.k] || "") + "</td>"; });
-    html += row("位值", function (c) { return "<td>" + pow(base, c.k) + '<br><span class="pv-v">= ' + c.v + "</span></td>"; });
-    html += row("數字", function (c) { return '<td class="pv-d' + (c.d === "0" ? " zero" : "") + '">' + c.d + "</td>"; });
-    html += row("數字 × 位值", function (c) { return '<td class="' + (c.d === "0" ? "zero" : "") + '">' + c.prod + "</td>"; });
+    if (base === 10) html += row(L("位", "Place"), function (c) { return '<td class="pv-name">' + (DEC_NAMES[c.k] || "") + "</td>"; });
+    html += row(L("位值", "Place value"), function (c) { return "<td>" + pow(base, c.k) + '<br><span class="pv-v">= ' + c.v + "</span></td>"; });
+    html += row(L("數字", "Digit"), function (c) { return '<td class="pv-d' + (c.d === "0" ? " zero" : "") + '">' + c.d + "</td>"; });
+    html += row(L("數字 × 位值", "Digit × place value"), function (c) { return '<td class="' + (c.d === "0" ? "zero" : "") + '">' + c.prod + "</td>"; });
     return html + "</table></div>";
   }
 
@@ -45,8 +46,8 @@
   var pvBase = 2;
   var pvInput = $("pv-input"), pvOut = $("pv-out"), pvErr = $("pv-error");
   var PV_RULE = {
-    2:  { re: /^[01]+$/, max: 10, msg: "二進制只可以使用數字 0 和 1，因為滿 2 便要進位。" },
-    10: { re: /^[0-9]+$/, max: 4, msg: "十進制只可以使用數字 0 至 9。" },
+    2:  { re: /^[01]+$/, max: 10, msg: L("二進制只可以使用數字 0 和 1，因為滿 2 便要進位。", "Binary uses only the digits 0 and 1, because we carry over as soon as we reach 2.") },
+    10: { re: /^[0-9]+$/, max: 4, msg: L("十進制只可以使用數字 0 至 9。", "Decimal uses only the digits 0 to 9.") },
   };
 
   function renderPV() {
@@ -83,7 +84,7 @@
 
   /* ---------- ③ 進位計數器 ---------- */
   var cnt = 0, MAX = 255, timer = null;
-  var DEC_LABELS = ["百", "十", "個"], BIN_LABELS = ["128", "64", "32", "16", "8", "4", "2", "1"];
+  var DEC_LABELS = L(["百", "十", "個"], ["H", "T", "O"]), BIN_LABELS = ["128", "64", "32", "16", "8", "4", "2", "1"];
 
   function cells(str, oldStr, labels) {
     var firstNonZero = str.search(/[1-9]/);
@@ -96,6 +97,7 @@
     }).join("");
   }
 
+  function times(k) { return "carried " + (k === 1 ? "once" : k + " times"); }
   function trailing(str, ch) { var k = 0; for (var i = str.length - 1; i >= 0 && str[i] === ch; i--) k++; return k; }
 
   function renderCounter(prev) {
@@ -109,12 +111,12 @@
     if (prev != null && cnt === prev + 1) {
       var dc = trailing(pd, "9"), bc = trailing(pb, "1");
       msg = "<strong>" + prev + " + 1 = " + cnt + "</strong><br>" +
-        "十進制：" + (dc ? "逢十進一，進位 " + dc + " 次" : "沒有進位") + "　｜　" +
-        "二進制：" + (bc ? "逢二進一，進位 " + bc + " 次" : "沒有進位");
+        L("十進制：" + (dc ? "逢十進一，進位 " + dc + " 次" : "沒有進位"), "Decimal: " + (dc ? "carry at ten, " + times(dc) : "no carrying")) + "　｜　" +
+        L("二進制：" + (bc ? "逢二進一，進位 " + bc + " 次" : "沒有進位"), "Binary: " + (bc ? "carry at two, " + times(bc) : "no carrying"));
     } else if (prev != null && cnt === prev - 1) {
       msg = "<strong>" + prev + " − 1 = " + cnt + "</strong>";
     } else {
-      msg = "由 0 開始，按「+1」試試看。";
+      msg = L("由 0 開始，按「+1」試試看。", "Start from 0 and press “+1”.");
     }
     $("counter-msg").innerHTML = msg;
     $("cnt-plus").disabled = cnt >= MAX;
@@ -127,7 +129,7 @@
     if (cnt !== prev) renderCounter(prev);
     if (cnt >= MAX) stopPlay();
   }
-  function stopPlay() { clearInterval(timer); timer = null; $("cnt-play").textContent = "▶ 自動"; }
+  function stopPlay() { clearInterval(timer); timer = null; $("cnt-play").textContent = L("▶ 自動", "▶ Auto"); }
 
   $("cnt-plus").addEventListener("click", function () { step(1); });
   $("cnt-minus").addEventListener("click", function () { step(-1); });
@@ -135,7 +137,7 @@
   $("cnt-play").addEventListener("click", function () {
     if (timer) { stopPlay(); return; }
     if (cnt >= MAX) { cnt = 0; renderCounter(null); }
-    this.textContent = "⏸ 暫停";
+    this.textContent = L("⏸ 暫停", "⏸ Pause");
     timer = setInterval(function () { step(1); }, 800);
   });
   document.addEventListener("sectionchange", function (e) { if (e.detail !== "counter") stopPlay(); });
@@ -144,17 +146,18 @@
   /* ---------- ① 點數咭 ---------- */
   var CARD_VALUES = [16, 8, 4, 2, 1];
   var DOT_COLS = { 16: 4, 8: 4, 4: 2, 2: 2, 1: 1 };
-  var READ = { "0": "零", "1": "一" };
+  var READ = L({ "0": "零", "1": "一" }, { "0": "zero", "1": "one" });
   var cardBits = [1, 0, 1, 0, 1], dotsTarget = null;
   var cardsEl = $("cards");
 
   cardsEl.innerHTML = CARD_VALUES.map(function (v, i) {
     var dots = new Array(v + 1).join("<i></i>");
-    return '<button type="button" class="dcard" data-i="' + i + '" aria-label="' + v + ' 點咭">' +
+    return '<button type="button" class="dcard" data-i="' + i + '" aria-label="' + L(v + " 點咭", v + "-dot card") + '">' +
       '<span class="face"><span class="dots" style="grid-template-columns:repeat(' + DOT_COLS[v] + ',auto)">' + dots + "</span></span>" +
-      '<span class="bit"></span><span class="val">' + v + " 點</span></button>";
+      '<span class="bit"></span><span class="val">' + v + L(" 點", v === 1 ? " dot" : " dots") + "</span></button>";
   }).join("");
 
+  function dots(k) { return L(k + " 粒點", k + (k === 1 ? " dot" : " dots")); }
   function renderCards() {
     cardsEl.querySelectorAll(".dcard").forEach(function (b, i) {
       b.setAttribute("aria-pressed", cardBits[i] === 1);
@@ -163,22 +166,23 @@
     var on = [], total = 0;
     cardBits.forEach(function (x, i) { if (x) { on.push(CARD_VALUES[i]); total += CARD_VALUES[i]; } });
     var binStr = cardBits.join("").replace(/^0+(?=\d)/, "");
-    var reading = "二進制數" + binStr.split("").map(function (d) { return READ[d]; }).join("");
+    var digitsRead = binStr.split("").map(function (d) { return READ[d]; });
+    var reading = L("二進制數" + digitsRead.join(""), "binary " + digitsRead.join("-"));
 
     // 數量、寫法、讀法三者並列
     $("triad").innerHTML =
-      "<div><small>數量</small><b>" + total + " 粒點</b><span>" + (on.length ? on.join(" + ") : "沒有點") + "</span></div>" +
-      "<div><small>寫法</small><b>" + sub(binStr, 2) + "</b></div>" +
-      "<div><small>讀法</small><b>" + reading + "</b></div>";
+      "<div><small>" + L("數量", "Quantity") + "</small><b>" + dots(total) + "</b><span>" + (on.length ? on.join(" + ") : L("沒有點", "no dots")) + "</span></div>" +
+      "<div><small>" + L("寫法", "Written as") + "</small><b>" + sub(binStr, 2) + "</b></div>" +
+      "<div><small>" + L("讀法", "Read as") + "</small><b>" + reading + "</b></div>";
 
     var fb = $("dots-feedback");
     if (dotsTarget == null) { fb.innerHTML = ""; return; }
     if (total === dotsTarget) {
-      fb.innerHTML = '<div class="feedback ok"><strong>做到了！</strong>' + dotsTarget + " 粒點 = " + sub(binStr, 2) + "</div>";
+      fb.innerHTML = '<div class="feedback ok"><strong>' + L("做到了！", "You did it!") + "</strong>" + dots(dotsTarget) + " = " + sub(binStr, 2) + "</div>";
     } else {
-      fb.innerHTML = '<div class="feedback bad"><strong>目標：' + dotsTarget + " 粒點</strong>現在是 " + total +
-        (total < dotsTarget ? " 粒，還差 " + (dotsTarget - total) + " 粒。" : " 粒，多了 " + (total - dotsTarget) + " 粒。") +
-        "提示：先翻開最大而又不超過目標的咭。</div>";
+      fb.innerHTML = '<div class="feedback bad"><strong>' + L("目標：", "Target: ") + dots(dotsTarget) + "</strong>" +
+        L("現在是 " + total + (total < dotsTarget ? " 粒，還差 " + (dotsTarget - total) + " 粒。" : " 粒，多了 " + (total - dotsTarget) + " 粒。") + "提示：先翻開最大而又不超過目標的咭。",
+          "You have " + total + (total < dotsTarget ? ", " + (dotsTarget - total) + " short. " : ", " + (total - dotsTarget) + " too many. ") + "Hint: first turn over the biggest card that does not go over the target.") + "</div>";
     }
   }
 
@@ -188,8 +192,8 @@
     var i = Number(b.getAttribute("data-i")), v = CARD_VALUES[i];
     cardBits[i] = 1 - cardBits[i];
     $("last-flip").innerHTML = cardBits[i]
-      ? "翻開 " + v + " 點咭：這個位的 <strong>1</strong> 代表 <strong>" + v + " 粒點</strong>。"
-      : "蓋上 " + v + " 點咭：這個位變成 <strong>0</strong>，少了 " + v + " 粒點。";
+      ? L("翻開 " + v + " 點咭：這個位的 <strong>1</strong> 代表 <strong>" + v + " 粒點</strong>。", "Turned over the " + v + "-dot card: the <strong>1</strong> in this place stands for <strong>" + dots(v) + "</strong>.")
+      : L("蓋上 " + v + " 點咭：這個位變成 <strong>0</strong>，少了 " + v + " 粒點。", "Covered the " + v + "-dot card: this place becomes <strong>0</strong>, " + dots(v) + " fewer.");
     renderCards();
   });
   $("dots-clear").addEventListener("click", function () {
@@ -204,20 +208,23 @@
 
   /* ---------- ④ 糖果包裝工廠 ---------- */
   var LEVELS = [
-    { name: "粒", v: 1, unit: "粒" }, { name: "袋", v: 2, unit: "袋" }, { name: "盒", v: 4, unit: "盒" },
-    { name: "箱", v: 8, unit: "箱" }, { name: "大箱", v: 16, unit: "大箱" },
+    { zh: "粒", en: "candy", v: 1 }, { zh: "袋", en: "bag", v: 2 }, { zh: "盒", en: "box", v: 4 },
+    { zh: "箱", en: "crate", v: 8 }, { zh: "大箱", en: "large crate", v: 16 },
   ];
   var packCounts, packStage, packN;
+  // 數量 + 單位，例如「3 盒」／「3 boxes」
+  function qty(k, lv) { return L(k + " " + lv.zh, k + " " + (k === 1 ? lv.en : lv.en === "box" ? "boxes" : lv.en === "candy" ? "candies" : lv.en + "s")); }
+  function levelName(lv) { var n = L(lv.zh, lv.en); return n.charAt(0).toUpperCase() + n.slice(1); }
   var packInput = $("pack-n");
 
   function renderFactory(active) {
     // 由左至右：大箱 → 粒，與位值表的次序一致
     var html = "";
     for (var k = LEVELS.length - 1; k >= 0; k--) {
-      var L = LEVELS[k], toks = "";
-      for (var j = 0; j < packCounts[k]; j++) toks += '<span class="tok t' + k + '">' + (k ? L.v : "") + "</span>";
+      var lv = LEVELS[k], toks = "";
+      for (var j = 0; j < packCounts[k]; j++) toks += '<span class="tok t' + k + '">' + (k ? lv.v : "") + "</span>";
       html += '<div class="bin' + (active && active.indexOf(k) !== -1 ? " active" : "") + '">' +
-        '<div class="bin-head">' + L.name + "<small>每個 " + L.v + " 粒</small></div>" +
+        '<div class="bin-head">' + levelName(lv) + "<small>" + L("每個 " + lv.v + " 粒", lv.v === 1 ? "1 candy" : lv.v + " candies each") + "</small></div>" +
         '<div class="bin-body">' + toks + "</div>" +
         '<div class="bin-foot">' + packCounts[k] + "</div></div>";
     }
@@ -230,7 +237,7 @@
     packCounts = [packN, 0, 0, 0, 0];
     packStage = 0;
     $("pack-step").disabled = false;
-    $("pack-msg").innerHTML = "現在有 " + packN + " 粒散裝糖果。按「包裝下一步」開始。";
+    $("pack-msg").innerHTML = L("現在有 " + packN + " 粒散裝糖果。按「包裝下一步」開始。", "There are " + qty(packN, LEVELS[0]) + " loose. Press “Next packing step” to start.");
     renderFactory();
   }
 
@@ -240,16 +247,17 @@
     packCounts[k + 1] += made;
     packCounts[k] = had % 2;
     packStage++;
-    var msg = "每 2 " + from.unit + "包成 1 " + to.unit + "：" + had + " " + from.unit + " → " + made + " " + to.unit +
-      "，剩下 " + packCounts[k] + " " + from.unit + "。";
-    if (made === 0) msg = "只有 " + had + " " + from.unit + "，不足 2 " + from.unit + "，不用包裝。";
+    var msg = L("每 2 " + from.zh + "包成 1 " + to.zh + "：" + qty(had, from) + " → " + qty(made, to) + "，剩下 " + qty(packCounts[k], from) + "。",
+      "Every 2 " + qty(2, from).slice(2) + " make 1 " + to.en + ": " + qty(had, from) + " → " + qty(made, to) + ", " + qty(packCounts[k], from) + " left.");
+    if (made === 0) msg = L("只有 " + qty(had, from) + "，不足 2 " + from.zh + "，不用包裝。", "Only " + qty(had, from) + " — fewer than 2, so nothing to pack.");
 
     if (packStage === LEVELS.length - 1) {
       var digits = packCounts.slice().reverse().join("").replace(/^0+(?=\d)/, "");
       var parts = [];
       for (var i = LEVELS.length - 1; i >= 0; i--) if (packCounts[i]) parts.push(LEVELS[i].v);
-      msg += "<br><strong>包裝完成！</strong>每種包裝最多只有 1 個。由左至右寫下數量，就是 <strong>" + sub(digits, 2) +
-        "</strong>。驗算：" + parts.join(" + ") + " = " + packN + " 粒。";
+      msg += "<br><strong>" + L("包裝完成！", "Packing done!") + "</strong>" +
+        L("每種包裝最多只有 1 個。由左至右寫下數量，就是 <strong>" + sub(digits, 2) + "</strong>。驗算：" + parts.join(" + ") + " = " + packN + " 粒。",
+          " There is at most 1 of each package. Writing the numbers from left to right gives <strong>" + sub(digits, 2) + "</strong>. Check: " + parts.join(" + ") + " = " + qty(packN, LEVELS[0]) + ".");
       $("pack-step").disabled = true;
     }
     $("pack-msg").innerHTML = msg;

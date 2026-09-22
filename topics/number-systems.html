@@ -104,65 +104,65 @@
     <div id="topic-head"></div>
 
     <div class="topic-layout">
-      <nav class="toc" id="toc" aria-label="本課目錄"></nav>
+      <nav class="toc" id="toc" aria-label="本課目錄" data-en-aria-label="Contents"></nav>
 
       <div>
         <section class="section" id="dots">
-          <h2>① 點數咭</h2>
-          <p class="hint">每張咭上的點數，就是那個位的位值。按咭翻開（1）或蓋上（0），數數看得見多少粒點。</p>
+          <h2><span data-l="zh">① 點數咭</span><span data-l="en">① Dot cards</span></h2>
+          <p class="hint"><span data-l="zh">每張咭上的點數，就是那個位的位值。按咭翻開（1）或蓋上（0），數數看得見多少粒點。</span><span data-l="en">The number of dots on each card is the place value of that place. Click a card to turn it over (1) or cover it (0), and count how many dots you can see.</span></p>
           <div class="cards" id="cards"></div>
           <div class="last-flip" id="last-flip" aria-live="polite"></div>
           <div class="triad" id="triad"></div>
           <div class="row">
-            <button type="button" class="btn primary" id="dots-challenge">挑戰：隨機目標數</button>
-            <button type="button" class="btn" id="dots-clear">全部蓋上</button>
+            <button type="button" class="btn primary" id="dots-challenge"><span data-l="zh">挑戰：隨機目標數</span><span data-l="en">Challenge: random target</span></button>
+            <button type="button" class="btn" id="dots-clear"><span data-l="zh">全部蓋上</span><span data-l="en">Cover all</span></button>
           </div>
           <div id="dots-feedback"></div>
         </section>
 
         <section class="section" id="pv">
-          <h2>② 位值表</h2>
-          <p class="hint">輸入一個數，看看每個數字代表多少。切換進制時，會換成同一個數的另一種寫法。</p>
+          <h2><span data-l="zh">② 位值表</span><span data-l="en">② Place value table</span></h2>
+          <p class="hint"><span data-l="zh">輸入一個數，看看每個數字代表多少。切換進制時，會換成同一個數的另一種寫法。</span><span data-l="en">Enter a number to see what each digit stands for. Switching the number system shows the same number written the other way.</span></p>
           <div class="row">
-            <div class="seg" id="pv-base" role="group" aria-label="選擇進制">
-              <button type="button" data-base="2" aria-pressed="true">二進制</button>
-              <button type="button" data-base="10" aria-pressed="false">十進制</button>
+            <div class="seg" id="pv-base" role="group" aria-label="選擇進制" data-en-aria-label="Choose the number system">
+              <button type="button" data-base="2" aria-pressed="true"><span data-l="zh">二進制</span><span data-l="en">Binary</span></button>
+              <button type="button" data-base="10" aria-pressed="false"><span data-l="zh">十進制</span><span data-l="en">Decimal</span></button>
             </div>
-            <input id="pv-input" class="field" value="1011" inputmode="numeric" autocomplete="off" maxlength="10" aria-label="輸入數字">
-            <button type="button" class="btn" id="pv-random">隨機</button>
+            <input id="pv-input" class="field" value="1011" inputmode="numeric" autocomplete="off" maxlength="10" aria-label="輸入數字" data-en-aria-label="Enter a number">
+            <button type="button" class="btn" id="pv-random"><span data-l="zh">隨機</span><span data-l="en">Random</span></button>
           </div>
           <div id="pv-error" class="error" hidden></div>
           <div id="pv-out"></div>
         </section>
 
         <section class="section" id="counter">
-          <h2>③ 逢十進一 vs 逢二進一</h2>
-          <p class="hint">按「+1」逐一數數，比較兩種進制何時進位。有變化的格會亮起。</p>
+          <h2><span data-l="zh">③ 逢十進一 vs 逢二進一</span><span data-l="en">③ Carry at ten vs carry at two</span></h2>
+          <p class="hint"><span data-l="zh">按「+1」逐一數數，比較兩種進制何時進位。有變化的格會亮起。</span><span data-l="en">Press “+1” to count up one at a time and compare when each system carries over. Digits that change light up.</span></p>
           <div class="odo-row">
-            <div class="odo-label">十進制</div>
+            <div class="odo-label"><span data-l="zh">十進制</span><span data-l="en">Decimal</span></div>
             <div class="odo" id="odo-dec"></div>
           </div>
           <div class="odo-row">
-            <div class="odo-label">二進制</div>
+            <div class="odo-label"><span data-l="zh">二進制</span><span data-l="en">Binary</span></div>
             <div class="odo" id="odo-bin"></div>
           </div>
           <div class="counter-msg" id="counter-msg" aria-live="polite"></div>
           <div class="row">
             <button type="button" class="btn" id="cnt-minus">−1</button>
             <button type="button" class="btn primary" id="cnt-plus">+1</button>
-            <button type="button" class="btn" id="cnt-play">▶ 自動</button>
-            <button type="button" class="btn" id="cnt-reset">重設</button>
+            <button type="button" class="btn" id="cnt-play"><span data-l="zh">▶ 自動</span><span data-l="en">▶ Auto</span></button>
+            <button type="button" class="btn" id="cnt-reset"><span data-l="zh">重設</span><span data-l="en">Reset</span></button>
           </div>
         </section>
 
         <section class="section" id="factory">
-          <h2>④ 糖果包裝工廠</h2>
-          <p class="hint">工廠規定：每 2 粒糖包成 1 袋，每 2 袋裝成 1 盒，每 2 盒裝成 1 箱，每 2 箱裝成 1 大箱。包裝完後，每種包裝各有多少個？</p>
+          <h2><span data-l="zh">④ 糖果包裝工廠</span><span data-l="en">④ Candy packing factory</span></h2>
+          <p class="hint"><span data-l="zh">工廠規定：每 2 粒糖包成 1 袋，每 2 袋裝成 1 盒，每 2 盒裝成 1 箱，每 2 箱裝成 1 大箱。包裝完後，每種包裝各有多少個？</span><span data-l="en">Factory rules: every 2 candies go into 1 bag, every 2 bags into 1 box, every 2 boxes into 1 crate, and every 2 crates into 1 large crate. After packing, how many of each package are there?</span></p>
           <div class="row">
-            <label for="pack-n">糖果數量</label>
+            <label for="pack-n"><span data-l="zh">糖果數量</span><span data-l="en">Number of candies</span></label>
             <input id="pack-n" class="field" type="number" min="1" max="31" value="21" style="width:100px">
-            <button type="button" class="btn primary" id="pack-step">包裝下一步</button>
-            <button type="button" class="btn" id="pack-reset">重新開始</button>
+            <button type="button" class="btn primary" id="pack-step"><span data-l="zh">包裝下一步</span><span data-l="en">Next packing step</span></button>
+            <button type="button" class="btn" id="pack-reset"><span data-l="zh">重新開始</span><span data-l="en">Start again</span></button>
           </div>
           <div class="factory" id="factory-bins"></div>
           <div class="pack-msg" id="pack-msg" aria-live="polite"></div>
@@ -173,7 +173,7 @@
     </div>
   </main>
 
-  <footer><div class="wrap">中三數學學習站 · <a href="../notes/number-systems.html">教師筆記</a></div></footer>
+  <footer><div class="wrap"><span data-l="zh">中三數學學習站</span><span data-l="en">S3 Maths Hub</span> · <a href="../notes/number-systems.html"><span data-l="zh">教師筆記</span><span data-l="en">Teacher notes</span></a></div></footer>
 
   <script src="../assets/topic.js"></script>
   <script src="number-systems.js"></script>

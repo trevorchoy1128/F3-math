@@ -37,7 +37,7 @@
 
     var n = o.labels.length, band = pw / n, k = o.series.length, gap = 2;
     var bw = Math.max(2, Math.min(24, (band * 0.7 - gap * (k - 1)) / k));
-    var svg = '<svg width="' + W + '" height="' + H + '" role="img" aria-label="' + (o.ariaLabel || "柱形圖") + '">';
+    var svg = '<svg width="' + W + '" height="' + H + '" role="img" aria-label="' + (o.ariaLabel || L("柱形圖", "Bar chart")) + '">';
 
     for (var t = 0; t <= top + 1e-9; t += step) {
       svg += '<line class="grid" x1="' + padL + '" x2="' + (W - padR) + '" y1="' + y(t) + '" y2="' + y(t) + '"/>' +

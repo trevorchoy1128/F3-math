@@ -1,6 +1,7 @@
 // 主頁：課題列表、搜尋、範疇篩選、最近瀏覽
 (function () {
   renderTopbar("");
+  document.title = L(SITE.title, SITE.titleEn);
 
   var state = { strand: "all", q: "" };
   var chipsEl = document.getElementById("chips");
@@ -15,10 +16,10 @@
   }
 
   // 範疇篩選按鈕
-  var chips = [{ id: "all", name: "全部" }].concat(STRANDS);
+  var chips = [{ id: "all", name: "全部", en: "All" }].concat(STRANDS);
   chipsEl.innerHTML = chips.map(function (s) {
     var dot = s.id === "all" ? "" : '<span class="dot"></span>';
-    return '<button type="button" class="chip" data-strand="' + s.id + '" aria-pressed="' + (s.id === "all") + '">' + dot + esc(s.name) + "</button>";
+    return '<button type="button" class="chip" data-strand="' + s.id + '" aria-pressed="' + (s.id === "all") + '">' + dot + esc(strandName(s)) + "</button>";
   }).join("");
   chipsEl.addEventListener("click", function (e) {
     var b = e.target.closest(".chip");
@@ -32,20 +33,22 @@
 
   qEl.addEventListener("input", function () { state.q = qEl.value.trim().toLowerCase(); render(); });
 
+  // 搜尋同時比對中英文
   function matches(t) {
     if (state.strand !== "all" && t.strand !== state.strand) return false;
     if (!state.q) return true;
-    var hay = [t.zh, t.en, t.desc].concat(t.keywords || []).join(" ").toLowerCase();
+    var hay = [t.zh, t.en, t.desc, t.descEn].concat(t.keywords || []).join(" ").toLowerCase();
     return state.q.split(/\s+/).every(function (w) { return hay.indexOf(w) !== -1; });
   }
 
   function card(t, n) {
     return '<a class="card" data-strand="' + t.strand + '" href="' + topicUrl("", t.id) + '">' +
-      '<span class="num">課題 ' + n + "</span>" +
-      "<h3>" + esc(t.zh) + "</h3>" +
-      '<span class="en">' + esc(t.en) + "</span>" +
-      '<span class="desc">' + esc(t.desc) + "</span>" +
-      '<span class="foot"><span class="badge ' + t.status + '">' + STATUS_LABEL[t.status] + '</span><span class="go">進入 →</span></span>' +
+      '<span class="num">' + L("課題 ", "Topic ") + n + "</span>" +
+      "<h3>" + esc(topicName(t)) + "</h3>" +
+      '<span class="en">' + esc(L(t.en, t.zh)) + "</span>" +
+      '<span class="desc">' + esc(L(t.desc, t.descEn)) + "</span>" +
+      '<span class="foot"><span class="badge ' + t.status + '">' + L(STATUS_LABEL[t.status], STATUS_LABEL_EN[t.status]) + "</span>" +
+      '<span class="go">' + L("進入 →", "Open →") + "</span></span>" +
       "</a>";
   }
 
@@ -57,7 +60,8 @@
       total += items.length;
       if (!items.length) return "";
       return '<section class="strand-block" data-strand="' + s.id + '">' +
-        '<div class="strand-head"><h2>' + esc(s.name) + "</h2><span>" + esc(s.en) + " · " + items.length + " 個課題</span></div>" +
+        '<div class="strand-head"><h2>' + esc(strandName(s)) + "</h2><span>" + esc(L(s.en, s.name)) + " · " +
+        items.length + L(" 個課題", items.length > 1 ? " topics" : " topic") + "</span></div>" +
         '<div class="grid">' + items.join("") + "</div></section>";
     }).join("");
     emptyEl.classList.toggle("show", total === 0);
@@ -69,8 +73,8 @@
   }).filter(Boolean);
   if (recent.length) {
     var r = document.getElementById("recent");
-    r.innerHTML = "<span>最近瀏覽：</span>" + recent.map(function (t) {
-      return '<a href="' + topicUrl("", t.id) + '">' + esc(t.zh) + "</a>";
+    r.innerHTML = "<span>" + L("最近瀏覽：", "Recently viewed:") + "</span>" + recent.map(function (t) {
+      return '<a href="' + topicUrl("", t.id) + '">' + esc(topicName(t)) + "</a>";
     }).join("");
     r.classList.add("show");
   }

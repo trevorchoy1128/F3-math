@@ -21,45 +21,67 @@
     <div id="topic-head"></div>
 
     <div class="topic-layout">
-      <nav class="toc" id="toc" aria-label="本頁目錄"></nav>
+      <nav class="toc" id="toc" aria-label="本頁目錄" data-en-aria-label="Contents"></nav>
 
       <div>
         <section class="section" id="goals">
-          <h2>學習目標</h2>
-          <ul>
+          <h2><span data-l="zh">學習目標</span><span data-l="en">Learning objectives</span></h2>
+          <ul data-l="zh">
             <li>理解 10 的正整數及負整數次方的意義。</li>
             <li>認識科學記數法 a × 10<sup>n</sup> 的條件：1 ≤ a &lt; 10，n 是整數。</li>
             <li>把很大的數寫成科學記數法（n 為正整數）。</li>
             <li>把很小的數寫成科學記數法（n 為負整數）。</li>
           </ul>
+          <ul data-l="en">
+            <li>Understand the meaning of positive and negative integral powers of 10.</li>
+            <li>Know the conditions for scientific notation a × 10<sup>n</sup>: 1 ≤ a &lt; 10 and n is an integer.</li>
+            <li>Write very large numbers in scientific notation (n is a positive integer).</li>
+            <li>Write very small numbers in scientific notation (n is a negative integer).</li>
+          </ul>
         </section>
 
         <section class="section" id="concept">
-          <h2>概念講解</h2>
+          <h2><span data-l="zh">概念講解</span><span data-l="en">Key concepts</span></h2>
 
-          <h3>1. 為甚麼需要科學記數法？</h3>
-          <p>很大或很小的數有很多個 0，例如地球與太陽的距離約 150 000 000 km，病毒的直徑約 0.000 000 1 m。這些數難以閱讀，容易數錯 0 的數目，也難以比較大小。科學記數法可以把它們寫得簡潔。</p>
+          <h3><span data-l="zh">1. 為甚麼需要科學記數法？</span><span data-l="en">1. Why do we need scientific notation?</span></h3>
+          <p data-l="zh">很大或很小的數有很多個 0，例如地球與太陽的距離約 150 000 000 km，病毒的直徑約 0.000 000 1 m。這些數難以閱讀，容易數錯 0 的數目，也難以比較大小。科學記數法可以把它們寫得簡潔。</p>
+          <p data-l="en">Very large or very small numbers contain many zeros. For example, the distance between the Earth and the Sun is about 150 000 000 km, and the diameter of a virus is about 0.000 000 1 m. Such numbers are hard to read, it is easy to miscount the zeros, and they are hard to compare. Scientific notation lets us write them concisely.</p>
 
-          <h3>2. 定義</h3>
-          <div class="formula">a × 10<sup>n</sup>，其中 1 ≤ a &lt; 10，n 是整數</div>
-          <ul>
+          <h3><span data-l="zh">2. 定義</span><span data-l="en">2. Definition</span></h3>
+          <div class="formula" data-l="zh">a × 10<sup>n</sup>，其中 1 ≤ a &lt; 10，n 是整數</div>
+          <div class="formula" data-l="en">a × 10<sup>n</sup>, where 1 ≤ a &lt; 10 and n is an integer</div>
+          <ul data-l="zh">
             <li><strong>a</strong>：只有一個非零數字在小數點前。</li>
             <li><strong>n</strong>：很大的數，n 是正整數；很小的數（小於 1），n 是負整數。</li>
           </ul>
+          <ul data-l="en">
+            <li><strong>a</strong>: has exactly one non-zero digit before the decimal point.</li>
+            <li><strong>n</strong>: for a very large number, n is a positive integer; for a very small number (less than 1), n is a negative integer.</li>
+          </ul>
 
-          <h3>3. 步驟</h3>
-          <ol>
+          <h3><span data-l="zh">3. 步驟</span><span data-l="en">3. Steps</span></h3>
+          <ol data-l="zh">
             <li>把小數點移到第一個非零數字的後面，得出 a。</li>
             <li>數一數小數點移了多少位。</li>
             <li>小數點<strong>向左</strong>移 k 位，n = k；小數點<strong>向右</strong>移 k 位，n = −k。</li>
           </ol>
-          <p>例如：45 000 000 = 4.5 × 10<sup>7</sup>（小數點向左移 7 位）；0.000 32 = 3.2 × 10<sup>−4</sup>（小數點向右移 4 位）。</p>
+          <ol data-l="en">
+            <li>Move the decimal point to just after the first non-zero digit to get a.</li>
+            <li>Count how many places the decimal point has moved.</li>
+            <li>If the decimal point moves k places <strong>to the left</strong>, n = k; if it moves k places <strong>to the right</strong>, n = −k.</li>
+          </ol>
+          <p data-l="zh">例如：45 000 000 = 4.5 × 10<sup>7</sup>（小數點向左移 7 位）；0.000 32 = 3.2 × 10<sup>−4</sup>（小數點向右移 4 位）。</p>
+          <p data-l="en">For example: 45 000 000 = 4.5 × 10<sup>7</sup> (decimal point moves 7 places to the left); 0.000 32 = 3.2 × 10<sup>−4</sup> (decimal point moves 4 places to the right).</p>
 
-          <div class="callout">
+          <div class="callout" data-l="zh">
             <strong>記憶方法</strong>
             數值不變：a 變小了多少倍，10<sup>n</sup> 就要變大多少倍，反之亦然。小數點向左移（a 變小）→ n 增加；向右移（a 變大）→ n 減少。
           </div>
-          <div class="callout warn">
+          <div class="callout" data-l="en">
+            <strong>Memory aid</strong>
+            The value stays the same: however many times smaller a becomes, 10<sup>n</sup> must become that many times larger, and vice versa. Decimal point moves left (a gets smaller) → n increases; moves right (a gets larger) → n decreases.
+          </div>
+          <div class="callout warn" data-l="zh">
             <strong>常見錯誤</strong>
             <ul>
               <li>a 不在 1 與 10 之間，例如寫成 45 × 10<sup>6</sup> 或 0.45 × 10<sup>8</sup>。</li>
@@ -69,28 +91,48 @@
               <li>數位數時數錯，特別是把小數點前的 0 也數進去。</li>
             </ul>
           </div>
+          <div class="callout warn" data-l="en">
+            <strong>Common mistakes</strong>
+            <ul>
+              <li>a is not between 1 and 10, e.g. writing 45 × 10<sup>6</sup> or 0.45 × 10<sup>8</sup>.</li>
+              <li>Writing a as 10, e.g. 10 × 10<sup>4</sup> (should be 1 × 10<sup>5</sup>).</li>
+              <li>Forgetting the negative sign for a very small number, e.g. writing 0.000 32 as 3.2 × 10<sup>4</sup>.</li>
+              <li>Thinking 10<sup>−4</sup> is a negative number. In fact 10<sup>−4</sup> = 0.000 1, which is a very small positive number.</li>
+              <li>Miscounting the number of places, especially counting the 0 before the decimal point as well.</li>
+            </ul>
+          </div>
         </section>
 
         <section class="section" id="teaching">
-          <h2>教學建議</h2>
-          <h3>課堂頁面各工具的用法</h3>
-          <ul>
+          <h2><span data-l="zh">教學建議</span><span data-l="en">Teaching suggestions</span></h2>
+          <h3><span data-l="zh">課堂頁面各工具的用法</span><span data-l="en">Using the tools on the class page</span></h3>
+          <ul data-l="zh">
             <li><strong>① 10 的乘冪</strong>：由 10<sup>3</sup> 開始，逐步減到 10<sup>0</sup>、10<sup>−1</sup>、10<sup>−2</sup>，請學生預測下一個結果。每減 1，數值就除以 10，讓學生自然接受負指數代表很小的數。</li>
             <li><strong>② 移動小數點</strong>：本課核心。先請學生預測要向哪邊移、移幾多位，再按鍵驗證。提示會說明 a 太大或太小；移動時留意 a 與 10<sup>n</sup> 一起變化，但等式左右兩邊始終相等。可用預設的數，或輸入學生提出的數。</li>
             <li><strong>③ 是不是科學記數法？</strong>：適合全班討論。先讓學生舉手投票，再按鍵揭曉理由。重點是 1 ≤ a &lt; 10 及底數必須是 10。</li>
             <li><strong>④ 大與小的世界</strong>：先顯示一般寫法，問學生「哪個較大？相差多少倍？」，再轉為科學記數法，讓學生感受只看指數就能比較大小。</li>
           </ul>
-          <h3>留意</h3>
-          <ul>
+          <ul data-l="en">
+            <li><strong>① Powers of 10</strong>: Start from 10<sup>3</sup> and step down to 10<sup>0</sup>, 10<sup>−1</sup>, 10<sup>−2</sup>, asking students to predict the next result. Each time the index decreases by 1, the value is divided by 10, so students naturally accept that a negative index represents a very small number.</li>
+            <li><strong>② Moving the decimal point</strong>: The core of this lesson. First ask students to predict which way and how many places to move, then press the buttons to check. Hints explain whether a is too large or too small; as you move, note that a and 10<sup>n</sup> change together, but the two sides of the equation always remain equal. Use the preset numbers, or enter numbers suggested by students.</li>
+            <li><strong>③ Is it scientific notation?</strong>: Good for whole-class discussion. Let students vote by raising hands first, then press the button to reveal the reason. The key points are 1 ≤ a &lt; 10 and that the base must be 10.</li>
+            <li><strong>④ A world of big and small</strong>: First show the ordinary form and ask students, “Which is larger? How many times larger?” Then convert to scientific notation so students see that they can compare sizes just by looking at the indices.</li>
+          </ul>
+          <h3><span data-l="zh">留意</span><span data-l="en">Notes</span></h3>
+          <ul data-l="zh">
             <li>如學生未學負整數指數，可先在 ① 由 10<sup>3</sup> 逐步向下拉，建立「每減 1 就除以 10」的規律。</li>
             <li>④ 的數據都是近似值，方便學生計算。</li>
+          </ul>
+          <ul data-l="en">
+            <li>If students have not yet learnt negative integral indices, first use ① to step down gradually from 10<sup>3</sup> to establish the pattern “each time the index decreases by 1, divide by 10”.</li>
+            <li>The data in ④ are all approximate values, to make calculation easier for students.</li>
           </ul>
         </section>
       </div>
     </div>
   </main>
 
-  <footer><div class="wrap">中三數學學習站 · 教師筆記</div></footer>
+  <footer><div class="wrap"><span data-l="zh">中三數學學習站 · 教師筆記</span><span data-l="en">S3 Maths Hub · Teacher notes</span></div></footer>
 
   <script src="../assets/topic.js"></script>
 </body>

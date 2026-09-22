@@ -63,12 +63,30 @@
     summary { cursor: pointer; color: var(--c); font-size: 15px; }
     td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 
-    /* ③ 分期複利 */
-    .timeline { position: relative; height: 54px; margin: 14px 8px 4px; }
-    .timeline .line { position: absolute; left: 0; right: 0; top: 18px; height: 2px; background: var(--border); }
-    .timeline .tick { position: absolute; top: 12px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: var(--c); border: 2px solid var(--surface); }
-    .timeline .end { position: absolute; top: 32px; font-size: 12px; color: var(--muted); transform: translateX(-50%); white-space: nowrap; }
-    .compare tr.on td { background: var(--c-soft); font-weight: 700; }
+    /* ③ 分期複利：四種方式的總利息（按本金計＋利息的利息），可點選 */
+    h3.sub { font-size: 16px; margin: 18px 0 6px; }
+    .freq-bars { display: flex; flex-direction: column; gap: 6px; margin: 10px 0 4px; }
+    .fbar {
+      font: inherit; color: var(--text); text-align: left; cursor: pointer; width: 100%;
+      display: grid; grid-template-columns: 76px 1fr auto; align-items: center; gap: 10px;
+      border: 1px solid transparent; border-radius: 10px; background: none; padding: 6px 8px;
+    }
+    .fbar:hover { background: var(--surface-2); }
+    .fbar[aria-pressed="true"] { border-color: var(--c); background: var(--c-soft); }
+    .fbar .name { font-size: 14px; font-weight: 600; }
+    .fbar .track { display: flex; height: 22px; }
+    .fbar .seg1 { background: var(--s1); border-radius: 4px 0 0 4px; }
+    .fbar .seg2 { background: var(--s2); border-radius: 0 4px 4px 0; margin-left: 2px; min-width: 2px; }
+    .fbar .amt { font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .fbar .amt small { color: var(--muted); }
+    .period-table { max-height: 360px; overflow-y: auto; }
+    .period-table th { position: sticky; top: 0; }
+    .ioi { color: var(--dh); }
+    .period-table tr.year-end td { border-bottom: 2px solid var(--muted); }
+    @media (max-width: 480px) {
+      .fbar { grid-template-columns: 1fr auto; }
+      .fbar .track { grid-column: 1 / -1; grid-row: 2; }
+    }
 
     @media (max-width: 480px) {
       .tiles { grid-template-columns: 1fr; }
@@ -83,33 +101,33 @@
     <div id="topic-head"></div>
 
     <div class="topic-layout">
-      <nav class="toc" id="toc" aria-label="本課目錄"></nav>
+      <nav class="toc" id="toc" aria-label="本課目錄" data-en-aria-label="Contents"></nav>
 
       <div>
         <section class="section" id="successive">
-          <h2>① 連續百分變化</h2>
-          <p class="hint">先增加 20%，再減少 20%，會回到原來的數值嗎？設定每一次變化，看看結果。</p>
+          <h2><span data-l="zh">① 連續百分變化</span><span data-l="en">① Successive percentage changes</span></h2>
+          <p class="hint"><span data-l="zh">先增加 20%，再減少 20%，會回到原來的數值嗎？設定每一次變化，看看結果。</span><span data-l="en">Increase by 20%, then decrease by 20% — do we get back to the original value? Set up each change and see the result.</span></p>
           <div class="presets" id="succ-presets"></div>
           <div class="row">
-            <label for="succ-start">原值</label>
+            <label for="succ-start"><span data-l="zh">原值</span><span data-l="en">Original value</span></label>
             <input id="succ-start" class="field sm" type="number" min="1" value="100">
           </div>
           <div class="steps" id="succ-steps"></div>
           <div class="row">
-            <button type="button" class="btn" id="succ-add">＋ 加一次變化</button>
-            <button type="button" class="btn" id="succ-swap">交換次序</button>
-            <label class="predict-toggle"><input type="checkbox" id="succ-predict"> 先預測，後揭曉</label>
+            <button type="button" class="btn" id="succ-add"><span data-l="zh">＋ 加一次變化</span><span data-l="en">+ Add a change</span></button>
+            <button type="button" class="btn" id="succ-swap"><span data-l="zh">交換次序</span><span data-l="en">Swap order</span></button>
+            <label class="predict-toggle"><input type="checkbox" id="succ-predict"> <span data-l="zh">先預測，後揭曉</span><span data-l="en">Predict first, then reveal</span></label>
           </div>
           <div class="predict-box" id="succ-guess" hidden>
-            <label for="succ-guess-in">估計最後的數值：</label>
+            <label for="succ-guess-in"><span data-l="zh">估計最後的數值：</span><span data-l="en">Estimate the final value:</span></label>
             <input id="succ-guess-in" class="field sm" type="number" inputmode="decimal">
-            <button type="button" class="btn primary" id="succ-reveal">揭曉</button>
+            <button type="button" class="btn primary" id="succ-reveal"><span data-l="zh">揭曉</span><span data-l="en">Reveal</span></button>
           </div>
           <div id="succ-out">
             <div class="legend">
-              <span><i style="background:var(--s1)"></i>上一次的數值（當作 100%）</span>
-              <span><i style="background:var(--s2)"></i>增加的部分</span>
-              <span><i class="removed-key"></i>減少的部分</span>
+              <span><i style="background:var(--s1)"></i><span data-l="zh">上一次的數值（當作 100%）</span><span data-l="en">Value after the previous change (taken as 100%)</span></span>
+              <span><i style="background:var(--s2)"></i><span data-l="zh">增加的部分</span><span data-l="en">Increase</span></span>
+              <span><i class="removed-key"></i><span data-l="zh">減少的部分</span><span data-l="en">Decrease</span></span>
             </div>
             <div class="pbars" id="succ-bars"></div>
             <div class="calc" id="succ-calc"></div>
@@ -118,76 +136,78 @@
         </section>
 
         <section class="section" id="interest">
-          <h2>② 單利息 vs 複利息</h2>
-          <p class="hint">同樣的本金和利率，單利息每年只按本金計利息；複利息則按上一年的本利和計利息。</p>
+          <h2><span data-l="zh">② 單利息 vs 複利息</span><span data-l="en">② Simple vs compound interest</span></h2>
+          <p class="hint"><span data-l="zh">同樣的本金和利率，單利息每年只按本金計利息；複利息則按上一年的本利和計利息。</span><span data-l="en">With the same principal and interest rate, simple interest is calculated on the principal every year; compound interest is calculated on the amount at the end of the previous year.</span></p>
           <div class="form">
-            <div><label for="int-p">本金 P（$）</label><input id="int-p" class="field sm" type="number" min="100" step="100" value="10000"></div>
-            <div><label for="int-r">年利率 r = <output id="int-r-out"></output>%</label><input id="int-r" type="range" min="1" max="20" value="8"></div>
-            <div><label for="int-n">年期 n = <output id="int-n-out"></output> 年</label><input id="int-n" type="range" min="1" max="20" value="10"></div>
+            <div><label for="int-p"><span data-l="zh">本金 P（$）</span><span data-l="en">Principal P ($)</span></label><input id="int-p" class="field sm" type="number" min="100" step="100" value="10000"></div>
+            <div><label for="int-r"><span data-l="zh">年利率</span><span data-l="en">Interest rate p.a.</span> r = <output id="int-r-out"></output>%</label><input id="int-r" type="range" min="1" max="20" value="8"></div>
+            <div><label for="int-n"><span data-l="zh">年期</span><span data-l="en">Number of years</span> n = <output id="int-n-out"></output></label><input id="int-n" type="range" min="1" max="20" value="10"></div>
           </div>
           <div class="row">
-            <label class="predict-toggle"><input type="checkbox" id="int-predict"> 先預測，後揭曉</label>
+            <label class="predict-toggle"><input type="checkbox" id="int-predict"> <span data-l="zh">先預測，後揭曉</span><span data-l="en">Predict first, then reveal</span></label>
           </div>
           <div class="predict-box" id="int-guess" hidden>
-            <label for="int-guess-in">估計 <span id="int-guess-n"></span> 年後複利息的本利和（$）：</label>
+            <label for="int-guess-in" id="int-guess-label"></label>
             <input id="int-guess-in" class="field sm" type="number" inputmode="decimal">
-            <button type="button" class="btn primary" id="int-reveal">揭曉</button>
+            <button type="button" class="btn primary" id="int-reveal"><span data-l="zh">揭曉</span><span data-l="en">Reveal</span></button>
           </div>
           <div id="int-out">
-          <div class="legend"><span><i style="background:var(--s1)"></i>單利息本利和</span><span><i style="background:var(--s2)"></i>複利息本利和</span></div>
+          <div class="legend"><span><i style="background:var(--s1)"></i><span data-l="zh">單利息本利和</span><span data-l="en">Amount (simple interest)</span></span><span><i style="background:var(--s2)"></i><span data-l="zh">複利息本利和</span><span data-l="en">Amount (compound interest)</span></span></div>
           <div class="chart" id="int-chart"></div>
           <div class="tiles" id="int-tiles"></div>
           <div class="year-nav">
-            <button type="button" class="btn" id="int-prev" aria-label="上一年">◀</button>
+            <button type="button" class="btn" id="int-prev" aria-label="上一年" data-en-aria-label="Previous year">◀</button>
             <strong id="int-year"></strong>
-            <button type="button" class="btn" id="int-next" aria-label="下一年">▶</button>
-            <span class="hint">（也可以按圖中的柱）</span>
+            <button type="button" class="btn" id="int-next" aria-label="下一年" data-en-aria-label="Next year">▶</button>
+            <span class="hint"><span data-l="zh">（也可以按圖中的柱）</span><span data-l="en">(or click a bar in the chart)</span></span>
           </div>
           <div class="explain" id="int-explain"></div>
           <details>
-            <summary>顯示每年數據表</summary>
+            <summary><span data-l="zh">顯示每年數據表</span><span data-l="en">Show the table for each year</span></summary>
             <div class="table-wrap"><table class="t" id="int-table"></table></div>
           </details>
           </div>
         </section>
 
         <section class="section" id="periods">
-          <h2>③ 分期複利</h2>
-          <p class="hint">年利率相同，但每年計息的次數不同：每年、每半年、每季或每月。計息次數越多，本利和會怎樣？</p>
+          <h2><span data-l="zh">③ 分期複利</span><span data-l="en">③ Compounding periods</span></h2>
+          <p class="hint"><span data-l="zh">年利率相同，但每年計息的次數不同。計息次數越多，利息會怎樣？多出來的利息從哪裏來？</span><span data-l="en">Same interest rate per annum, but interest is compounded a different number of times a year. What happens to the interest? Where does the extra interest come from?</span></p>
           <div class="form">
-            <div><label for="per-p">本金 P（$）</label><input id="per-p" class="field sm" type="number" min="100" step="100" value="10000"></div>
-            <div><label for="per-r">年利率 r = <output id="per-r-out"></output>%</label><input id="per-r" type="range" min="1" max="20" value="8"></div>
-            <div><label for="per-n">年期 n = <output id="per-n-out"></output> 年</label><input id="per-n" type="range" min="1" max="10" value="3"></div>
+            <div><label for="per-p"><span data-l="zh">本金 P（$）</span><span data-l="en">Principal P ($)</span></label><input id="per-p" class="field sm" type="number" min="100" step="100" value="10000"></div>
+            <div><label for="per-r"><span data-l="zh">年利率</span><span data-l="en">Interest rate p.a.</span> r = <output id="per-r-out"></output>%</label><input id="per-r" type="range" min="1" max="20" value="8"></div>
+            <div><label for="per-n"><span data-l="zh">年期</span><span data-l="en">Number of years</span> n = <output id="per-n-out"></output></label><input id="per-n" type="range" min="1" max="10" value="3"></div>
           </div>
-          <div class="seg" id="per-freq" role="group" aria-label="計息方式">
-            <button type="button" data-k="1" aria-pressed="true">每年</button>
-            <button type="button" data-k="2" aria-pressed="false">每半年</button>
-            <button type="button" data-k="4" aria-pressed="false">每季</button>
-            <button type="button" data-k="12" aria-pressed="false">每月</button>
+
+          <h3 class="sub"><span data-l="zh">四種計息方式的總利息</span><span data-l="en">Total interest for the four ways of compounding</span></h3>
+          <div class="legend">
+            <span><i style="background:var(--s1)"></i><span data-l="zh">按本金計的利息（四種都一樣）</span><span data-l="en">Interest on the principal (same for all four)</span></span>
+            <span><i style="background:var(--s2)"></i><span data-l="zh">利息的利息</span><span data-l="en">Interest on interest</span></span>
           </div>
-          <div class="timeline" id="per-timeline" aria-hidden="true"></div>
+          <div class="freq-bars" id="per-bars" role="group" aria-label="選擇計息方式" data-en-aria-label="Choose how often interest is compounded"></div>
+
+          <h3 class="sub" id="per-sub"></h3>
           <div class="calc" id="per-calc"></div>
-          <div class="table-wrap"><table class="t compare" id="per-table"></table></div>
+          <div class="table-wrap period-table"><table class="t" id="per-table"></table></div>
         </section>
 
         <section class="section" id="growth">
-          <h2>④ 增長與折舊</h2>
-          <p class="hint">每期都按上一期的數值增加（增長）或減少（折舊）相同的百分率。選一個情境，或自行設定。</p>
+          <h2><span data-l="zh">④ 增長與折舊</span><span data-l="en">④ Growth and depreciation</span></h2>
+          <p class="hint"><span data-l="zh">每期都按上一期的數值增加（增長）或減少（折舊）相同的百分率。選一個情境，或自行設定。</span><span data-l="en">In each period the value increases (growth) or decreases (depreciation) by the same percentage of the previous period's value. Choose a scenario or set your own.</span></p>
           <div class="presets" id="gr-presets"></div>
           <div class="form">
-            <div><label for="gr-start">初始值</label><input id="gr-start" class="field sm" type="number" min="1" value="300000"></div>
+            <div><label for="gr-start"><span data-l="zh">初始值</span><span data-l="en">Initial value</span></label><input id="gr-start" class="field sm" type="number" min="1" value="300000"></div>
             <div>
-              <label>類型</label>
-              <div class="seg" id="gr-type" role="group" aria-label="增長或折舊">
-                <button type="button" data-t="1" aria-pressed="false">增長</button>
-                <button type="button" data-t="-1" aria-pressed="true">折舊</button>
+              <label><span data-l="zh">類型</span><span data-l="en">Type</span></label>
+              <div class="seg" id="gr-type" role="group" aria-label="增長或折舊" data-en-aria-label="Growth or depreciation">
+                <button type="button" data-t="1" aria-pressed="false"><span data-l="zh">增長</span><span data-l="en">Growth</span></button>
+                <button type="button" data-t="-1" aria-pressed="true"><span data-l="zh">折舊</span><span data-l="en">Depreciation</span></button>
               </div>
             </div>
-            <div><label for="gr-r">每期百分率 = <output id="gr-r-out"></output>%</label><input id="gr-r" type="range" min="1" max="50" value="15"></div>
-            <div><label for="gr-n">期數 = <output id="gr-n-out"></output></label><input id="gr-n" type="range" min="1" max="20" value="10"></div>
+            <div><label for="gr-r"><span data-l="zh">每期百分率</span><span data-l="en">Rate per period</span> = <output id="gr-r-out"></output>%</label><input id="gr-r" type="range" min="1" max="50" value="15"></div>
+            <div><label for="gr-n"><span data-l="zh">期數</span><span data-l="en">Number of periods</span> = <output id="gr-n-out"></output></label><input id="gr-n" type="range" min="1" max="20" value="10"></div>
           </div>
           <div class="row">
-            <label class="predict-toggle"><input type="checkbox" id="gr-compare"> 比較錯誤做法：每期都按「原值」計算</label>
+            <label class="predict-toggle"><input type="checkbox" id="gr-compare"> <span data-l="zh">比較錯誤做法：每期都按「原值」計算</span><span data-l="en">Compare with the wrong method: calculating on the original value every period</span></label>
           </div>
           <div class="legend" id="gr-legend" hidden></div>
           <div class="chart" id="gr-chart"></div>
@@ -201,7 +221,7 @@
     </div>
   </main>
 
-  <footer><div class="wrap">中三數學學習站 · <a href="../notes/percentages.html">教師筆記</a></div></footer>
+  <footer><div class="wrap"><span data-l="zh">中三數學學習站</span><span data-l="en">S3 Maths Hub</span> · <a href="../notes/percentages.html"><span data-l="zh">教師筆記</span><span data-l="en">Teacher notes</span></a></div></footer>
 
   <script src="../assets/topic.js"></script>
   <script src="../assets/chart.js"></script>

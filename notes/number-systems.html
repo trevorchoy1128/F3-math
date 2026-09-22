@@ -29,60 +29,89 @@
     <div id="topic-head"></div>
 
     <div class="topic-layout">
-      <nav class="toc" id="toc" aria-label="本頁目錄"></nav>
+      <nav class="toc" id="toc" aria-label="本頁目錄" data-en-aria-label="Contents"></nav>
 
       <div>
         <section class="section" id="goals">
-          <h2>學習目標</h2>
-          <ul>
+          <h2><span data-l="zh">學習目標</span><span data-l="en">Learning objectives</span></h2>
+          <ul data-l="zh">
             <li>理解<strong>位值</strong>的意義：同一個數字放在不同位置，代表不同的值。</li>
             <li>認識十進制（逢十進一）及二進制（逢二進一）的位值。</li>
             <li>把十進制數及二進制數寫成<strong>展開式</strong>。</li>
             <li>把二進制數轉換為十進制數。</li>
           </ul>
+          <ul data-l="en">
+            <li>Understand the meaning of <strong>place value</strong>: the same digit in different positions represents different values.</li>
+            <li>Recognise the place values of the decimal system (carry over at ten) and the binary system (carry over at two).</li>
+            <li>Write decimal and binary numbers in <strong>expanded form</strong>.</li>
+            <li>Convert binary numbers into decimal numbers.</li>
+          </ul>
         </section>
 
         <section class="section" id="concept">
-          <h2>概念講解</h2>
+          <h2><span data-l="zh">概念講解</span><span data-l="en">Key concepts</span></h2>
 
-          <h3>1. 甚麼是位值？</h3>
-          <p>請看 <strong>555</strong> 這個數。三個數字都是 5，但它們代表的值並不相同：</p>
+          <h3><span data-l="zh">1. 甚麼是位值？</span><span data-l="en">1. What is place value?</span></h3>
+          <p data-l="zh">請看 <strong>555</strong> 這個數。三個數字都是 5，但它們代表的值並不相同：</p>
+          <p data-l="en">Look at the number <strong>555</strong>. All three digits are 5, but they do not represent the same value:</p>
           <div class="digits-demo">
-            <div class="dd"><b>5</b><small>百位 → 500</small></div>
-            <div class="dd"><b>5</b><small>十位 → 50</small></div>
-            <div class="dd"><b>5</b><small>個位 → 5</small></div>
+            <div class="dd"><b>5</b><small><span data-l="zh">百位 → 500</span><span data-l="en">hundreds → 500</span></small></div>
+            <div class="dd"><b>5</b><small><span data-l="zh">十位 → 50</span><span data-l="en">tens → 50</span></small></div>
+            <div class="dd"><b>5</b><small><span data-l="zh">個位 → 5</span><span data-l="en">ones → 5</span></small></div>
           </div>
-          <p>一個數字代表的值，取決於它所在的<strong>位置</strong>。每個位置的「份量」，稱為<strong>位值</strong>（place value）。</p>
+          <p data-l="zh">一個數字代表的值，取決於它所在的<strong>位置</strong>。每個位置的「份量」，稱為<strong>位值</strong>（place value）。</p>
+          <p data-l="en">The value a digit represents depends on its <strong>position</strong>. The "weight" of each position is called its <strong>place value</strong>.</p>
 
-          <h3>2. 位值有甚麼作用？</h3>
-          <ul>
+          <h3><span data-l="zh">2. 位值有甚麼作用？</span><span data-l="en">2. Why is place value useful?</span></h3>
+          <ul data-l="zh">
             <li><strong>用少量數字寫出任何數</strong>：十進制只有 0 至 9 十個數字，但靠位值，就能寫出無論多大的數。</li>
             <li><strong>「0」可以佔位</strong>：35 和 305 的分別，在於中間的 0 把 3 推到了百位。</li>
             <li><strong>計算的基礎</strong>：直式加減中的「進位」和「借位」，都是建基於位值。</li>
           </ul>
+          <ul data-l="en">
+            <li><strong>Write any number with only a few digits</strong>: the decimal system has only the ten digits 0 to 9, but with place value we can write a number of any size.</li>
+            <li><strong>"0" can act as a placeholder</strong>: the difference between 35 and 305 is that the 0 in the middle pushes the 3 into the hundreds place.</li>
+            <li><strong>The basis of calculation</strong>: "carrying" and "borrowing" in column addition and subtraction are both based on place value.</li>
+          </ul>
 
-          <h3>3. 十進制：逢十進一</h3>
-          <p>日常使用的是<strong>十進制</strong>（decimal）。它用 0 至 9 共十個數字；某個位數滿 10，便向左進一位。因此，<strong>每向左移一位，位值便乘以 10</strong>。</p>
-          <div class="table-wrap">
+          <h3><span data-l="zh">3. 十進制：逢十進一</span><span data-l="en">3. Decimal: carry over at ten</span></h3>
+          <p data-l="zh">日常使用的是<strong>十進制</strong>（decimal）。它用 0 至 9 共十個數字；某個位數滿 10，便向左進一位。因此，<strong>每向左移一位，位值便乘以 10</strong>。</p>
+          <p data-l="en">In daily life we use the <strong>decimal</strong> system. It uses the ten digits 0 to 9; when a place reaches 10, we carry 1 to the place on its left. Therefore, <strong>each time we move one place to the left, the place value is multiplied by 10</strong>.</p>
+          <div class="table-wrap" data-l="zh">
             <table class="t">
               <tr><th>位</th><td>萬位</td><td>千位</td><td>百位</td><td>十位</td><td>個位</td></tr>
               <tr><th>位值</th><td>10<sup>4</sup> = 10000</td><td>10<sup>3</sup> = 1000</td><td>10<sup>2</sup> = 100</td><td>10<sup>1</sup> = 10</td><td>10<sup>0</sup> = 1</td></tr>
             </table>
           </div>
-          <p>例如：3025 = 3 × 1000 + 0 × 100 + 2 × 10 + 5 × 1。這種寫法稱為<strong>展開式</strong>。</p>
+          <div class="table-wrap" data-l="en">
+            <table class="t">
+              <tr><th>Place</th><td>Ten thousands</td><td>Thousands</td><td>Hundreds</td><td>Tens</td><td>Ones</td></tr>
+              <tr><th>Place value</th><td>10<sup>4</sup> = 10000</td><td>10<sup>3</sup> = 1000</td><td>10<sup>2</sup> = 100</td><td>10<sup>1</sup> = 10</td><td>10<sup>0</sup> = 1</td></tr>
+            </table>
+          </div>
+          <p data-l="zh">例如：3025 = 3 × 1000 + 0 × 100 + 2 × 10 + 5 × 1。這種寫法稱為<strong>展開式</strong>。</p>
+          <p data-l="en">For example: 3025 = 3 × 1000 + 0 × 100 + 2 × 10 + 5 × 1. Writing a number this way is called its <strong>expanded form</strong>.</p>
 
-          <h3>4. 二進制：逢二進一</h3>
-          <p><strong>二進制</strong>（binary）只用 0 和 1 兩個數字；某個位數滿 2，便向左進一位。因此，<strong>每向左移一位，位值便乘以 2</strong>。</p>
-          <div class="table-wrap">
+          <h3><span data-l="zh">4. 二進制：逢二進一</span><span data-l="en">4. Binary: carry over at two</span></h3>
+          <p data-l="zh"><strong>二進制</strong>（binary）只用 0 和 1 兩個數字；某個位數滿 2，便向左進一位。因此，<strong>每向左移一位，位值便乘以 2</strong>。</p>
+          <p data-l="en">The <strong>binary</strong> system uses only the two digits 0 and 1; when a place reaches 2, we carry 1 to the place on its left. Therefore, <strong>each time we move one place to the left, the place value is multiplied by 2</strong>.</p>
+          <div class="table-wrap" data-l="zh">
             <table class="t">
               <tr><th>位值</th><td>2<sup>7</sup></td><td>2<sup>6</sup></td><td>2<sup>5</sup></td><td>2<sup>4</sup></td><td>2<sup>3</sup></td><td>2<sup>2</sup></td><td>2<sup>1</sup></td><td>2<sup>0</sup></td></tr>
               <tr><th>即</th><td>128</td><td>64</td><td>32</td><td>16</td><td>8</td><td>4</td><td>2</td><td>1</td></tr>
             </table>
           </div>
-          <p>電腦內部使用二進制，因為電路只有「通電」（1）和「斷電」（0）兩種狀態。</p>
+          <div class="table-wrap" data-l="en">
+            <table class="t">
+              <tr><th>Place value</th><td>2<sup>7</sup></td><td>2<sup>6</sup></td><td>2<sup>5</sup></td><td>2<sup>4</sup></td><td>2<sup>3</sup></td><td>2<sup>2</sup></td><td>2<sup>1</sup></td><td>2<sup>0</sup></td></tr>
+              <tr><th>i.e.</th><td>128</td><td>64</td><td>32</td><td>16</td><td>8</td><td>4</td><td>2</td><td>1</td></tr>
+            </table>
+          </div>
+          <p data-l="zh">電腦內部使用二進制，因為電路只有「通電」（1）和「斷電」（0）兩種狀態。</p>
+          <p data-l="en">Computers use binary internally because a circuit has only two states: "on" (1) and "off" (0).</p>
 
-          <h3>5. 十進制與二進制的比較</h3>
-          <div class="table-wrap">
+          <h3><span data-l="zh">5. 十進制與二進制的比較</span><span data-l="en">5. Comparing decimal and binary</span></h3>
+          <div class="table-wrap" data-l="zh">
             <table class="t">
               <tr><th></th><th>十進制</th><th>二進制</th></tr>
               <tr><th>使用的數字</th><td>0, 1, 2, …, 9</td><td>0, 1</td></tr>
@@ -91,26 +120,50 @@
               <tr><th>每向左移一位</th><td>位值 × 10</td><td>位值 × 2</td></tr>
             </table>
           </div>
+          <div class="table-wrap" data-l="en">
+            <table class="t">
+              <tr><th></th><th>Decimal</th><th>Binary</th></tr>
+              <tr><th>Digits used</th><td>0, 1, 2, …, 9</td><td>0, 1</td></tr>
+              <tr><th>Carrying rule</th><td>Carry over at ten</td><td>Carry over at two</td></tr>
+              <tr><th>Place values (right to left)</th><td>1, 10, 100, 1000, …</td><td>1, 2, 4, 8, 16, …</td></tr>
+              <tr><th>Each move one place to the left</th><td>Place value × 10</td><td>Place value × 2</td></tr>
+            </table>
+          </div>
 
-          <h3>6. 記法</h3>
-          <div class="callout">
+          <h3><span data-l="zh">6. 記法</span><span data-l="en">6. Notation</span></h3>
+          <div class="callout" data-l="zh">
             <strong>怎樣分辨是哪一種進制？</strong>
             二進制數會在右下方寫上細小的 2，例如 1011<sub>2</sub>，讀作「二進制數一零一一」。
             沒有標示的數（例如 1011）一般當作十進制數，即「一千零一十一」。
           </div>
+          <div class="callout" data-l="en">
+            <strong>How can we tell which number system is being used?</strong>
+            A binary number has a small 2 written at its lower right, e.g. 1011<sub>2</sub>, read as "binary one-zero-one-one".
+            A number without this mark (e.g. 1011) is normally taken as a decimal number, i.e. "one thousand and eleven".
+          </div>
 
-          <h3>7. 把二進制數轉換為十進制數</h3>
-          <ol>
+          <h3><span data-l="zh">7. 把二進制數轉換為十進制數</span><span data-l="en">7. Converting binary numbers into decimal numbers</span></h3>
+          <ol data-l="zh">
             <li>由<strong>右至左</strong>寫出每個數字的位值：1、2、4、8、16……</li>
             <li>把每個數字乘以它的位值（即寫成展開式）。</li>
             <li>把所有結果相加。</li>
           </ol>
-          <p>例如：1011<sub>2</sub> = 1 × 8 + 0 × 4 + 1 × 2 + 1 × 1 = 8 + 0 + 2 + 1 = <strong>11</strong></p>
-          <div class="callout">
+          <ol data-l="en">
+            <li>From <strong>right to left</strong>, write down the place value of each digit: 1, 2, 4, 8, 16, …</li>
+            <li>Multiply each digit by its place value (i.e. write the number in expanded form).</li>
+            <li>Add all the results together.</li>
+          </ol>
+          <p data-l="zh">例如：1011<sub>2</sub> = 1 × 8 + 0 × 4 + 1 × 2 + 1 × 1 = 8 + 0 + 2 + 1 = <strong>11</strong></p>
+          <p data-l="en">For example: 1011<sub>2</sub> = 1 × 8 + 0 × 4 + 1 × 2 + 1 × 1 = 8 + 0 + 2 + 1 = <strong>11</strong></p>
+          <div class="callout" data-l="zh">
             <strong>小技巧</strong>
             0 乘以任何位值都是 0，所以只需把「1」所在位置的位值加起來：1011<sub>2</sub> → 8 + 2 + 1 = 11。
           </div>
-          <div class="callout warn">
+          <div class="callout" data-l="en">
+            <strong>Tip</strong>
+            0 multiplied by any place value is 0, so we only need to add up the place values of the positions holding a "1": 1011<sub>2</sub> → 8 + 2 + 1 = 11.
+          </div>
+          <div class="callout warn" data-l="zh">
             <strong>常見錯誤</strong>
             <ul>
               <li>把 1011<sub>2</sub> 讀成「一千零一十一」。</li>
@@ -119,31 +172,53 @@
               <li>在二進制數中寫出 2 或以上的數字。二進制只有 0 和 1。</li>
             </ul>
           </div>
+          <div class="callout warn" data-l="en">
+            <strong>Common mistakes</strong>
+            <ul>
+              <li>Reading 1011<sub>2</sub> as "one thousand and eleven".</li>
+              <li>Counting place values from the left. Place values should start with 1 at the <strong>rightmost</strong> place.</li>
+              <li>Thinking that the rightmost place value is 2. In fact, the rightmost place value is 1.</li>
+              <li>Writing a digit of 2 or above in a binary number. Binary uses only 0 and 1.</li>
+            </ul>
+          </div>
         </section>
 
         <section class="section" id="teaching">
-          <h2>教學建議</h2>
+          <h2><span data-l="zh">教學建議</span><span data-l="en">Teaching suggestions</span></h2>
 
-          <h3>課堂頁面各工具的用法</h3>
-          <ul>
+          <h3><span data-l="zh">課堂頁面各工具的用法</span><span data-l="en">Using the tools on the class page</span></h3>
+          <ul data-l="zh">
             <li><strong>① 點數咭</strong>：先讓學生數每張咭的點數，發現「每張是右邊一張的 2 倍」。翻開一張咭時，強調「這個 1 代表 8 粒點」，而不只是「1 在第四位」。下方同時顯示數量、寫法、讀法，可請學生把三者對應起來。「挑戰」適合全班遊戲。</li>
             <li><strong>② 位值表</strong>：輸入二進制數，顯示每個數字乘以位值，再寫成展開式。可故意輸入「1021」，讓學生解釋為何二進制不能有 2。</li>
             <li><strong>③ 逢十進一 vs 逢二進一</strong>：在按「+1」之前，先請學生預測哪一步會進位、進位幾次（例如 7 → 8、15 → 16），再按鍵驗證。</li>
             <li><strong>④ 糖果包裝工廠</strong>（延伸）：用「每 2 個包成 1 個大包裝」說明逢二進一。包裝完成後，每種包裝最多只有 1 個，由左至右寫下就是二進制數。</li>
           </ul>
+          <ul data-l="en">
+            <li><strong>① Dot cards</strong>: First let students count the dots on each card and discover that "each card has twice as many dots as the card on its right". When turning a card over, stress that "this 1 stands for 8 dots", not just "the 1 is in the fourth place". The quantity, written form and spoken form are shown together below, so students can be asked to match the three. The "Challenge" works well as a whole-class game.</li>
+            <li><strong>② Place value table</strong>: Enter a binary number to show each digit multiplied by its place value, then written in expanded form. You may deliberately enter "1021" and ask students to explain why binary cannot contain a 2.</li>
+            <li><strong>③ Carry at ten vs carry at two</strong>: Before pressing "+1", ask students to predict which step will cause a carry and how many carries there will be (e.g. 7 → 8, 15 → 16), then press the button to check.</li>
+            <li><strong>④ Candy packing factory</strong> (extension): Use "pack every 2 into 1 bigger pack" to illustrate carrying over at two. When packing is finished, there is at most 1 of each type of pack; writing them down from left to right gives the binary number.</li>
+          </ul>
 
-          <h3>研究的啟示</h3>
-          <ul>
+          <h3><span data-l="zh">研究的啟示</span><span data-l="en">What the research says</span></h3>
+          <ul data-l="zh">
             <li><strong>位值的四個性質</strong>（Ross, 1989）：位置性、底數性、乘法性（數字 × 位值）、加法性（各部分相加）。展開式正好同時體現乘法性及加法性。</li>
             <li><strong>重視「數量值」</strong>（Thompson, 2003）：學生能說出「1 在 8 的位」，不代表明白它代表 8 件東西。可配合實物或點數卡（CS Unplugged 二進制卡）。</li>
             <li><strong>變易理論</strong>（Marton；盧敏玲）：固定一樣、改變另一樣，學生才會注意到關鍵特徵。例如數字不變（101），只改變進制；或數值不變，只改變寫法。</li>
             <li><strong>數量、寫法、讀法互相連繫</strong>（Fuson 等, 1997）：學生要把實際數量、書寫的數字及讀法三者連起來，理解才會穩固。</li>
             <li><strong>包裝情境</strong>（McClain, 2003）：以包裝糖果的情境（粒 → 袋 → 盒）解釋分組及進位，令「逢二進一」有具體意思。</li>
           </ul>
+          <ul data-l="en">
+            <li><strong>Four properties of place value</strong> (Ross, 1989): positional, base, multiplicative (digit × place value) and additive (the parts are added together). Expanded form shows both the multiplicative and the additive properties at the same time.</li>
+            <li><strong>Emphasise "quantity value"</strong> (Thompson, 2003): a student who can say "the 1 is in the 8s place" does not necessarily understand that it stands for 8 objects. Support this with concrete objects or dot cards (CS Unplugged binary cards).</li>
+            <li><strong>Variation theory</strong> (Marton; Lo Mun Ling): students notice critical features only when one thing is kept the same while another is changed. For example, keep the digits the same (101) and change only the number system; or keep the value the same and change only the way it is written.</li>
+            <li><strong>Linking quantity, written form and spoken form</strong> (Fuson et al., 1997): understanding becomes secure only when students connect the actual quantity, the written numeral and the way it is read.</li>
+            <li><strong>Packing context</strong> (McClain, 2003): a candy-packing context (pieces → bags → boxes) explains grouping and carrying, giving "carry over at two" a concrete meaning.</li>
+          </ul>
         </section>
 
         <section class="section" id="references">
-          <h2>參考資料</h2>
+          <h2><span data-l="zh">參考資料</span><span data-l="en">References</span></h2>
           <ul class="refs">
             <li>Ross, S. H. (1989). Parts, wholes, and place value: A developmental view. <em>Arithmetic Teacher, 36</em>(6).</li>
             <li>Thompson, I. (2003). Putting place value in its place. <em>Mathematics Teaching</em>.</li>
@@ -157,7 +232,7 @@
     </div>
   </main>
 
-  <footer><div class="wrap">中三數學學習站 · 教師筆記</div></footer>
+  <footer><div class="wrap"><span data-l="zh">中三數學學習站 · 教師筆記</span><span data-l="en">S3 Maths Hub · Teacher notes</span></div></footer>
 
   <script src="../assets/topic.js"></script>
 </body>

@@ -43,6 +43,8 @@
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
+/* 中英切換：只顯示目前語言的文字 */
+html[data-lang="en"] [data-l="zh"], html:not([data-lang="en"]) [data-l="en"] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
@@ -79,6 +81,7 @@ a { color: var(--accent); }
   cursor: pointer; font: inherit; font-size: 14px;
 }
 .icon-btn:hover { background: var(--surface-2); }
+.lang-btn { font-weight: 600; min-width: 52px; }
 
 /* ===== 主頁 Hero + 搜尋 ===== */
 .hero { padding: 40px 0 24px; }

@@ -22,29 +22,38 @@
     <div id="topic-head"></div>
 
     <div class="topic-layout">
-      <nav class="toc" id="toc" aria-label="本頁目錄"></nav>
+      <nav class="toc" id="toc" aria-label="本頁目錄" data-en-aria-label="Contents"></nav>
 
       <div>
         <section class="section" id="goals">
-          <h2>學習目標</h2>
-          <ul>
+          <h2><span data-l="zh">學習目標</span><span data-l="en">Learning objectives</span></h2>
+          <ul data-l="zh">
             <li>計算連續百分變化，並理解兩次相同百分率的增減不會互相抵消。</li>
             <li>分辨單利息與複利息，並計算本利和及利息。</li>
             <li>計算按每半年、每季或每月計算的複利息。</li>
             <li>應用百分法解決增長及折舊的問題。</li>
           </ul>
+          <ul data-l="en">
+            <li>Calculate successive percentage changes, and understand that an increase and a decrease by the same percentage do not cancel each other out.</li>
+            <li>Distinguish between simple interest and compound interest, and calculate the amount and the interest.</li>
+            <li>Calculate compound interest compounded half-yearly, quarterly or monthly.</li>
+            <li>Apply percentages to solve problems on growth and depreciation.</li>
+          </ul>
         </section>
 
         <section class="section" id="concept">
-          <h2>概念講解</h2>
+          <h2><span data-l="zh">概念講解</span><span data-l="en">Key concepts</span></h2>
 
-          <h3>1. 連續百分變化</h3>
-          <p>每一次的百分變化，都是按<strong>上一次變化後的數值</strong>計算。</p>
-          <div class="formula">新值 = 原值 × (1 ± r₁%) × (1 ± r₂%) × …</div>
-          <p>例如：100 先增加 20%，再減少 20%：100 × 1.2 × 0.8 = 96，整體減少 4%，並非回到 100。</p>
+          <h3><span data-l="zh">1. 連續百分變化</span><span data-l="en">1. Successive percentage changes</span></h3>
+          <p data-l="zh">每一次的百分變化，都是按<strong>上一次變化後的數值</strong>計算。</p>
+          <p data-l="en">Each percentage change is calculated on <strong>the value after the previous change</strong>.</p>
+          <div class="formula" data-l="zh">新值 = 原值 × (1 ± r₁%) × (1 ± r₂%) × …</div>
+          <div class="formula" data-l="en">New value = Original value × (1 ± r₁%) × (1 ± r₂%) × …</div>
+          <p data-l="zh">例如：100 先增加 20%，再減少 20%：100 × 1.2 × 0.8 = 96，整體減少 4%，並非回到 100。</p>
+          <p data-l="en">For example, 100 is first increased by 20% and then decreased by 20%: 100 × 1.2 × 0.8 = 96. Overall it decreases by 4%; it does not return to 100.</p>
 
-          <h3>2. 單利息與複利息</h3>
-          <div class="table-wrap">
+          <h3><span data-l="zh">2. 單利息與複利息</span><span data-l="en">2. Simple interest and compound interest</span></h3>
+          <div class="table-wrap" data-l="zh">
             <table class="t">
               <tr><th></th><th>單利息</th><th>複利息</th></tr>
               <tr><th>計算利息的基礎</th><td>每年都按本金</td><td>按上一年的本利和</td></tr>
@@ -52,18 +61,31 @@
               <tr><th>公式</th><td>I = P × r% × n<br>A = P + I</td><td>A = P(1 + r%)<sup>n</sup><br>I = A − P</td></tr>
             </table>
           </div>
-          <p>P：本金　r%：年利率　n：年數　I：利息　A：本利和</p>
+          <div class="table-wrap" data-l="en">
+            <table class="t">
+              <tr><th></th><th>Simple interest</th><th>Compound interest</th></tr>
+              <tr><th>Interest is calculated on</th><td>The principal, every year</td><td>The amount at the end of the previous year</td></tr>
+              <tr><th>Interest each year</th><td>Unchanged</td><td>Increases year by year</td></tr>
+              <tr><th>Formula</th><td>I = P × r% × n<br>A = P + I</td><td>A = P(1 + r%)<sup>n</sup><br>I = A − P</td></tr>
+            </table>
+          </div>
+          <p data-l="zh">P：本金　r%：年利率　n：年數　I：利息　A：本利和</p>
+          <p data-l="en">P: principal　r%: interest rate per annum　n: number of years　I: interest　A: amount</p>
 
-          <h3>3. 分期複利</h3>
-          <p>若每年計息 k 次（每半年 k = 2，每季 k = 4，每月 k = 12），則每期利率為 r% ÷ k，n 年共有 nk 期：</p>
+          <h3><span data-l="zh">3. 分期複利</span><span data-l="en">3. Compound interest compounded periodically</span></h3>
+          <p data-l="zh">若每年計息 k 次（每半年 k = 2，每季 k = 4，每月 k = 12），則每期利率為 r% ÷ k，n 年共有 nk 期：</p>
+          <p data-l="en">If interest is compounded k times a year (half-yearly k = 2, quarterly k = 4, monthly k = 12), the interest rate per period is r% ÷ k, and there are nk periods in n years:</p>
           <div class="formula">A = P(1 + r% ÷ k)<sup>nk</sup></div>
-          <p>年利率相同時，計息次數越多，本利和越大，但增幅會越來越小。</p>
+          <p data-l="zh">年利率相同時，計息次數越多，本利和越大，但增幅會越來越小。</p>
+          <p data-l="en">For the same interest rate per annum, the more often interest is compounded, the greater the amount, but the increase becomes smaller and smaller.</p>
 
-          <h3>4. 增長與折舊</h3>
-          <div class="formula">增長：新值 = 原值 × (1 + r%)<sup>n</sup>　　折舊：新值 = 原值 × (1 − r%)<sup>n</sup></div>
-          <p>增長與複利息的計算方法相同；折舊則每期都按上一期的價值減少 r%，所以價值不會跌至 0。</p>
+          <h3><span data-l="zh">4. 增長與折舊</span><span data-l="en">4. Growth and depreciation</span></h3>
+          <div class="formula" data-l="zh">增長：新值 = 原值 × (1 + r%)<sup>n</sup>　　折舊：新值 = 原值 × (1 − r%)<sup>n</sup></div>
+          <div class="formula" data-l="en">Growth: New value = Original value × (1 + r%)<sup>n</sup>　　Depreciation: New value = Original value × (1 − r%)<sup>n</sup></div>
+          <p data-l="zh">增長與複利息的計算方法相同；折舊則每期都按上一期的價值減少 r%，所以價值不會跌至 0。</p>
+          <p data-l="en">Growth is calculated in the same way as compound interest. In depreciation, the value decreases by r% of the previous period's value each period, so the value never drops to 0.</p>
 
-          <div class="callout warn">
+          <div class="callout warn" data-l="zh">
             <strong>常見錯誤</strong>
             <ul>
               <li>以為「先加 20% 再減 20%」會回到原值。</li>
@@ -74,36 +96,67 @@
               <li>折舊時寫成 (1 + r%)<sup>n</sup>，或以為 n 年後價值減少了 n × r%。</li>
             </ul>
           </div>
+          <div class="callout warn" data-l="en">
+            <strong>Common mistakes</strong>
+            <ul>
+              <li>Thinking that "increase by 20%, then decrease by 20%" returns to the original value.</li>
+              <li>Adding two percentage changes directly, e.g. thinking that an increase of 10% followed by another 10% is an increase of 20% (it is actually 21%).</li>
+              <li>Calculating compound interest on the principal every year (i.e. wrongly using simple interest).</li>
+              <li>For compound interest compounded periodically, forgetting to divide the interest rate per annum by k, or to multiply the number of years by k.</li>
+              <li>Confusing the amount A with the interest I: when a question asks for the interest, subtract the principal.</li>
+              <li>Writing (1 + r%)<sup>n</sup> for depreciation, or thinking that the value has decreased by n × r% after n years.</li>
+            </ul>
+          </div>
         </section>
 
         <section class="section" id="teaching">
-          <h2>教學建議</h2>
-          <h3>課堂頁面各工具的用法</h3>
-          <ul>
+          <h2><span data-l="zh">教學建議</span><span data-l="en">Teaching suggestions</span></h2>
+          <h3><span data-l="zh">課堂頁面各工具的用法</span><span data-l="en">Using the tools on the class page</span></h3>
+          <ul data-l="zh">
             <li><strong>① 連續百分變化</strong>：勾選「先預測，後揭曉」，按「+20% → −20%」，讓學生寫下估計再揭曉 96，製造認知衝突。百分比條把每一步的「100%」都畫出來，學生可直接看到第二次的 20%（24）比第一次的 20%（20）長。然後按「交換次序」，發現次序不影響結果（1.2 × 0.8 = 0.8 × 1.2）。「+10% → +10%」可帶出整體是 +21% 而不是 +20%。</li>
             <li><strong>② 單利息 vs 複利息</strong>：先勾選「先預測，後揭曉」，讓學生估計 20 年後複利息的本利和，大多數學生會低估。揭曉後用 ◀ ▶ 逐年比較，並展開數據表，對比「比上一年多」（單利息不變、複利息遞增）及「是上一年的」（複利息每年都 × 1.08）兩欄。</li>
-            <li><strong>③ 分期複利</strong>：依次按「每年、每半年、每季、每月」，觀察時間線上的計息次數及本利和的變化。下方列出頭幾期的計算，讓學生明白公式中的 r% ÷ k 和 nk 從何而來。</li>
+            <li><strong>③ 分期複利</strong>：先看上方四條橫條：藍色「按本金計的利息」四種方式都一樣，只有橙色「利息的利息」隨計息次數增加。問學生「多出來的利息從哪裏來？」。然後按任何一條，下方表格逐期列出「本期利息 = 按本金計 + 利息的利息」，讓學生看到利息怎樣一期一期滾存，並明白公式中的 r% ÷ k 和 nk 從何而來。</li>
             <li><strong>④ 增長與折舊</strong>：先用「汽車折舊」，問學生「價值何時跌到一半？」。然後勾選「比較錯誤做法」，對比「每年都減去原值的 15%」：錯誤做法在第 7 年已跌至 0，讓學生明白為何要按上一期計算。</li>
           </ul>
+          <ul data-l="en">
+            <li><strong>① Successive percentage changes</strong>: Tick "Predict first, then reveal" and press "+20% → −20%". Let students write down their estimates before revealing 96, creating cognitive conflict. The percentage bar draws the "100%" of every step, so students can see directly that the second 20% (24) is longer than the first 20% (20). Then press "Swap order" to find that the order does not affect the result (1.2 × 0.8 = 0.8 × 1.2). "+10% → +10%" brings out that the overall change is +21%, not +20%.</li>
+            <li><strong>② Simple vs compound interest</strong>: First tick "Predict first, then reveal" and let students estimate the amount under compound interest after 20 years; most students will underestimate it. After revealing, use ◀ ▶ to compare year by year, and expand the data table to compare the two columns "more than the previous year" (constant for simple interest, increasing for compound interest) and "times the previous year" (× 1.08 every year for compound interest).</li>
+            <li><strong>③ Compounding periods</strong>: Start with the four bars at the top: the blue "interest on the principal" is the same for all four, and only the orange "interest on interest" grows as interest is compounded more often. Ask students "Where does the extra interest come from?". Then click any bar: the table below lists, period by period, "interest = on principal + on interest", so students see how interest builds up and where r% ÷ k and nk in the formula come from.</li>
+            <li><strong>④ Growth and depreciation</strong>: Start with "Car depreciation" and ask students "When will the value drop to half?". Then tick "Compare with the wrong method" to compare with "subtracting 15% of the original value every year": the wrong method already drops to 0 in year 7, which helps students understand why each period must be based on the previous period.</li>
+          </ul>
 
-          <h3>研究的啟示</h3>
-          <ul>
+          <h3><span data-l="zh">研究的啟示</span><span data-l="en">What the research says</span></h3>
+          <ul data-l="zh">
             <li><strong>百分率的語言有誤導性</strong>（Parker &amp; Leinhardt, 1995）：「增加 20%」用加法的字眼表達乘法的意思，而且「……的 20%」中的「的」指向哪個基數，學生常常弄錯。教學時宜同時寫出兩種說法：「增加 20%」即「× 1.2」。</li>
             <li><strong>連續百分變化的核心是基數改變</strong>（Jacobs Danan &amp; Gelman, 2018）：不少大學生仍會把兩次百分變化直接相加。研究建議先確保學生掌握一步的百分變化，再處理兩步的問題。</li>
             <li><strong>百分比條／雙數線</strong>（Van den Heuvel-Panhuizen, 2003；Küchemann, Hodgen &amp; Brown）：把數量與 0%–100% 並排畫在同一條上，可延伸至超過 100%，並支援把百分率當作「乘數」使用。① 的百分比條即採用此模型。</li>
             <li><strong>指數增長偏誤</strong>（Stango &amp; Zinman, 2009）：一般人會把複利增長「直線化」，因而低估未來值。先估計、後揭曉，可讓學生親身經歷這種偏誤。</li>
             <li><strong>「加」與「乘」的規律</strong>（Confrey &amp; Smith, 1995；Ellis 等）：理解指數增長的關鍵，是察覺時間每加 1，數值就乘以同一個數。② 的數據表及 ④ 的「每一年都 × 0.85」正是突出這一點。</li>
             <li><strong>直線化錯覺</strong>（De Bock, Van Dooren &amp; Verschaffel）：學生傾向在不適用的情況下使用直線模型。④ 的「比較錯誤做法」直接對比兩種模型。</li>
+            <li><strong>用表格及面積表示複利</strong>（Hubbard, Matthews &amp; Samek, 2016）：比較三種工具後發現，逐期列出利息的表格及以面積表示利息的圖，比折線圖更能幫助學習者理解複利。③ 因此採用「總利息橫條（按本金計＋利息的利息）」及逐期表格。</li>
           </ul>
-          <h3>留意</h3>
-          <ul>
+          <ul data-l="en">
+            <li><strong>The language of percentages is misleading</strong> (Parker &amp; Leinhardt, 1995): "increase by 20%" uses additive wording to express a multiplicative meaning, and students often mistake which base value the "of" in "20% of …" refers to. When teaching, write both forms together: "increase by 20%" means "× 1.2".</li>
+            <li><strong>The key to successive percentage changes is the change of base value</strong> (Jacobs Danan &amp; Gelman, 2018): many university students still add two percentage changes directly. The research suggests making sure students master one-step percentage changes before tackling two-step problems.</li>
+            <li><strong>Percentage bar / double number line</strong> (Van den Heuvel-Panhuizen, 2003; Küchemann, Hodgen &amp; Brown): drawing quantities side by side with 0%–100% on the same bar can be extended beyond 100%, and supports using percentages as "multipliers". The percentage bar in ① uses this model.</li>
+            <li><strong>Exponential growth bias</strong> (Stango &amp; Zinman, 2009): people tend to "linearise" compound growth and so underestimate future values. Estimating first and then revealing lets students experience this bias for themselves.</li>
+            <li><strong>Patterns of "adding" and "multiplying"</strong> (Confrey &amp; Smith, 1995; Ellis et al.): the key to understanding exponential growth is noticing that each time the time increases by 1, the value is multiplied by the same number. The data table in ② and "× 0.85 every year" in ④ highlight exactly this.</li>
+            <li><strong>Illusion of linearity</strong> (De Bock, Van Dooren &amp; Verschaffel): students tend to use linear models where they do not apply. "Compare with the wrong method" in ④ contrasts the two models directly.</li>
+            <li><strong>Tables and area to show compound interest</strong> (Hubbard, Matthews &amp; Samek, 2016): comparing three tools, a table of the interest in each period and an area display helped learners understand compounding more than a line graph did. ③ therefore uses total-interest bars (on principal + on interest) and a period-by-period table.</li>
+          </ul>
+          <h3><span data-l="zh">留意</span><span data-l="en">Notes</span></h3>
+          <ul data-l="zh">
             <li>所有金額均準確至 $0.01；人口及細菌數目取最接近的整數。</li>
             <li>④ 的情境數據為方便計算而設的虛構數字。</li>
+          </ul>
+          <ul data-l="en">
+            <li>All amounts of money are correct to the nearest $0.01; populations and numbers of bacteria are rounded to the nearest integer.</li>
+            <li>The data in the scenarios of ④ are fictitious numbers chosen for ease of calculation.</li>
           </ul>
         </section>
 
         <section class="section" id="references">
-          <h2>參考資料</h2>
+          <h2><span data-l="zh">參考資料</span><span data-l="en">References</span></h2>
           <ul class="refs">
             <li>Parker, M., &amp; Leinhardt, G. (1995). Percent: A privileged proportion. <em>Review of Educational Research, 65</em>(4), 421–481.</li>
             <li>Jacobs Danan, J. A., &amp; Gelman, R. (2018). The problem with percentages. <em>Philosophical Transactions of the Royal Society B, 373</em>(1740), 20160519.</li>
@@ -112,13 +165,14 @@
             <li>Stango, V., &amp; Zinman, J. (2009). Exponential growth bias and household finance. <em>The Journal of Finance, 64</em>(6), 2807–2849.</li>
             <li>Confrey, J., &amp; Smith, E. (1995). Splitting, covariation, and their role in the development of exponential functions. <em>Journal for Research in Mathematics Education, 26</em>(1), 66–86.</li>
             <li>Ellis, A. B., Ozgur, Z., Kulow, T., Williams, C. C., &amp; Amidon, J. (2016). An exponential growth learning trajectory. <em>Mathematical Thinking and Learning, 18</em>(3).</li>
-            <li>De Bock, D., Van Dooren, W., Janssens, D., &amp; Verschaffel, L. (2007). <em>The illusion of linearity: From analysis to improvement.</em> Springer.</li>          </ul>
+            <li>De Bock, D., Van Dooren, W., Janssens, D., &amp; Verschaffel, L. (2007). <em>The illusion of linearity: From analysis to improvement.</em> Springer.</li>
+            <li>Hubbard, E., Matthews, P., &amp; Samek, A. (2016). Using online compound interest tools to improve financial literacy. <em>The Journal of Economic Education, 47</em>(2), 106–120.</li>          </ul>
         </section>
       </div>
     </div>
   </main>
 
-  <footer><div class="wrap">中三數學學習站 · 教師筆記</div></footer>
+  <footer><div class="wrap"><span data-l="zh">中三數學學習站 · 教師筆記</span><span data-l="en">S3 Maths Hub · Teacher notes</span></div></footer>
 
   <script src="../assets/topic.js"></script>
 </body>

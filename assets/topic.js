@@ -12,24 +12,25 @@
   var strand = STRANDS.filter(function (s) { return s.id === t.strand; })[0];
 
   document.body.setAttribute("data-strand", t.strand);
-  document.title = t.zh + (isNotes ? "（教師筆記）" : "") + "｜" + SITE.title;
+  var name = topicName(t), notesLabel = L("教師筆記", "Teacher notes");
+  document.title = name + (isNotes ? L("（教師筆記）", " (Teacher notes)") : "") + L("｜", " | ") + L(SITE.title, SITE.titleEn);
   if (!isNotes) addRecent(t.id);
 
   // 標題區
   var classUrl = topicUrl(ROOT, t.id);
   var head = document.getElementById("topic-head");
   head.innerHTML =
-    '<nav class="crumbs"><a href="' + ROOT + 'index.html">主頁</a> › ' + strand.name + " › " +
-    (isNotes ? '<a href="' + classUrl + '">' + t.zh + "</a> › 教師筆記" : t.zh) + "</nav>" +
-    '<div class="topic-hero"><span class="tag">' + (isNotes ? "教師筆記" : strand.name) + "</span>" +
-    "<h1>" + t.zh + "</h1><p class=\"en\">" + t.en + "</p>" +
-    (isNotes ? '<p><a href="' + classUrl + '">← 返回課堂頁面</a></p>' : "") + "</div>";
+    '<nav class="crumbs"><a href="' + ROOT + 'index.html">' + L("主頁", "Home") + "</a> › " + strandName(strand) + " › " +
+    (isNotes ? '<a href="' + classUrl + '">' + name + "</a> › " + notesLabel : name) + "</nav>" +
+    '<div class="topic-hero"><span class="tag">' + (isNotes ? notesLabel : strandName(strand)) + "</span>" +
+    "<h1>" + name + "</h1><p class=\"en\">" + L(t.en, t.zh) + "</p>" +
+    (isNotes ? '<p><a href="' + classUrl + '">' + L("← 返回課堂頁面", "← Back to class page") + "</a></p>" : "") + "</div>";
 
   // 目錄（由頁內每個 .section 自動產生）
   var sections = Array.prototype.slice.call(document.querySelectorAll(".section[id]"));
   var toc = document.getElementById("toc");
   toc.innerHTML = sections.map(function (s) {
-    return '<a href="#' + s.id + '">' + s.querySelector("h2").textContent + "</a>";
+    return '<a href="#' + s.id + '">' + s.querySelector("h2").innerHTML + "</a>"; // innerHTML 保留中英兩個 span
   }).join("");
   var links = Array.prototype.slice.call(toc.querySelectorAll("a"));
 
@@ -55,9 +56,9 @@
       highlight(cur);
       var p = sections[i - 1], n = sections[i + 1];
       stepNav.innerHTML =
-        (p ? '<a class="btn" href="#' + p.id + '">← 上一部分</a>' : "<span></span>") +
+        (p ? '<a class="btn" href="#' + p.id + '">' + L("← 上一部分", "← Previous") + "</a>" : "<span></span>") +
         '<span class="step-count">' + (i + 1) + " / " + sections.length + "</span>" +
-        (n ? '<a class="btn primary" href="#' + n.id + '">下一部分 →</a>' : "<span></span>");
+        (n ? '<a class="btn primary" href="#' + n.id + '">' + L("下一部分 →", "Next →") + "</a>" : "<span></span>");
       if (fromUser) {
         history.replaceState(null, "", "#" + cur.id);
         document.getElementById("topic-head").scrollIntoView({ block: "start" });
@@ -102,6 +103,6 @@
   var pager = document.getElementById("pager");
   if (!pager) return;
   pager.innerHTML =
-    (prev ? '<a class="prev" href="' + prev.id + '.html"><small>← 上一課</small>' + prev.zh + "</a>" : "") +
-    (next ? '<a class="next" href="' + next.id + '.html"><small>下一課 →</small>' + next.zh + "</a>" : "");
+    (prev ? '<a class="prev" href="' + prev.id + '.html"><small>' + L("← 上一課", "← Previous topic") + "</small>" + topicName(prev) + "</a>" : "") +
+    (next ? '<a class="next" href="' + next.id + '.html"><small>' + L("下一課 →", "Next topic →") + "</small>" + topicName(next) + "</a>" : "");
 })();

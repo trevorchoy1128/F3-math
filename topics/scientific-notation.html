@@ -84,16 +84,16 @@
     <div id="topic-head"></div>
 
     <div class="topic-layout">
-      <nav class="toc" id="toc" aria-label="本課目錄"></nav>
+      <nav class="toc" id="toc" aria-label="本課目錄" data-en-aria-label="Contents"></nav>
 
       <div>
         <section class="section" id="powers">
-          <h2>① 10 的乘冪</h2>
-          <p class="hint">拉動滑桿改變指數 n，看看 10<sup>n</sup> 寫成一般的數是怎樣的。</p>
+          <h2><span data-l="zh">① 10 的乘冪</span><span data-l="en">① Powers of 10</span></h2>
+          <p class="hint"><span data-l="zh">拉動滑桿改變指數 n，看看 10<sup>n</sup> 寫成一般的數是怎樣的。</span><span data-l="en">Drag the slider to change the index n and see what 10<sup>n</sup> looks like as an ordinary number.</span></p>
           <div class="power-row">
-            <button type="button" class="btn" id="pw-minus" aria-label="指數減 1">−</button>
-            <input type="range" id="pw-range" min="-8" max="10" value="3" aria-label="指數 n">
-            <button type="button" class="btn" id="pw-plus" aria-label="指數加 1">+</button>
+            <button type="button" class="btn" id="pw-minus" aria-label="指數減 1" data-en-aria-label="Decrease the index by 1">−</button>
+            <input type="range" id="pw-range" min="-8" max="10" value="3" aria-label="指數 n" data-en-aria-label="Index n">
+            <button type="button" class="btn" id="pw-plus" aria-label="指數加 1" data-en-aria-label="Increase the index by 1">+</button>
           </div>
           <div class="power-card">
             <div class="big" id="pw-eq"></div>
@@ -103,13 +103,13 @@
         </section>
 
         <section class="section" id="mover">
-          <h2>② 移動小數點</h2>
-          <p class="hint">移動小數點（紅點），直到前面的數 a 在 1 與 10 之間。小數點每移一位，後面的指數就會改變 1，使數值保持不變。</p>
+          <h2><span data-l="zh">② 移動小數點</span><span data-l="en">② Moving the decimal point</span></h2>
+          <p class="hint"><span data-l="zh">移動小數點（紅點），直到前面的數 a 在 1 與 10 之間。小數點每移一位，後面的指數就會改變 1，使數值保持不變。</span><span data-l="en">Move the decimal point (the red dot) until the number a in front is between 1 and 10. Each time the decimal point moves one place, the index changes by 1, so the value stays the same.</span></p>
           <div class="presets" id="presets"></div>
           <div class="row">
-            <input id="mv-input" class="field" inputmode="decimal" autocomplete="off" placeholder="自己輸入一個數" aria-label="自己輸入一個數">
-            <button type="button" class="btn" id="mv-use">使用</button>
-            <button type="button" class="btn" id="mv-random">隨機</button>
+            <input id="mv-input" class="field" inputmode="decimal" autocomplete="off" placeholder="自己輸入一個數" aria-label="自己輸入一個數" data-en-placeholder="Enter your own number" data-en-aria-label="Enter your own number">
+            <button type="button" class="btn" id="mv-use"><span data-l="zh">使用</span><span data-l="en">Use</span></button>
+            <button type="button" class="btn" id="mv-random"><span data-l="zh">隨機</span><span data-l="en">Random</span></button>
           </div>
           <div id="mv-error" class="error" hidden></div>
 
@@ -117,32 +117,32 @@
           <div class="moves" id="mv-moves"></div>
           <div class="status" id="mv-status" aria-live="polite"></div>
           <div class="row move-btns">
-            <button type="button" class="btn primary" id="mv-left">← 小數點向左移</button>
-            <button type="button" class="btn primary" id="mv-right">小數點向右移 →</button>
-            <button type="button" class="btn" id="mv-reset">重設</button>
+            <button type="button" class="btn primary" id="mv-left"><span data-l="zh">← 小數點向左移</span><span data-l="en">← Move decimal point left</span></button>
+            <button type="button" class="btn primary" id="mv-right"><span data-l="zh">小數點向右移 →</span><span data-l="en">Move decimal point right →</span></button>
+            <button type="button" class="btn" id="mv-reset"><span data-l="zh">重設</span><span data-l="en">Reset</span></button>
           </div>
           <div class="equation" id="mv-eq"></div>
         </section>
 
         <section class="section" id="judge">
-          <h2>③ 是不是科學記數法？</h2>
-          <p class="hint">科學記數法寫成 a × 10<sup>n</sup>，其中 1 ≤ a &lt; 10，n 是整數。逐張判斷，看看你的理由是否正確。</p>
+          <h2><span data-l="zh">③ 是不是科學記數法？</span><span data-l="en">③ Is it scientific notation?</span></h2>
+          <p class="hint"><span data-l="zh">科學記數法寫成 a × 10<sup>n</sup>，其中 1 ≤ a &lt; 10，n 是整數。逐張判斷，看看你的理由是否正確。</span><span data-l="en">Scientific notation is written as a × 10<sup>n</sup>, where 1 ≤ a &lt; 10 and n is an integer. Judge each card and check whether your reason is right.</span></p>
           <div class="row">
             <span class="judge-score" id="judge-score"></span>
-            <button type="button" class="btn" id="judge-reset">重新開始</button>
+            <button type="button" class="btn" id="judge-reset"><span data-l="zh">重新開始</span><span data-l="en">Start again</span></button>
           </div>
           <div class="judge-grid" id="judge-grid"></div>
         </section>
 
         <section class="section world" id="world">
-          <h2>④ 大與小的世界</h2>
-          <p class="hint">按每張咭，在一般寫法與科學記數法之間切換。哪一種寫法比較容易讀？比較容易比較大小？</p>
+          <h2><span data-l="zh">④ 大與小的世界</span><span data-l="en">④ A world of big and small</span></h2>
+          <p class="hint"><span data-l="zh">按每張咭，在一般寫法與科學記數法之間切換。哪一種寫法比較容易讀？比較容易比較大小？</span><span data-l="en">Click each card to switch between the ordinary form and scientific notation. Which form is easier to read? Which makes it easier to compare sizes?</span></p>
           <div class="row">
-            <button type="button" class="btn" id="world-all">全部轉為科學記數法</button>
+            <button type="button" class="btn" id="world-all"><span data-l="zh">全部轉為科學記數法</span><span data-l="en">Show all in scientific notation</span></button>
           </div>
-          <h3>很大的數</h3>
+          <h3><span data-l="zh">很大的數</span><span data-l="en">Very large numbers</span></h3>
           <div class="facts" id="facts-big"></div>
-          <h3>很小的數</h3>
+          <h3><span data-l="zh">很小的數</span><span data-l="en">Very small numbers</span></h3>
           <div class="facts" id="facts-small"></div>
         </section>
 
@@ -151,7 +151,7 @@
     </div>
   </main>
 
-  <footer><div class="wrap">中三數學學習站 · <a href="../notes/scientific-notation.html">教師筆記</a></div></footer>
+  <footer><div class="wrap"><span data-l="zh">中三數學學習站</span><span data-l="en">S3 Maths Hub</span> · <a href="../notes/scientific-notation.html"><span data-l="zh">教師筆記</span><span data-l="en">Teacher notes</span></a></div></footer>
 
   <script src="../assets/topic.js"></script>
   <script src="scientific-notation.js"></script>
